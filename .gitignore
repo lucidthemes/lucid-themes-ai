@@ -1,0 +1,34 @@
+
+# Global / IDE Options
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Backend
+backend/.venv/
+backend/app/__pycache__/
+backend/app/*.pyc
+backend/app/.pytest_cache/
+backend/app/.ruff_cache/
+backend/app/.mypy_cache/
+
+# Environment Variables
+.env
+.env*.local
+*.env
+backend/.env
+frontend/.env*.local
