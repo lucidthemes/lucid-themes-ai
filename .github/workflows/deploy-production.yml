@@ -82,7 +82,7 @@ jobs:
       - name: Deploy to Vercel (production)
         uses: amondnet/vercel-action@v42
         with:
-          vercel-token: ${{ secrets.FRONTEND_VERCEL_PROD_TOKEN }}
+          vercel-token: ${{ secrets.FRONTEND_VERCEL_TOKEN }}
           vercel-args: --prod
           vercel-org-id: ${{ secrets.FRONTEND_VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.FRONTEND_VERCEL_PROD_PROJECT_ID }}
