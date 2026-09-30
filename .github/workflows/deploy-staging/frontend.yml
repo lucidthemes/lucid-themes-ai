@@ -1,4 +1,4 @@
-name: Deploy to Staging
+name: Deploy to Staging (Frontend)
 
 on:
   pull_request:
@@ -6,6 +6,8 @@ on:
       - closed
     branches:
       - main
+    paths:
+      - 'frontend/**'
 
 jobs:
   frontend-deploy:
