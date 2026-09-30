@@ -1,9 +1,35 @@
 services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      API_BASE_URL: http://backend:8000
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /src
+          ignore:
+            - node_modules/
+            - .next/
+
+        - action: rebuild
+          path: ./frontend/package.json
+
+        - action: rebuild
+          path: ./frontend/package-lock.json
+
   backend:
     build:
       context: ./backend
     ports:
       - "8000:8000"
+    environment:
+      FRONTEND_URL: http://localhost:3000
 
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
