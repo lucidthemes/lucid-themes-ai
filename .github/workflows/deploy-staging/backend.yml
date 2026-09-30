@@ -1,0 +1,30 @@
+name: Deploy to Staging (Backend)
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  backend-deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Deploy to Render (staging)
+        if: github.ref == 'refs/heads/main'
+        env:
+          deploy_url: ${{ secrets.BACKEND_RENDER_STAGING_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
