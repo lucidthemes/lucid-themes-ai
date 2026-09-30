@@ -4,6 +4,7 @@
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss",
         "FastAPILabs.fastapi-vscode",
-        "ms-python.python"
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
     ]
 }
