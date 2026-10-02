@@ -10,21 +10,41 @@ on:
       - 'backend/**'
 
 jobs:
-  backend-deploy:
+  backend-build-image:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./backend
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push staging image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/backend:pr-${{ github.event.pull_request.number }}
+            ghcr.io/${{ github.repository }}/backend:staging
+
+  backend-deploy:
+    runs-on: ubuntu-latest
+    needs: backend-build-image
+
+    steps:
       - name: Deploy to Render (staging)
-        if: github.ref == 'refs/heads/main'
         env:
           deploy_url: ${{ secrets.BACKEND_RENDER_STAGING_DEPLOY_HOOK_URL }}
         run: |
-          curl "$deploy_url"
+          curl -f "$deploy_url"
