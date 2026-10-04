@@ -5,6 +5,8 @@ services:
     ports:
       - "3000:3000"
     environment:
+      PROJECT_ENVIRONMENT: development
+      NEXT_PUBLIC_PROJECT_ENVIRONMENT: development
       API_BASE_URL: http://backend:8000
       NEXT_PUBLIC_API_URL: http://localhost:8000
 
@@ -29,6 +31,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      PROJECT_ENVIRONMENT: development
       FRONTEND_URL: http://localhost:3000
       DATABASE_URL: postgresql://user:password@db:5432/app_db
     depends_on:
