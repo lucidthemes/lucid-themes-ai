@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 
 #### App
 
+##### Dashboard
+
+- dashboard route group
+- dashboard page route
+- dashboard components
+
 ##### Auth
 
 - login route
@@ -23,6 +29,7 @@ All notable changes to this project will be documented in this file.
 
 - supabase js helpers
 - project environment check
+- app providers
 
 #### Types
 

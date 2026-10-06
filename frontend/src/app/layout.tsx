@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import TanStackQueryClientProvider from '@/components/query-client-provider';
 import { Toaster } from '@/components/ui/toast';
+import AppProviders from '@/lib/providers/app-providers';
 import { DEFAULT_METADATA } from '@/lib/metadata';
 
 import './globals.css';
@@ -27,13 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <TanStackQueryClientProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          {children}
-          <Toaster />
-        </body>
-      </html>
-    </TanStackQueryClientProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AppProviders>{children}</AppProviders>
+        <Toaster />
+      </body>
+    </html>
   );
 }
