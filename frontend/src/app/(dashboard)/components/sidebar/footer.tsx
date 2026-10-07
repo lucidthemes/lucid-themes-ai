@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Spinner } from '@/components/ui/spinner';
+import { isDevelopmentEnvironment } from '@/lib/project-environment';
 import { createClient } from '@/lib/supabase/client';
 
 export default function DashboardLayoutSidebarFooter({ authEmail }: { authEmail: string }) {
@@ -55,10 +56,12 @@ export default function DashboardLayoutSidebarFooter({ authEmail }: { authEmail:
               className="cursor-pointer"
               onClick={() => {
                 startTransition(async () => {
+                  // development env - skip auth signout
+                  if (isDevelopmentEnvironment) return router.push('/auth/login');
+
+                  // require auth signout
                   const supabase = createClient();
-
                   const { error } = await supabase.auth.signOut({ scope: 'local' });
-
                   if (!error) router.push('/auth/login');
                 });
               }}
