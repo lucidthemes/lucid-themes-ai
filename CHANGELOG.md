@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - supabase js helpers
 - project environment check
 - app providers
+- api urls
 
 #### Types
 
