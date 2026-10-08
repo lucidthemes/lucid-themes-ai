@@ -33,7 +33,8 @@ services:
     environment:
       PROJECT_ENVIRONMENT: development
       FRONTEND_URL: http://localhost:3000
-      DATABASE_URL: postgresql://user:password@db:5432/app_db
+      DATABASE_URL: postgresql+psycopg://user:password@db:5432/app_db
+      DIRECT_DATABASE_URL: postgresql+psycopg://user:password@db:5432/app_db
     depends_on:
       - db
 
