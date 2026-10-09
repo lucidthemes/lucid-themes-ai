@@ -9,8 +9,10 @@ class Settings(BaseSettings):
     FRONTEND_URL: str
 
     # Database
-    DATABASE_URL: str
+    WRITE_DATABASE_URL: str
+    READ_DATABASE_URL: str
     DIRECT_DATABASE_URL: str
+    DATABASE_SCHEMA: str = "public"
 
     # Authentication
     JWKS_URL: str | None = None
