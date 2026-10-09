@@ -6,6 +6,7 @@ dependencies = [
     "alembic>=1.20.0",
     "cryptography>=50.0.2",
     "fastapi[standard]>=0.141.1",
+    "pgvector>=0.5.1",
     "psycopg[binary]>=3.3.6",
     "pydantic-settings>=2.15.0",
     "pyjwt>=2.15.1",
@@ -21,6 +22,7 @@ dev = [
 target-version = "py314"
 line-length = 100
 indent-width = 4
+exclude = ["alembic"]
 
 [tool.ruff.lint]
 select = [
@@ -37,6 +39,10 @@ select = [
 ignore = [
     "E501", # Line too long (handled automatically by ruff formatter anyway)
 ]
+
+[tool.ruff.lint.flake8-bugbear]
+# Allow default arguments like, e.g., `data: List[str] = fastapi.Query(None)`.
+extend-immutable-calls = ["Depends", "fastapi.Depends", "Query", "fastapi.Query"]
 
 [tool.ruff.format]
 quote-style = "double"
