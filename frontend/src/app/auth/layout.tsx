@@ -2,10 +2,10 @@ import { redirect } from 'next/navigation';
 import { Brain } from 'lucide-react';
 
 import { getAuthClaims } from '@/lib/supabase/auth';
-import { isDevelopmentEnvironment } from '@/lib/project-environment';
+import { isDevelopmentModeServer } from '@/lib/development-mode';
 
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
-  if (!isDevelopmentEnvironment) {
+  if (!isDevelopmentModeServer) {
     const authClaims = await getAuthClaims();
 
     if (authClaims) redirect('/');

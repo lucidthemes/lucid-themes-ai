@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-import { isDevelopmentEnvironment } from '@/lib/project-environment';
+import { isDevelopmentModeClient } from '@/lib/development-mode';
 
 import { ForgotPasswordFormSchema } from './forgot-password.schema';
 import type { ForgotPasswordForm } from './forgot-password.schema';
@@ -21,8 +21,8 @@ export default function useForgotPasswordForm() {
   });
 
   const onSubmit = async (data: ForgotPasswordForm) => {
-    // development env - disable
-    if (isDevelopmentEnvironment) return;
+    // development mode - disable
+    if (isDevelopmentModeClient) return;
 
     // submit forgot password request
     forgotPasswordFormMutation.mutate(data);

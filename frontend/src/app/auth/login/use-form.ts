@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-import { isDevelopmentEnvironment } from '@/lib/project-environment';
+import { isDevelopmentModeClient } from '@/lib/development-mode';
 
 import { LoginFormSchema } from './login.schema';
 import type { LoginForm } from './login.schema';
@@ -30,8 +30,8 @@ export default function useLoginForm() {
   });
 
   const onSubmit = async (data: LoginForm) => {
-    // development env - skip login auth
-    if (isDevelopmentEnvironment) return router.push('/');
+    // development mode - skip login auth
+    if (isDevelopmentModeClient) return router.push('/');
 
     // require login auth
     loginFormMutation.mutate(data);
