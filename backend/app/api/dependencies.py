@@ -15,7 +15,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     )
 
     # development env - bypass verifying jwt and return dummy user id
-    if settings.PROJECT_ENVIRONMENT == "development":
+    if settings.DEVELOPMENT_MODE:
         user_id = 123456789
         return user_id
 
