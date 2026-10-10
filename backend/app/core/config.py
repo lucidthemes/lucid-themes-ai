@@ -2,10 +2,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # Environment
-    PROJECT_ENVIRONMENT: str | None = None
+    # Project
+    PROJECT_TITLE: str = "Lucid Themes AI"
+    PROJECT_SUMMARY: str = "Backend API used by the frontend app"
 
-    # General
+    # Frontend
     FRONTEND_URL: str
 
     # Database
@@ -18,6 +19,9 @@ class Settings(BaseSettings):
     JWKS_URL: str | None = None
     JWT_ALGORITHM: str = "ES256"
     JWT_AUDIENCE: str = "authenticated"
+
+    # Development mode
+    DEVELOPMENT_MODE: bool = False
 
     model_config = SettingsConfigDict(
         env_file=".env",

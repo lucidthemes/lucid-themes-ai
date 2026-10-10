@@ -5,8 +5,8 @@ from app.api.main import api_v1_router
 from app.core.config import settings
 
 app = FastAPI(
-    title="Lucid Themes AI",
-    summary="Backend API used for the Lucid Themes AI frontend",
+    title=settings.PROJECT_TITLE,
+    summary=settings.PROJECT_SUMMARY,
     version="0.1.0",
     openapi_url="/api/v1/openapi.json",
 )
