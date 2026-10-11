@@ -32,9 +32,9 @@ services:
       - "8000:8000"
     environment:
       FRONTEND_URL: http://localhost:3000
-      WRITE_DATABASE_URL: postgresql+psycopg://user:password@db:5432/app_db
-      READ_DATABASE_URL: postgresql+psycopg://user:password@db:5432/app_db
-      DIRECT_DATABASE_URL: postgresql+psycopg://user:password@db:5432/app_db
+      WRITE_DATABASE_URL: postgresql+asyncpg://user:password@db:5432/app_db
+      READ_DATABASE_URL: postgresql+asyncpg://user:password@db:5432/app_db
+      DIRECT_DATABASE_URL: postgresql+asyncpg://user:password@db:5432/app_db
       DEVELOPMENT_MODE: true
     depends_on:
       - db

@@ -1,6 +1,9 @@
+import asyncio
+
 from logging.config import fileConfig
 
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.pool import NullPool
 
 from alembic import context
 
@@ -61,29 +64,40 @@ def include_object(object, name, type_, reflected, compare_to):
     return True
 
 
-def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+def do_run_migrations(connection):
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        include_object=include_object,  # Enforce the schema filter
+        include_schemas=True, # Tell Alembic to inspect your specific custom schema
+        version_table_schema=settings.DATABASE_SCHEMA, # Stores alembic_version in your new schema
+    )
 
-    In this scenario we need to create an Engine
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+async def run_async_migrations():
+    """In this scenario we need to create an Engine
     and associate a connection with the context.
 
     """
-    connectable = create_engine(
+
+    connectable = create_async_engine(
         settings.DIRECT_DATABASE_URL,
-        pool_pre_ping=True,
+        poolclass=NullPool,
     )
 
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            include_object=include_object,  # Enforce the schema filter
-            include_schemas=True, # Tell Alembic to inspect your specific custom schema
-            version_table_schema=settings.DATABASE_SCHEMA, # Stores alembic_version in your new schema
-        )
+    async with connectable.connect() as connection:
+        await connection.run_sync(do_run_migrations)
 
-        with context.begin_transaction():
-            context.run_migrations()
+    await connectable.dispose()
+
+
+def run_migrations_online():
+    """Run migrations in 'online' mode."""
+
+    asyncio.run(run_async_migrations())
 
 
 if context.is_offline_mode():
