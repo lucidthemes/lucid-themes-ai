@@ -8,7 +8,6 @@ dependencies = [
     "cryptography>=50.0.2",
     "fastapi[standard]>=0.141.1",
     "pgvector>=0.5.1",
-    "psycopg[binary]>=3.3.6",
     "pydantic-settings>=2.15.0",
     "pyjwt>=2.15.1",
     "sqlalchemy[asyncio]>=2.1.4",
