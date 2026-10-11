@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ChevronRightIcon } from 'lucide-react';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -28,6 +31,10 @@ export type SidebarNavMenu = {
 };
 
 export default function DashboardLayoutSidebarNavMenu({ items }: { items: SidebarNavMenu[] }) {
+  const pathname = usePathname();
+
+  const isActive = (url: string) => pathname === url || pathname.startsWith(url + '/');
+
   if (!items) return;
 
   return (
@@ -48,7 +55,7 @@ export default function DashboardLayoutSidebarNavMenu({ items }: { items: Sideba
           return (
             <Collapsible
               key={item.title}
-              defaultOpen={item.isActive}
+              defaultOpen={item.isActive || isActive(item.url)}
               className="group/collapsible"
               render={<SidebarMenuItem />}
             >

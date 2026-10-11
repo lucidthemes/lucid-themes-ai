@@ -10,10 +10,14 @@ export default function DashboardLayoutSidebarGroupSearch() {
   const items: SidebarNavMenu[] = [
     {
       title: 'Documentation',
-      url: '#',
+      url: '/search/documentation',
       icon: <BookOpenText />,
       isCollapsible: true,
       items: [
+        {
+          title: 'Overview',
+          url: '/search/documentation',
+        },
         {
           title: 'Ingest',
           url: '/search/documentation/ingest',
@@ -21,8 +25,11 @@ export default function DashboardLayoutSidebarGroupSearch() {
         {
           title: 'Retrieval',
           url: '#',
-          isActive: true,
           items: [
+            {
+              title: 'Overview',
+              url: '/search/documentation/retrieval',
+            },
             {
               title: 'Basic',
               url: '/search/documentation/retrieval/basic',
