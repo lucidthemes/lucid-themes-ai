@@ -1,0 +1,38 @@
+import { Controller } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
+
+import { Input } from '@/components/ui/input';
+import { Field, FieldLabel, FieldError } from '@/components/ui/field';
+
+import type { DocumentationIngestJobChunksCreateForm } from '../../../../(routes)/new/schemas/chunks-create-form.schema';
+
+export default function DocumentationIngestJobChunksCreateFormFieldChunkSize({
+  form,
+}: {
+  form: UseFormReturn<DocumentationIngestJobChunksCreateForm>;
+}) {
+  return (
+    <Controller
+      name="chunk_size"
+      control={form.control}
+      render={({ field, fieldState }) => (
+        <Field data-invalid={fieldState.invalid}>
+          <FieldLabel htmlFor="chunk_size">Chunk size</FieldLabel>
+          <Input
+            {...field}
+            aria-invalid={fieldState.invalid}
+            name={field.name}
+            type="number"
+            min={1}
+            value={field.value ?? ''}
+            onChange={(e) => {
+              const value = e.target.valueAsNumber;
+              field.onChange(Number.isNaN(value) ? undefined : value);
+            }}
+          />
+          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+        </Field>
+      )}
+    />
+  );
+}
