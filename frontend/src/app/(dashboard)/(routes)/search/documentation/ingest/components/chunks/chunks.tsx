@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-import { Card } from '@/components/ui/card';
-
-import DocumentationIngestLoading from '../loading';
+import { Card, CardContent } from '@/components/ui/card';
 
 import DocumentationIngestChunksHeader from './header';
 import DocumentationIngestChunksItems from './items';
 import DocumentationIngestChunksFooter from './footer';
+
+import DocumentationIngestLoading from '../loading';
 
 export default function DocumentationIngestChunks() {
   const [expanded, setExpanded] = useState(true);
@@ -18,17 +18,19 @@ export default function DocumentationIngestChunks() {
     { id: '2', content: 'A practical talk on component APIs, accessibility, and shipping faster.' },
   ];
 
+  const loading = false;
+
   return (
-    <Card className="relative mx-auto w-full">
+    <Card className="mx-auto w-full">
       <DocumentationIngestChunksHeader expanded={expanded} setExpanded={setExpanded} />
       {expanded && (
-        <>
-          <DocumentationIngestChunksItems chunks={chunks} />
-          <DocumentationIngestChunksFooter />
-        </>
-      )}
+        <CardContent className="flex flex-col gap-5">
+          {!loading && <DocumentationIngestChunksItems chunks={chunks} />}
 
-      <DocumentationIngestLoading />
+          {loading && <DocumentationIngestLoading title="Generating embeddings" />}
+        </CardContent>
+      )}
+      {expanded && !loading && <DocumentationIngestChunksFooter />}
     </Card>
   );
 }

@@ -14,7 +14,7 @@ export default function DocumentationIngestChunksHeader({
 }) {
   return (
     <CardHeader>
-      <CardTitle>Document chunks</CardTitle>
+      <CardTitle>Document chunks (100)</CardTitle>
       <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
       <CardAction className="flex gap-5 self-center">
         <Button className="cursor-pointer" variant="secondary" onClick={() => setExpanded((expanded) => !expanded)}>
