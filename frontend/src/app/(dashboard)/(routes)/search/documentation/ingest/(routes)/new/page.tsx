@@ -1,7 +1,7 @@
 import DashboardLayoutContainer from '../../../../../../components/container';
 import DashboardLayoutHeading from '../../../../../../components/heading';
 
-import DocumentationIngestParse from '../../components/parse';
+import DocumentationIngestParse from '../components/parse';
 import DocumentationIngestChunks from '../components/chunks';
 import DocumentationIngestCosts from '../components/costs';
 
