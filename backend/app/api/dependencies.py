@@ -17,13 +17,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         user_id = 123456789
         return user_id
 
+    # not development env - require JWKS URL to be specified to use for verification
     token_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate token",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    # not development env - require JWKS URL to be specified to use for verification
     if settings.JWKS_URL is None:
         raise token_exception
 
