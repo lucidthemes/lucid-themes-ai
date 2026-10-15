@@ -2,8 +2,8 @@ import DashboardLayoutContainer from '../../../../../../components/container';
 import DashboardLayoutHeading from '../../../../../../components/heading';
 
 import DocumentationIngestParse from '../../components/parse';
-import DocumentationIngestChunks from '../../components/chunks';
-import DocumentationIngestCosts from '../../components/costs';
+import DocumentationIngestChunks from '../components/chunks';
+import DocumentationIngestCosts from '../components/costs';
 
 import DocumentationIngestNewBackButton from './components/back-button';
 import DocumentationIngestNewCreateOptions from './components/create-options/create-options';
