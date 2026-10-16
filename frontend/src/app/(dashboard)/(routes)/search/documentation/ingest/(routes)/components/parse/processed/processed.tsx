@@ -10,6 +10,7 @@ import DocumentationIngestParseProcessedFooter from './footer';
 
 export default function DocumentationIngestParseProcessed() {
   const [viewContentOpen, setViewContentOpen] = useState(false);
+  const [viewContentSplit, setViewContentSplit] = useState(false);
 
   return (
     <>
@@ -17,10 +18,14 @@ export default function DocumentationIngestParseProcessed() {
         <DocumentationIngestParseProcessedDocument
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
+          viewContentSplit={viewContentSplit}
+          setViewContentSplit={setViewContentSplit}
         />
         <DocumentationIngestParseProcessedWebpage
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
+          viewContentSplit={viewContentSplit}
+          setViewContentSplit={setViewContentSplit}
         />
       </CardContent>
       <DocumentationIngestParseProcessedFooter />

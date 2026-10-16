@@ -14,7 +14,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 
 export default function DocumentationIngestParseProcessedFooterSettings() {
   const splitMethods = [
-    { label: 'Markdown (default)', value: 'markdown' },
+    { label: 'Markdown', value: 'markdown' },
     { label: 'Text', value: 'text' },
   ];
 

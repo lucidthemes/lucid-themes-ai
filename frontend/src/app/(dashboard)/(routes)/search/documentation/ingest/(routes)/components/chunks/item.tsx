@@ -28,7 +28,7 @@ export default function DocumentationIngestChunksItem({
           <Item variant="muted">
             <ItemContent className="gap-y-2.5">
               <div className="flex flex-col gap-y-1">
-                <ItemTitle>Markdown</ItemTitle>
+                <ItemTitle>Content</ItemTitle>
                 <Textarea id={chunk.id} placeholder="Type your message here." defaultValue={chunk.content} />
               </div>
               <div className="flex flex-col gap-y-1">

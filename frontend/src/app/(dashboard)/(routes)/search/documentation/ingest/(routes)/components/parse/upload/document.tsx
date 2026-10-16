@@ -8,11 +8,18 @@ import { Field, FieldGroup } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
 
+import DocumentationIngestParseUploadDocumentPages from './document-pages';
 import DocumentationIngestParseTierSelect from './tier-select';
 import DocumentationIngestParseTierAccept from './tier-accept';
 import DocumentationIngestParseCreditCalculator from './credit-calculator';
 
 export default function DocumentationIngestParseUploadDocument() {
+  const [documentParseTier, setDocumentParseTier] = useState({
+    label: 'Cost Effective',
+    value: 'cost_effective',
+    credits: 3,
+  });
+  const [pages, setPages] = useState(1);
   const [calculatorOpen, setCalculatorOpen] = useState(false);
 
   return (
@@ -29,14 +36,21 @@ export default function DocumentationIngestParseUploadDocument() {
           <Field>
             <Input id="document" type="file" className="cursor-pointer" accept=".pdf" />
           </Field>
-          <DocumentationIngestParseTierSelect />
+          <DocumentationIngestParseUploadDocumentPages setPages={setPages} />
+          <DocumentationIngestParseTierSelect setDocumentParseTier={setDocumentParseTier} />
           <DocumentationIngestParseTierAccept
             type="document"
             calculatorOpen={calculatorOpen}
             setCalculatorOpen={setCalculatorOpen}
           />
         </FieldGroup>
-        {calculatorOpen && <DocumentationIngestParseCreditCalculator />}
+        {calculatorOpen && (
+          <DocumentationIngestParseCreditCalculator
+            documentParseTier={documentParseTier}
+            pages={pages}
+            setPages={setPages}
+          />
+        )}
       </ItemContent>
     </Item>
   );

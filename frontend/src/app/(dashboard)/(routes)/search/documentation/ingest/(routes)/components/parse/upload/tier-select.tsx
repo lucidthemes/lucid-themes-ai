@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import { Info } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -13,18 +14,28 @@ import {
 } from '@/components/ui/select';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-export default function DocumentationIngestParseTierSelect() {
+export default function DocumentationIngestParseTierSelect({
+  setDocumentParseTier,
+}: {
+  setDocumentParseTier?: Dispatch<
+    SetStateAction<{
+      label: string;
+      value: string;
+      credits: number;
+    }>
+  >;
+}) {
   const tiers = [
-    { label: 'Agentic Plus', value: 'agentic-plus' },
-    { label: 'Agentic ', value: 'agentic ' },
-    { label: 'Cost Effective (recommended)', value: 'cost-effective' },
-    { label: 'Fast', value: 'fast' },
+    { label: 'Agentic Plus', value: 'agentic_plus', credits: 45 },
+    { label: 'Agentic ', value: 'agentic ', credits: 10 },
+    { label: 'Cost Effective', value: 'cost_effective', credits: 3 },
+    { label: 'Fast', value: 'fast', credits: 1 },
   ];
 
   return (
     <Field orientation="horizontal">
       <FieldContent>
-        <Select items={tiers} defaultValue="cost-effective">
+        <Select items={tiers} defaultValue="cost_effective">
           <SelectTrigger className="w-full cursor-pointer">
             <SelectValue />
           </SelectTrigger>
@@ -32,7 +43,12 @@ export default function DocumentationIngestParseTierSelect() {
             <SelectGroup>
               <SelectLabel>Tier</SelectLabel>
               {tiers.map((tier) => (
-                <SelectItem key={tier.value} value={tier.value} className="cursor-pointer">
+                <SelectItem
+                  key={tier.value}
+                  value={tier.value}
+                  className="cursor-pointer"
+                  onClick={() => setDocumentParseTier && setDocumentParseTier(tier)}
+                >
                   {tier.label}
                 </SelectItem>
               ))}

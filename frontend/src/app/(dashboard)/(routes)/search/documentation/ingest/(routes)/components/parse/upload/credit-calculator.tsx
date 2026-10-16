@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Field } from '@/components/ui/field';
@@ -6,10 +6,22 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
-export default function DocumentationIngestParseCreditCalculator() {
-  const [pages, setPages] = useState(1);
-
+export default function DocumentationIngestParseCreditCalculator({
+  documentParseTier,
+  pages,
+  setPages,
+}: {
+  documentParseTier: {
+    label: string;
+    value: string;
+    credits: number;
+  };
+  pages: number;
+  setPages: Dispatch<SetStateAction<number>>;
+}) {
   const pagesLabel = pages > 1 ? 'pages' : 'page';
+
+  const parseCreditsTotal = pages * documentParseTier.credits;
 
   return (
     <>
@@ -38,10 +50,10 @@ export default function DocumentationIngestParseCreditCalculator() {
               <Badge variant="secondary">
                 {pages} {pagesLabel}
               </Badge>{' '}
-              on tier <Badge variant="secondary">Cost Effective</Badge> at{' '}
-              <Badge variant="secondary">3 credits per page</Badge> :
+              on tier <Badge variant="secondary">{documentParseTier.label}</Badge> at{' '}
+              <Badge variant="secondary">{documentParseTier.credits} credits per page</Badge> :
             </span>
-            <Badge variant="default">9 credits</Badge>
+            <Badge variant="default">{parseCreditsTotal} credits</Badge>
           </div>
         )}
       </div>
