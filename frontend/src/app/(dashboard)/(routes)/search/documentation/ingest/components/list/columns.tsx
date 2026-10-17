@@ -4,7 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 
 import type { DataTableFeatures } from '@/components/ui/data-table';
 
-import type { DocumentationIngestJobsList } from '../schemas/ingest-jobs-list.schema';
+import type { DocumentationIngestJobsList } from '../../schemas/ingest-jobs-list.schema';
 import DocumentationIngestJobsListActionsButtons from './actions-buttons';
 
 const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestJobsList>();

@@ -1,14 +1,15 @@
-import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-export default function DocumentationIngestNewBackButton() {
+import { useIngestJobNewStore } from '../store/ingest-job-new.store';
+
+export default function DocumentationIngestJobNewBackButton() {
+  const resetJobOption = useIngestJobNewStore((state) => state.resetJobOption);
+
   return (
-    <Link href="/search/documentation/ingest">
-      <Button variant="ghost" className="cursor-pointer">
-        <ArrowLeft /> Back
-      </Button>
-    </Link>
+    <Button variant="ghost" className="cursor-pointer" onClick={resetJobOption}>
+      <ArrowLeft /> Back
+    </Button>
   );
 }

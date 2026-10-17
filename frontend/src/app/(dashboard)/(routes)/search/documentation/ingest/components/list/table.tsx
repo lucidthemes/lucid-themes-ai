@@ -2,7 +2,7 @@
 
 import { DataTable } from '@/components/ui/data-table';
 
-import type { DocumentationIngestJobsList } from '../schemas/ingest-jobs-list.schema';
+import type { DocumentationIngestJobsList } from '../../schemas/ingest-jobs-list.schema';
 
 import { DocumentationIngestJobsListcolumns } from './columns';
 

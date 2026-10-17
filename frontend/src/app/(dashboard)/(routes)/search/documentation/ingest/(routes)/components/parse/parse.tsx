@@ -1,17 +1,19 @@
 import { Card } from '@/components/ui/card';
 
-import DocumentationIngestParseHeader from './header';
-import DocumentationIngestParseUpload from './upload';
-import DocumentationIngestParseProcessed from './processed';
+import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
 
-export default function DocumentationIngestParse() {
+import DocumentationIngestJobParseHeader from './header';
+import DocumentationIngestJobParseUpload from './upload';
+import DocumentationIngestJobParseProcessed from './processed';
+
+export default function DocumentationIngestJobParse({ jobStatus }: { jobStatus: DocumentationIngestJobStatus }) {
   return (
     <Card className="mx-auto w-full">
-      <DocumentationIngestParseHeader />
+      <DocumentationIngestJobParseHeader jobStatus={jobStatus} />
 
-      <DocumentationIngestParseUpload />
+      {jobStatus !== 'completed' && <DocumentationIngestJobParseUpload />}
 
-      <DocumentationIngestParseProcessed />
+      <DocumentationIngestJobParseProcessed jobStatus={jobStatus} />
     </Card>
   );
 }

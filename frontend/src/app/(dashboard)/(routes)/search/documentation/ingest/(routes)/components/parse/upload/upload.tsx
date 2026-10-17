@@ -3,12 +3,12 @@ import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardFooter } from '@/components/ui/card';
 
-import DocumentationIngestLoading from '../../loading';
+import DocumentationIngestJobLoading from '../../../../components/job/loading';
 
-import DocumentationIngestParseUploadDocument from './document';
-import DocumentationIngestParseUploadWebpage from './web-page';
+import DocumentationIngestJobParseUploadDocument from './document';
+import DocumentationIngestJobParseUploadWebpage from './web-page';
 
-export default function DocumentationIngestParseUpload() {
+export default function DocumentationIngestJobParseUpload() {
   const loading = false;
 
   return (
@@ -16,12 +16,12 @@ export default function DocumentationIngestParseUpload() {
       <CardContent className="flex gap-5">
         {!loading && (
           <>
-            <DocumentationIngestParseUploadDocument />
-            <DocumentationIngestParseUploadWebpage />
+            <DocumentationIngestJobParseUploadDocument />
+            <DocumentationIngestJobParseUploadWebpage />
           </>
         )}
 
-        {loading && <DocumentationIngestLoading title="Processing LlamaParse job" />}
+        {loading && <DocumentationIngestJobLoading title="Processing LlamaParse job" />}
       </CardContent>
 
       {!loading && (

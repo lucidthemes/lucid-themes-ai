@@ -6,7 +6,7 @@ import { Field } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export default function DocumentationIngestParseTierAccept({
+export default function DocumentationIngestJobParseTierAccept({
   type,
   calculatorOpen,
   setCalculatorOpen,

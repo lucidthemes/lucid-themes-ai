@@ -4,31 +4,37 @@ import { useState } from 'react';
 
 import { CardContent } from '@/components/ui/card';
 
-import DocumentationIngestParseProcessedDocument from './document';
-import DocumentationIngestParseProcessedWebpage from './web-page';
-import DocumentationIngestParseProcessedFooter from './footer';
+import type { DocumentationIngestJobStatus } from '../../../../types/ingest-job';
 
-export default function DocumentationIngestParseProcessed() {
+import DocumentationIngestJobParseProcessedDocument from './document';
+import DocumentationIngestJobParseProcessedWebpage from './web-page';
+import DocumentationIngestJobParseProcessedFooter from './footer';
+
+export default function DocumentationIngestJobParseProcessed({
+  jobStatus,
+}: {
+  jobStatus: DocumentationIngestJobStatus;
+}) {
   const [viewContentOpen, setViewContentOpen] = useState(false);
   const [viewContentSplit, setViewContentSplit] = useState(false);
 
   return (
     <>
       <CardContent>
-        <DocumentationIngestParseProcessedDocument
+        <DocumentationIngestJobParseProcessedDocument
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
           viewContentSplit={viewContentSplit}
           setViewContentSplit={setViewContentSplit}
         />
-        <DocumentationIngestParseProcessedWebpage
+        <DocumentationIngestJobParseProcessedWebpage
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
           viewContentSplit={viewContentSplit}
           setViewContentSplit={setViewContentSplit}
         />
       </CardContent>
-      <DocumentationIngestParseProcessedFooter />
+      {jobStatus !== 'completed' && <DocumentationIngestJobParseProcessedFooter />}
     </>
   );
 }

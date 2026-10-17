@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import type { DocumentationIngestJobsList } from '../schemas/ingest-jobs-list.schema';
+import type { DocumentationIngestJobsList } from '../../schemas/ingest-jobs-list.schema';
 
 export default function DocumentationIngestJobsListActionsButtons({ item }: { item: DocumentationIngestJobsList }) {
   return (

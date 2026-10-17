@@ -6,14 +6,14 @@ import { SquareText, Settings } from 'lucide-react';
 import { CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-import DocumentationIngestParseProcessedFooterSettings from './footer-settings';
+import DocumentationIngestJobParseProcessedFooterSettings from './footer-settings';
 
-export default function DocumentationIngestParseProcessedFooter() {
+export default function DocumentationIngestJobParseProcessedFooter() {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <CardFooter className="flex-col items-end gap-5">
-      {settingsOpen && <DocumentationIngestParseProcessedFooterSettings />}
+      {settingsOpen && <DocumentationIngestJobParseProcessedFooterSettings />}
       <div className="flex justify-end gap-5">
         <Button
           variant={settingsOpen ? 'secondary' : 'outline'}

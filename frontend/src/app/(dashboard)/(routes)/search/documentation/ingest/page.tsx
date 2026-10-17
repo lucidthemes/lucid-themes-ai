@@ -9,8 +9,8 @@ import DashboardLayoutHeading from '../../../../components/heading';
 import DocumentationIngestJobsList from './components/list';
 
 export const metadata: Metadata = {
-  title: 'Search Documentation - Ingest',
-  description: 'View frontend and dashboard logs',
+  title: 'Documentation - Ingest',
+  description: 'Create and view documentation ingest jobs',
 };
 
 export default function DashboardSearchDocumentationIngestPage() {

@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-export default function DocumentationIngestParseProcessedContentTabs() {
+export default function DocumentationIngestJobParseProcessedContentTabs() {
   const testVlaue = `# Markdown syntax guide
 
 ## Headers

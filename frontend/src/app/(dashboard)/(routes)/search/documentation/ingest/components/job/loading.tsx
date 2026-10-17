@@ -1,7 +1,7 @@
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty';
 import { Spinner } from '@/components/ui/spinner';
 
-export default function DocumentationIngestLoading({ title }: { title: string }) {
+export default function DocumentationIngestJobLoading({ title }: { title: string }) {
   return (
     <Empty className="w-full bg-muted">
       <EmptyHeader>

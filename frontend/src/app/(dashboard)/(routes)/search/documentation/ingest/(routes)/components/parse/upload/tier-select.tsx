@@ -1,3 +1,5 @@
+'use client';
+
 import type { Dispatch, SetStateAction } from 'react';
 import { Info } from 'lucide-react';
 
@@ -14,7 +16,7 @@ import {
 } from '@/components/ui/select';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-export default function DocumentationIngestParseTierSelect({
+export default function DocumentationIngestJobParseTierSelect({
   setDocumentParseTier,
 }: {
   setDocumentParseTier?: Dispatch<
@@ -47,7 +49,9 @@ export default function DocumentationIngestParseTierSelect({
                   key={tier.value}
                   value={tier.value}
                   className="cursor-pointer"
-                  onClick={() => setDocumentParseTier && setDocumentParseTier(tier)}
+                  onClick={() => {
+                    if (setDocumentParseTier) setDocumentParseTier(tier);
+                  }}
                 >
                   {tier.label}
                 </SelectItem>

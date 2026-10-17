@@ -3,7 +3,7 @@ import { Eye, EyeOff, SquareSplitHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-export default function DocumentationIngestParseProcessedContentButtons({
+export default function DocumentationIngestJobParseProcessedContentButtons({
   viewContentOpen,
   setViewContentOpen,
   viewContentSplit,

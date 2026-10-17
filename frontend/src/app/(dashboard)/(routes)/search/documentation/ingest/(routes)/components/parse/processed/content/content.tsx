@@ -1,9 +1,13 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 
-import DocumentationIngestParseProcessedContentTabs from './tabs';
+import DocumentationIngestJobParseProcessedContentTabs from './tabs';
 
-export default function DocumentationIngestParseProcessedContent({ viewContentSplit }: { viewContentSplit: boolean }) {
-  if (!viewContentSplit) return <DocumentationIngestParseProcessedContentTabs />;
+export default function DocumentationIngestJobParseProcessedContent({
+  viewContentSplit,
+}: {
+  viewContentSplit: boolean;
+}) {
+  if (!viewContentSplit) return <DocumentationIngestJobParseProcessedContentTabs />;
 
   return (
     <ResizablePanelGroup orientation="horizontal" className="gap-4">
@@ -16,7 +20,7 @@ export default function DocumentationIngestParseProcessedContent({ viewContentSp
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize="50%">
-        <DocumentationIngestParseProcessedContentTabs />
+        <DocumentationIngestJobParseProcessedContentTabs />
       </ResizablePanel>
     </ResizablePanelGroup>
   );

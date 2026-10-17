@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { Textarea } from '@/components/ui/textarea';
 
-export default function DocumentationIngestChunksItem({
+export default function DocumentationIngestJobChunksItem({
   chunk,
 }: {
   chunk: {

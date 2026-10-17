@@ -5,10 +5,14 @@ import { Maximize2, Minimize2, ChevronsLeftRightEllipsis } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function DocumentationIngestChunksHeader({
+import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
+
+export default function DocumentationIngestJobChunksHeader({
+  jobStatus,
   expanded,
   setExpanded,
 }: {
+  jobStatus: DocumentationIngestJobStatus;
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -30,9 +34,11 @@ export default function DocumentationIngestChunksHeader({
           )}
         </Button>
 
-        <Button className="cursor-pointer">
-          Generate embeddings <ChevronsLeftRightEllipsis />
-        </Button>
+        {jobStatus !== 'completed' && (
+          <Button className="cursor-pointer">
+            Generate embeddings <ChevronsLeftRightEllipsis />
+          </Button>
+        )}
       </CardAction>
     </CardHeader>
   );

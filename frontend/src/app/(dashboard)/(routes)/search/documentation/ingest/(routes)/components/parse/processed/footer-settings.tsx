@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-export default function DocumentationIngestParseProcessedFooterSettings() {
+export default function DocumentationIngestJobParseProcessedFooterSettings() {
   const splitMethods = [
     { label: 'Markdown', value: 'markdown' },
     { label: 'Text', value: 'text' },

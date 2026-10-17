@@ -8,12 +8,12 @@ import { Field, FieldGroup } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
 
-import DocumentationIngestParseUploadDocumentPages from './document-pages';
-import DocumentationIngestParseTierSelect from './tier-select';
-import DocumentationIngestParseTierAccept from './tier-accept';
-import DocumentationIngestParseCreditCalculator from './credit-calculator';
+import DocumentationIngestJobParseUploadDocumentPages from './document-pages';
+import DocumentationIngestJobParseTierSelect from './tier-select';
+import DocumentationIngestJobParseTierAccept from './tier-accept';
+import DocumentationIngestJobParseCreditCalculator from './credit-calculator';
 
-export default function DocumentationIngestParseUploadDocument() {
+export default function DocumentationIngestJobParseUploadDocument() {
   const [documentParseTier, setDocumentParseTier] = useState({
     label: 'Cost Effective',
     value: 'cost_effective',
@@ -36,16 +36,16 @@ export default function DocumentationIngestParseUploadDocument() {
           <Field>
             <Input id="document" type="file" className="cursor-pointer" accept=".pdf" />
           </Field>
-          <DocumentationIngestParseUploadDocumentPages setPages={setPages} />
-          <DocumentationIngestParseTierSelect setDocumentParseTier={setDocumentParseTier} />
-          <DocumentationIngestParseTierAccept
+          <DocumentationIngestJobParseUploadDocumentPages setPages={setPages} />
+          <DocumentationIngestJobParseTierSelect setDocumentParseTier={setDocumentParseTier} />
+          <DocumentationIngestJobParseTierAccept
             type="document"
             calculatorOpen={calculatorOpen}
             setCalculatorOpen={setCalculatorOpen}
           />
         </FieldGroup>
         {calculatorOpen && (
-          <DocumentationIngestParseCreditCalculator
+          <DocumentationIngestJobParseCreditCalculator
             documentParseTier={documentParseTier}
             pages={pages}
             setPages={setPages}

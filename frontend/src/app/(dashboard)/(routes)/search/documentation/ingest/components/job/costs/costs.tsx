@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function DocumentationIngestCosts() {
+export default function DocumentationIngestJobCosts() {
   return (
     <Card className="mx-auto w-full">
       <CardHeader>
