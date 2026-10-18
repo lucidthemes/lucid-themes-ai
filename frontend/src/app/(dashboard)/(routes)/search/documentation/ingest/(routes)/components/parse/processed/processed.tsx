@@ -11,9 +11,9 @@ import DocumentationIngestJobParseProcessedWebpage from './web-page';
 import DocumentationIngestJobParseProcessedFooter from './footer';
 
 export default function DocumentationIngestJobParseProcessed({
-  jobStatus,
+  ingestJobStatus,
 }: {
-  jobStatus: DocumentationIngestJobStatus;
+  ingestJobStatus: DocumentationIngestJobStatus;
 }) {
   const [viewContentOpen, setViewContentOpen] = useState(false);
   const [viewContentSplit, setViewContentSplit] = useState(false);
@@ -34,7 +34,7 @@ export default function DocumentationIngestJobParseProcessed({
           setViewContentSplit={setViewContentSplit}
         />
       </CardContent>
-      {jobStatus !== 'completed' && <DocumentationIngestJobParseProcessedFooter />}
+      {ingestJobStatus !== 'completed' && <DocumentationIngestJobParseProcessedFooter />}
     </>
   );
 }

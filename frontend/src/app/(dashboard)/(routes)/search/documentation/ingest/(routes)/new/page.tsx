@@ -14,7 +14,7 @@ export default function DashboardSearchDocumentationIngestJobNewPage() {
   return (
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="New ingest job" />
-      <DashboardSearchDocumentationIngestJobNewLayout jobStatus="new" />
+      <DashboardSearchDocumentationIngestJobNewLayout ingestJobStatus="new" />
     </DashboardLayoutContainer>
   );
 }

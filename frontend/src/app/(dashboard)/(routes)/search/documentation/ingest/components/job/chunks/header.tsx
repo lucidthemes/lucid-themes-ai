@@ -8,11 +8,11 @@ import { CardAction, CardDescription, CardHeader, CardTitle } from '@/components
 import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
 
 export default function DocumentationIngestJobChunksHeader({
-  jobStatus,
+  ingestJobStatus,
   expanded,
   setExpanded,
 }: {
-  jobStatus: DocumentationIngestJobStatus;
+  ingestJobStatus: DocumentationIngestJobStatus;
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -34,7 +34,7 @@ export default function DocumentationIngestJobChunksHeader({
           )}
         </Button>
 
-        {jobStatus !== 'completed' && (
+        {ingestJobStatus !== 'completed' && (
           <Button className="cursor-pointer">
             Generate embeddings <ChevronsLeftRightEllipsis />
           </Button>

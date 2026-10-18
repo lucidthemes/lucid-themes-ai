@@ -9,23 +9,24 @@ import DocumentationIngestJobNewBackButton from '../components/back-button';
 import { useIngestJobNewStore } from '../store/ingest-job-new.store';
 
 export default function DashboardSearchDocumentationIngestJobNewLayout({
-  jobStatus,
+  ingestJobStatus,
 }: {
-  jobStatus: DocumentationIngestJobStatus;
+  ingestJobStatus: DocumentationIngestJobStatus;
 }) {
-  const jobOption = useIngestJobNewStore((state) => state.jobOption);
+  const ingestJobOption = useIngestJobNewStore((state) => state.ingestJobOption);
 
-  console.log(jobOption);
+  console.log(ingestJobOption);
 
-  const showIngestSections = jobStatus === 'new' && jobOption ? true : jobStatus === 'pending' ? true : false;
+  const showIngestSections =
+    ingestJobStatus === 'new' && ingestJobOption ? true : ingestJobStatus === 'pending' ? true : false;
 
   return (
     <>
-      {jobStatus === 'new' && jobOption === null && <DocumentationIngestJobNewOptions />}
+      {ingestJobStatus === 'new' && ingestJobOption === null && <DocumentationIngestJobNewOptions />}
 
-      {jobStatus === 'new' && jobOption && <DocumentationIngestJobNewBackButton />}
+      {ingestJobStatus === 'new' && ingestJobOption && <DocumentationIngestJobNewBackButton />}
 
-      {showIngestSections && <DashboardSearchDocumentationIngestJobLayout jobStatus={jobStatus} />}
+      {showIngestSections && <DashboardSearchDocumentationIngestJobLayout ingestJobStatus={ingestJobStatus} />}
     </>
   );
 }

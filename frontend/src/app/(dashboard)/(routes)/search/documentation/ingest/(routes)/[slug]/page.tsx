@@ -27,7 +27,7 @@ export default async function DashboardSearchDocumentationIngestJobPage({
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Completed ingest job" />
       <p>view ingest job! slug: {slug}</p>
-      <DashboardSearchDocumentationIngestJobLayout jobStatus="completed" />
+      <DashboardSearchDocumentationIngestJobLayout ingestJobStatus="completed" />
     </DashboardLayoutContainer>
   );
 }

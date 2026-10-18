@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
-export default function DocumentationIngestJobParseCreditCalculator({
+export default function DocumentationIngestJobParseUploadDocumentFormCreditCalculator({
   documentParseTier,
   pages,
   setPages,
@@ -28,10 +28,10 @@ export default function DocumentationIngestJobParseCreditCalculator({
       <Separator />
       <div className="flex flex-col gap-5">
         <Field orientation="horizontal" className="justify-end gap-1">
-          <Label htmlFor="credit-calculator">Number of pages:</Label>
+          <Label htmlFor="ingest-job-parse-credit-calculator">Number of pages:</Label>
           <Input
-            id="credit-calculator"
-            name="credit-calculator"
+            id="ingest-job-parse-credit-calculator"
+            name="ingest-job-parse-credit-calculator"
             type="number"
             className="max-w-20"
             min={1}

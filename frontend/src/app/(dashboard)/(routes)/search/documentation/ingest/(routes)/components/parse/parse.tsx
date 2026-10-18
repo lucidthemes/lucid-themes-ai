@@ -6,14 +6,18 @@ import DocumentationIngestJobParseHeader from './header';
 import DocumentationIngestJobParseUpload from './upload';
 import DocumentationIngestJobParseProcessed from './processed';
 
-export default function DocumentationIngestJobParse({ jobStatus }: { jobStatus: DocumentationIngestJobStatus }) {
+export default function DocumentationIngestJobParse({
+  ingestJobStatus,
+}: {
+  ingestJobStatus: DocumentationIngestJobStatus;
+}) {
   return (
     <Card className="mx-auto w-full">
-      <DocumentationIngestJobParseHeader jobStatus={jobStatus} />
+      <DocumentationIngestJobParseHeader ingestJobStatus={ingestJobStatus} />
 
-      {jobStatus !== 'completed' && <DocumentationIngestJobParseUpload />}
+      {ingestJobStatus !== 'completed' && <DocumentationIngestJobParseUpload />}
 
-      <DocumentationIngestJobParseProcessed jobStatus={jobStatus} />
+      <DocumentationIngestJobParseProcessed ingestJobStatus={ingestJobStatus} />
     </Card>
   );
 }

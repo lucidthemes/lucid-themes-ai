@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { useIngestJobNewStore } from '../store/ingest-job-new.store';
 
 export default function DocumentationIngestJobNewBackButton() {
-  const resetJobOption = useIngestJobNewStore((state) => state.resetJobOption);
+  const resetIngestJobOption = useIngestJobNewStore((state) => state.resetIngestJobOption);
 
   return (
-    <Button variant="ghost" className="cursor-pointer" onClick={resetJobOption}>
+    <Button variant="ghost" className="cursor-pointer" onClick={resetIngestJobOption}>
       <ArrowLeft /> Back
     </Button>
   );

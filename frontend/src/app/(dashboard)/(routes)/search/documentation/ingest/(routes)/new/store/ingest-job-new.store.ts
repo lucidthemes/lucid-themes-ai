@@ -1,21 +1,31 @@
 import { create } from 'zustand';
 
 type IngestJobOptions = 'automatic' | 'manual';
+type IngestJobParseUploadType = 'document' | 'webpage';
 
 type State = {
-  jobOption: IngestJobOptions | null;
+  ingestJobOption: IngestJobOptions | null;
+
+  ingestJobParseUploadType: IngestJobParseUploadType | null;
 };
 
 type Action = {
-  setJobOption: (option: IngestJobOptions) => void;
-  resetJobOption: () => void;
+  setIngestJobOption: (option: IngestJobOptions) => void;
+  resetIngestJobOption: () => void;
+
+  setIngestJobParseUploadType: (type: IngestJobParseUploadType) => void;
+  resetIngestJobParseUploadType: () => void;
 };
 
 export const useIngestJobNewStore = create<State & Action>((set) => ({
   // State
-  jobOption: null,
+  ingestJobOption: null,
+  ingestJobParseUploadType: null,
 
   // Actions
-  setJobOption: (option) => set({ jobOption: option }),
-  resetJobOption: () => set({ jobOption: null }),
+  setIngestJobOption: (option) => set({ ingestJobOption: option }),
+  resetIngestJobOption: () => set({ ingestJobOption: null }),
+
+  setIngestJobParseUploadType: (type) => set({ ingestJobParseUploadType: type }),
+  resetIngestJobParseUploadType: () => set({ ingestJobParseUploadType: null }),
 }));

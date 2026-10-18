@@ -2,9 +2,11 @@
 
 import type { Dispatch, SetStateAction } from 'react';
 import { Info } from 'lucide-react';
+import { Controller } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { Field, FieldContent } from '@/components/ui/field';
+import { Field, FieldContent, FieldError } from '@/components/ui/field';
 import {
   Select,
   SelectContent,
@@ -16,9 +18,12 @@ import {
 } from '@/components/ui/select';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-export default function DocumentationIngestJobParseTierSelect({
+export default function DocumentationIngestJobParseUploadFormFieldTierSelect({
+  form,
   setDocumentParseTier,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: UseFormReturn<any>;
   setDocumentParseTier?: Dispatch<
     SetStateAction<{
       label: string;
@@ -29,7 +34,7 @@ export default function DocumentationIngestJobParseTierSelect({
 }) {
   const tiers = [
     { label: 'Agentic Plus', value: 'agentic_plus', credits: 45 },
-    { label: 'Agentic ', value: 'agentic ', credits: 10 },
+    { label: 'Agentic ', value: 'agentic', credits: 10 },
     { label: 'Cost Effective', value: 'cost_effective', credits: 3 },
     { label: 'Fast', value: 'fast', credits: 1 },
   ];
@@ -37,28 +42,37 @@ export default function DocumentationIngestJobParseTierSelect({
   return (
     <Field orientation="horizontal">
       <FieldContent>
-        <Select items={tiers} defaultValue="cost_effective">
-          <SelectTrigger className="w-full cursor-pointer">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Tier</SelectLabel>
-              {tiers.map((tier) => (
-                <SelectItem
-                  key={tier.value}
-                  value={tier.value}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    if (setDocumentParseTier) setDocumentParseTier(tier);
-                  }}
-                >
-                  {tier.label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <Controller
+          name="tier"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <Select items={tiers} name={field.name} value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger className="w-full cursor-pointer">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Tier</SelectLabel>
+                    {tiers.map((tier) => (
+                      <SelectItem
+                        key={tier.value}
+                        value={tier.value}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          if (setDocumentParseTier) setDocumentParseTier(tier);
+                        }}
+                      >
+                        {tier.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
       </FieldContent>
       <HoverCard>
         <HoverCardTrigger

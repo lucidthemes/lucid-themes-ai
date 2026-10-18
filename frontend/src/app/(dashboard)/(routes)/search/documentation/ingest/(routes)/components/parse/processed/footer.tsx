@@ -5,6 +5,7 @@ import { SquareText, Settings } from 'lucide-react';
 
 import { CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 
 import DocumentationIngestJobParseProcessedFooterSettings from './footer-settings';
 
@@ -24,6 +25,7 @@ export default function DocumentationIngestJobParseProcessedFooter() {
           <Settings />
         </Button>
         <Button className="cursor-pointer">
+          <Spinner />
           Create chunks
           <SquareText />
         </Button>

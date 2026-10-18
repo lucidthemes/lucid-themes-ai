@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export default function DocumentationIngestJobParseUploadDocumentPages({
+export default function DocumentationIngestJobParseUploadDocumentFormFieldPages({
   setPages,
 }: {
   setPages: Dispatch<SetStateAction<number>>;

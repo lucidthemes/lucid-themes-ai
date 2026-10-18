@@ -14,7 +14,7 @@ export default async function DashboardSearchDocumentationIngestJobNewContinuePa
   return (
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Pending ingest job" />
-      <DashboardSearchDocumentationIngestJobNewLayout jobStatus="pending" />
+      <DashboardSearchDocumentationIngestJobNewLayout ingestJobStatus="pending" />
     </DashboardLayoutContainer>
   );
 }

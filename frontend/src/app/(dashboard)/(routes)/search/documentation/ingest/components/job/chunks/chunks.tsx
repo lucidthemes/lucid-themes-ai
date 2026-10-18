@@ -12,7 +12,11 @@ import DocumentationIngestJobChunksFooter from './footer';
 
 import DocumentationIngestJobLoading from '../loading';
 
-export default function DocumentationIngestJobChunks({ jobStatus }: { jobStatus: DocumentationIngestJobStatus }) {
+export default function DocumentationIngestJobChunks({
+  ingestJobStatus,
+}: {
+  ingestJobStatus: DocumentationIngestJobStatus;
+}) {
   const [expanded, setExpanded] = useState(true);
 
   const chunks = [
@@ -24,7 +28,11 @@ export default function DocumentationIngestJobChunks({ jobStatus }: { jobStatus:
 
   return (
     <Card className="mx-auto w-full">
-      <DocumentationIngestJobChunksHeader jobStatus={jobStatus} expanded={expanded} setExpanded={setExpanded} />
+      <DocumentationIngestJobChunksHeader
+        ingestJobStatus={ingestJobStatus}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
       {expanded && (
         <CardContent className="flex flex-col gap-5">
           {!loading && <DocumentationIngestJobChunksItems chunks={chunks} />}
@@ -32,7 +40,7 @@ export default function DocumentationIngestJobChunks({ jobStatus }: { jobStatus:
           {loading && <DocumentationIngestJobLoading title="Generating embeddings" />}
         </CardContent>
       )}
-      {jobStatus !== 'completed' && expanded && !loading && <DocumentationIngestJobChunksFooter />}
+      {ingestJobStatus !== 'completed' && expanded && !loading && <DocumentationIngestJobChunksFooter />}
     </Card>
   );
 }
