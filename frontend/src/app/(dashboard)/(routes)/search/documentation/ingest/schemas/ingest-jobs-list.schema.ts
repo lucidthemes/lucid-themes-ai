@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const DocumentationIngestJobsListSchema = z.object({
   id: z.uuid(),
+  name: z.string(),
   type: z.enum(['document', 'webpage']),
   status: z.enum(['completed', 'pending', 'failed']),
   created_at: z.string(),

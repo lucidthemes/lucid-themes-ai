@@ -8,8 +8,8 @@ import { CardContent } from '@/components/ui/card';
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { FieldGroup } from '@/components/ui/field';
 
-import { useIngestJobNewStore } from '../../../../new/store/ingest-job-new.store';
-import { useDocumentationIngestJobParseUploadWebpageForm } from '../../../../new/hooks/use-parse-upload-form';
+import { useIngestJobNewStore } from '../../../../../(routes)/new/store/ingest-job-new.store';
+import { useDocumentationIngestJobParseUploadWebpageForm } from '../../../../../(routes)/new/hooks/use-parse-upload-form';
 
 import DocumentationIngestJobParseUploadFormFieldTierSelect from '../field-tier-select';
 import DocumentationIngestJobParseUploadFormFieldTierAccept from '../field-tier-accept';
@@ -25,7 +25,7 @@ export default function DocumentationIngestJobParseUploadWebpageForm() {
     })),
   );
 
-  const { form, onSubmit } = useDocumentationIngestJobParseUploadWebpageForm();
+  const { form, onSubmit, isPending } = useDocumentationIngestJobParseUploadWebpageForm();
 
   const documentActiveClass = ingestJobParseUploadType === 'webpage' ? 'active' : '';
 
@@ -34,7 +34,7 @@ export default function DocumentationIngestJobParseUploadWebpageForm() {
       <CardContent className="flex gap-5 p-0">
         <Item
           variant="outline"
-          className={cn('cursor-pointer hover:not-[.active]:bg-muted', documentActiveClass)}
+          className={cn('not-[.active]:cursor-pointer hover:not-[.active]:bg-muted', documentActiveClass)}
           onClick={() => setIngestJobParseUploadType('webpage')}
         >
           <ItemMedia variant="icon">
@@ -55,7 +55,9 @@ export default function DocumentationIngestJobParseUploadWebpageForm() {
           </ItemContent>
         </Item>
       </CardContent>
-      {ingestJobParseUploadType === 'webpage' && <DocumentationIngestJobParseUploadFormSubmitButton />}
+      {ingestJobParseUploadType === 'webpage' && (
+        <DocumentationIngestJobParseUploadFormSubmitButton isPending={isPending} />
+      )}
     </form>
   );
 }

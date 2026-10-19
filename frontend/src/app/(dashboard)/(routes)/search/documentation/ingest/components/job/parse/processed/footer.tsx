@@ -9,8 +9,14 @@ import { Spinner } from '@/components/ui/spinner';
 
 import DocumentationIngestJobParseProcessedFooterSettings from './footer-settings';
 
-export default function DocumentationIngestJobParseProcessedFooter() {
+export default function DocumentationIngestJobParseProcessedFooter({ ingestJobStatus, ingestJobData }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  if (
+    ingestJobStatus !== 'pending' ||
+    (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parseJob.status !== 'completed')
+  )
+    return;
 
   return (
     <CardFooter className="flex-col items-end gap-5">

@@ -3,11 +3,13 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import DocumentationIngestJobParseProcessedContentTabs from './tabs';
 
 export default function DocumentationIngestJobParseProcessedContent({
+  ingestJobData,
   viewContentSplit,
 }: {
+  ingestJobData;
   viewContentSplit: boolean;
 }) {
-  if (!viewContentSplit) return <DocumentationIngestJobParseProcessedContentTabs />;
+  if (!viewContentSplit) return <DocumentationIngestJobParseProcessedContentTabs ingestJobData={ingestJobData} />;
 
   return (
     <ResizablePanelGroup orientation="horizontal" className="gap-4">
@@ -20,7 +22,7 @@ export default function DocumentationIngestJobParseProcessedContent({
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize="50%">
-        <DocumentationIngestJobParseProcessedContentTabs />
+        <DocumentationIngestJobParseProcessedContentTabs ingestJobData={ingestJobData} />
       </ResizablePanel>
     </ResizablePanelGroup>
   );

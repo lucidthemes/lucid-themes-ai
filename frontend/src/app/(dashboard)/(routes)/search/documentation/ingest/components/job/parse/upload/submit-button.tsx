@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { CardFooter } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 
-export default function DocumentationIngestJobParseUploadFormSubmitButton() {
+export default function DocumentationIngestJobParseUploadFormSubmitButton({ isPending }: { isPending?: boolean }) {
   return (
-    <CardFooter className="justify-end">
+    <CardFooter className="justify-end p-0">
       <Button type="submit" className="cursor-pointer">
-        <Spinner />
+        {isPending && <Spinner />}
         Send to LlamaParse
         <Send />
       </Button>

@@ -12,29 +12,39 @@ import DocumentationIngestJobParseProcessedFooter from './footer';
 
 export default function DocumentationIngestJobParseProcessed({
   ingestJobStatus,
+  ingestJobData,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
+  ingestJobData;
 }) {
   const [viewContentOpen, setViewContentOpen] = useState(false);
   const [viewContentSplit, setViewContentSplit] = useState(false);
+
+  if (
+    ingestJobStatus === 'new' ||
+    (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parseJob.status !== 'completed')
+  )
+    return;
 
   return (
     <>
       <CardContent>
         <DocumentationIngestJobParseProcessedDocument
+          ingestJobData={ingestJobData}
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
           viewContentSplit={viewContentSplit}
           setViewContentSplit={setViewContentSplit}
         />
         <DocumentationIngestJobParseProcessedWebpage
+          ingestJobData={ingestJobData}
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
           viewContentSplit={viewContentSplit}
           setViewContentSplit={setViewContentSplit}
         />
       </CardContent>
-      {ingestJobStatus !== 'completed' && <DocumentationIngestJobParseProcessedFooter />}
+      <DocumentationIngestJobParseProcessedFooter ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
     </>
   );
 }

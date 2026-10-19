@@ -7,8 +7,6 @@ const DocumentationIngestJobParseUploadFormSchema = z.object({
   }),
 });
 
-export type DocumentationIngestJobParseUploadForm = z.infer<typeof DocumentationIngestJobParseUploadFormSchema>;
-
 export const DocumentationIngestJobParseUploadDocumentFormSchema = DocumentationIngestJobParseUploadFormSchema.extend({
   file: z
     .instanceof(File, { message: 'Please select a file' })
@@ -16,13 +14,15 @@ export const DocumentationIngestJobParseUploadDocumentFormSchema = Documentation
   pages: z.enum(['all', 'range'], 'Please select an option'),
 });
 
-export type DocumentationIngestJobParseUploadDocumentForm = z.infer<
-  typeof DocumentationIngestJobParseUploadDocumentFormSchema
->;
-
 export const DocumentationIngestJobParseUploadWebpageFormSchema = DocumentationIngestJobParseUploadFormSchema.extend({
   url: z.httpUrl('Please enter a URL'),
 });
+
+export type DocumentationIngestJobParseUploadForm = z.infer<typeof DocumentationIngestJobParseUploadFormSchema>;
+
+export type DocumentationIngestJobParseUploadDocumentForm = z.infer<
+  typeof DocumentationIngestJobParseUploadDocumentFormSchema
+>;
 
 export type DocumentationIngestJobParseUploadWebpageForm = z.infer<
   typeof DocumentationIngestJobParseUploadWebpageFormSchema

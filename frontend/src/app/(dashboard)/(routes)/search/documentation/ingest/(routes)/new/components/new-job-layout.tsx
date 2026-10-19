@@ -10,8 +10,10 @@ import { useIngestJobNewStore } from '../store/ingest-job-new.store';
 
 export default function DashboardSearchDocumentationIngestJobNewLayout({
   ingestJobStatus,
+  ingestJobData,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
+  ingestJobData;
 }) {
   const ingestJobOption = useIngestJobNewStore((state) => state.ingestJobOption);
 
@@ -26,7 +28,9 @@ export default function DashboardSearchDocumentationIngestJobNewLayout({
 
       {ingestJobStatus === 'new' && ingestJobOption && <DocumentationIngestJobNewBackButton />}
 
-      {showIngestSections && <DashboardSearchDocumentationIngestJobLayout ingestJobStatus={ingestJobStatus} />}
+      {showIngestSections && (
+        <DashboardSearchDocumentationIngestJobLayout ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
+      )}
     </>
   );
 }

@@ -10,8 +10,8 @@ import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/comp
 import { FieldGroup } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
 
-import { useIngestJobNewStore } from '../../../../new/store/ingest-job-new.store';
-import { useDocumentationIngestJobParseUploadDocumentForm } from '../../../../new/hooks/use-parse-upload-form';
+import { useIngestJobNewStore } from '../../../../../(routes)/new/store/ingest-job-new.store';
+import { useDocumentationIngestJobParseUploadDocumentForm } from '../../../../../(routes)/new/hooks/use-parse-upload-form';
 
 import DocumentationIngestJobParseUploadFormFieldTierSelect from '../field-tier-select';
 import DocumentationIngestJobParseUploadFormFieldTierAccept from '../field-tier-accept';
@@ -37,7 +37,7 @@ export default function DocumentationIngestJobParseUploadDocumentForm() {
     })),
   );
 
-  const { form, onSubmit } = useDocumentationIngestJobParseUploadDocumentForm();
+  const { form, onSubmit, isPending } = useDocumentationIngestJobParseUploadDocumentForm();
 
   const documentActiveClass = ingestJobParseUploadType === 'document' ? 'active' : '';
 
@@ -46,7 +46,7 @@ export default function DocumentationIngestJobParseUploadDocumentForm() {
       <CardContent className="flex gap-5 p-0">
         <Item
           variant="outline"
-          className={cn('cursor-pointer hover:not-[.active]:bg-muted', documentActiveClass)}
+          className={cn('not-[.active]:cursor-pointer hover:not-[.active]:bg-muted', documentActiveClass)}
           onClick={() => setIngestJobParseUploadType('document')}
         >
           <ItemMedia variant="icon">
@@ -89,7 +89,9 @@ export default function DocumentationIngestJobParseUploadDocumentForm() {
           </ItemContent>
         </Item>
       </CardContent>
-      {ingestJobParseUploadType === 'document' && <DocumentationIngestJobParseUploadFormSubmitButton />}
+      {ingestJobParseUploadType === 'document' && (
+        <DocumentationIngestJobParseUploadFormSubmitButton isPending={isPending} />
+      )}
     </form>
   );
 }

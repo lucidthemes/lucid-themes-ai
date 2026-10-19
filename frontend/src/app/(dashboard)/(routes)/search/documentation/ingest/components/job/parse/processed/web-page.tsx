@@ -7,16 +7,20 @@ import DocumentationIngestJobParseProcessedContent from './content';
 import DocumentationIngestJobParseProcessedContentButtons from './content/buttons';
 
 export default function DocumentationIngestJobParseProcessedWebpage({
+  ingestJobData,
   viewContentOpen,
   setViewContentOpen,
   viewContentSplit,
   setViewContentSplit,
 }: {
+  ingestJobData;
   viewContentOpen: boolean;
   setViewContentOpen: Dispatch<SetStateAction<boolean>>;
   viewContentSplit: boolean;
   setViewContentSplit: Dispatch<SetStateAction<boolean>>;
 }) {
+  if (!ingestJobData || ingestJobData.parse.type !== 'webpage') return;
+
   return (
     <Item variant="outline">
       <ItemMedia variant="icon">
@@ -25,9 +29,14 @@ export default function DocumentationIngestJobParseProcessedWebpage({
       <ItemContent className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
           <ItemTitle>Web page</ItemTitle>
-          <ItemDescription>www.example.com</ItemDescription>
+          {ingestJobData.parse.url && <ItemDescription>{ingestJobData.parse.url}</ItemDescription>}
         </div>
-        {viewContentOpen && <DocumentationIngestJobParseProcessedContent viewContentSplit={viewContentSplit} />}
+        {viewContentOpen && (
+          <DocumentationIngestJobParseProcessedContent
+            ingestJobData={ingestJobData}
+            viewContentSplit={viewContentSplit}
+          />
+        )}
       </ItemContent>
       <ItemActions>
         <DocumentationIngestJobParseProcessedContentButtons

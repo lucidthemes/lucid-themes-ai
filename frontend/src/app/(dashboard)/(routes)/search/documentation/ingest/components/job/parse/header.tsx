@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { useIngestJobNewStore } from '../../new/store/ingest-job-new.store';
+import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
 
 export default function DocumentationIngestJobParseHeader({
@@ -31,7 +31,7 @@ export default function DocumentationIngestJobParseHeader({
     <CardHeader>
       <CardTitle>Parse</CardTitle>
       <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
-      {ingestJobStatus !== 'completed' && ingestJobParseUploadType && (
+      {ingestJobStatus === 'new' && ingestJobParseUploadType && (
         <CardAction>
           <DropdownMenu>
             <DropdownMenuTrigger

@@ -1,7 +1,9 @@
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+
+import { toast } from '@/components/ui/toast';
 
 import {
   DocumentationIngestJobParseUploadDocumentFormSchema,
@@ -11,13 +13,20 @@ import type {
   DocumentationIngestJobParseUploadDocumentForm,
   DocumentationIngestJobParseUploadWebpageForm,
 } from '../schemas/parse-upload-form.schema';
+import { useIngestJobNewStore } from '../store/ingest-job-new.store';
+
+import {
+  createIngestJobParseUploadDocument,
+  createIngestJobParseUploadWebpage,
+} from '../actions/create-parse-upload.action';
 
 function useDocumentationIngestJobParseUploadDocumentForm() {
-  //   const router = useRouter();
+  const router = useRouter();
+
+  const ingestJobname = useIngestJobNewStore((state) => state.ingestJobname);
 
   const form = useForm<DocumentationIngestJobParseUploadDocumentForm>({
     defaultValues: {
-      //file: '',
       pages: 'all',
       tier: 'cost_effective',
       tierAccept: false,
@@ -25,61 +34,96 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
     resolver: zodResolver(DocumentationIngestJobParseUploadDocumentFormSchema),
   });
 
-  //   const loginFormMutation = useMutation({
-  //     mutationFn: signIn,
-  //     onSuccess: (result) => {
-  //       if (result.success) {
-  //         router.push('/');
-  //       } else {
-  //         toast.error('Invalid login credentials');
-  //       }
-  //     },
-  //   });
+  const createIngestJobParseUploadDocumentMutation = useMutation({
+    mutationFn: createIngestJobParseUploadDocument,
+    onSuccess: (result) => {
+      if (result.success && result.parseJobId) {
+        // console.log('good!');
+        // console.log(result.parseJobId);
+
+        router.push(`new/${result.parseJobId}`);
+      } else {
+        toast.add({
+          type: 'error',
+          description: 'Error creating parse job. Please try again.',
+          priority: 'high',
+        });
+      }
+    },
+    onError: (error) => {
+      const errorMessage = error.message;
+
+      if (errorMessage.includes('body size limit')) {
+        toast.add({
+          type: 'error',
+          description: 'Document file size exceeds limit',
+          priority: 'high',
+        });
+      }
+    },
+  });
 
   const onSubmit = async (data: DocumentationIngestJobParseUploadDocumentForm) => {
+    console.log(ingestJobname);
     console.log(data);
-    //loginFormMutation.mutate(data);
+
+    const name = ingestJobname ?? 'New ingest job';
+
+    createIngestJobParseUploadDocumentMutation.mutate({ name, formData: data });
   };
 
   return {
     form,
     onSubmit,
-    // isPending: loginFormMutation.isPending
+    isPending: createIngestJobParseUploadDocumentMutation.isPending,
   };
 }
 
 function useDocumentationIngestJobParseUploadWebpageForm() {
-  //   const router = useRouter();
+  const router = useRouter();
+
+  const ingestJobname = useIngestJobNewStore((state) => state.ingestJobname);
 
   const form = useForm<DocumentationIngestJobParseUploadWebpageForm>({
     defaultValues: {
-      //url: '',
+      url: '',
       tier: 'cost_effective',
       tierAccept: false,
     },
     resolver: zodResolver(DocumentationIngestJobParseUploadWebpageFormSchema),
   });
 
-  //   const loginFormMutation = useMutation({
-  //     mutationFn: signIn,
-  //     onSuccess: (result) => {
-  //       if (result.success) {
-  //         router.push('/');
-  //       } else {
-  //         toast.error('Invalid login credentials');
-  //       }
-  //     },
-  //   });
+  const createIngestJobParseUploadWebpageMutation = useMutation({
+    mutationFn: createIngestJobParseUploadWebpage,
+    onSuccess: (result) => {
+      if (result.success && result.parseJobId) {
+        // console.log('good!');
+        // console.log(result.parseJobId);
+
+        router.push(`new/${result.parseJobId}`);
+      } else {
+        toast.add({
+          type: 'error',
+          description: 'Error creating parse job. Please try again.',
+          priority: 'high',
+        });
+      }
+    },
+  });
 
   const onSubmit = async (data: DocumentationIngestJobParseUploadWebpageForm) => {
+    console.log(ingestJobname);
     console.log(data);
-    //loginFormMutation.mutate(data);
+
+    const name = ingestJobname ?? 'New ingest job';
+
+    createIngestJobParseUploadWebpageMutation.mutate({ name, formData: data });
   };
 
   return {
     form,
     onSubmit,
-    // isPending: loginFormMutation.isPending
+    isPending: createIngestJobParseUploadWebpageMutation.isPending,
   };
 }
 

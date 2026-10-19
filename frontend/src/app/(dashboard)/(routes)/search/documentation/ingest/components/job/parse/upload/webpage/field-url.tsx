@@ -6,7 +6,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import { Field, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
-import type { DocumentationIngestJobParseUploadWebpageForm } from '../../../../new/schemas/parse-upload-form.schema';
+import type { DocumentationIngestJobParseUploadWebpageForm } from '../../../../../(routes)/new/schemas/parse-upload-form.schema';
 
 export default function DocumentationIngestJobParseUploadWebpageFormFieldUrl({
   form,

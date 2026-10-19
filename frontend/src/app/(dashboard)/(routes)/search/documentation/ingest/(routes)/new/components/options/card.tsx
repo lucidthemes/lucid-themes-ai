@@ -9,7 +9,7 @@ export default function DocumentationIngestJobNewOptionCard({
   description,
   badge,
 }: {
-  option: 'automatic' | 'manual';
+  option: 'generated' | 'manual';
   title: string;
   description?: string;
   badge?: string;
