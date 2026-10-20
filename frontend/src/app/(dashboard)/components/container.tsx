@@ -1,3 +1,9 @@
-export default function DashboardLayoutContainer({ children }: { children: React.ReactNode }) {
-  return <div className="container mx-auto">{children}</div>;
+import { cn } from 'cn';
+
+export default function DashboardLayoutContainer({ children, className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div className={cn('container mx-auto', className)} {...props}>
+      {children}
+    </div>
+  );
 }

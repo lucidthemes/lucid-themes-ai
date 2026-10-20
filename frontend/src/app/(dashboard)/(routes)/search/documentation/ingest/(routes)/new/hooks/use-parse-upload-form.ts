@@ -100,7 +100,7 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
         // console.log('good!');
         // console.log(result.parseJobId);
 
-        router.push(`new/${result.parseJobId}`);
+        router.push(result.parseJobId);
       } else {
         toast.add({
           type: 'error',

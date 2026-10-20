@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { CardContent } from '@/components/ui/card';
 
-import type { DocumentationIngestJobStatus } from '../../../../types/ingest-job';
+import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../../schemas/ingest-job.schema';
 
 import DocumentationIngestJobParseProcessedDocument from './document';
 import DocumentationIngestJobParseProcessedWebpage from './web-page';
@@ -15,33 +15,30 @@ export default function DocumentationIngestJobParseProcessed({
   ingestJobData,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  ingestJobData;
+  ingestJobData?: DocumentationIngestJob;
 }) {
   const [viewContentOpen, setViewContentOpen] = useState(false);
   const [viewContentSplit, setViewContentSplit] = useState(false);
 
-  if (
-    ingestJobStatus === 'new' ||
-    (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parseJob.status !== 'completed')
-  )
+  if (ingestJobStatus === 'new' || (ingestJobStatus === 'pending' && ingestJobData.parse_job.status !== 'completed'))
     return;
 
   return (
     <>
       <CardContent>
         <DocumentationIngestJobParseProcessedDocument
-          ingestJobData={ingestJobData}
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
           viewContentSplit={viewContentSplit}
           setViewContentSplit={setViewContentSplit}
+          ingestJobData={ingestJobData}
         />
         <DocumentationIngestJobParseProcessedWebpage
-          ingestJobData={ingestJobData}
           viewContentOpen={viewContentOpen}
           setViewContentOpen={setViewContentOpen}
           viewContentSplit={viewContentSplit}
           setViewContentSplit={setViewContentSplit}
+          ingestJobData={ingestJobData}
         />
       </CardContent>
       <DocumentationIngestJobParseProcessedFooter ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />

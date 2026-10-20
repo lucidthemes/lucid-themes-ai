@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
-import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
+import type { DocumentationIngestJobStatus } from '../../../schemas/ingest-job.schema';
 
 export default function DocumentationIngestJobParseHeader({
   ingestJobStatus,
@@ -41,7 +41,7 @@ export default function DocumentationIngestJobParseHeader({
                 </Button>
               }
             />
-            <DropdownMenuContent>
+            <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="flex cursor-pointer justify-between"
                 onClick={() => setIngestJobParseUploadType('document')}

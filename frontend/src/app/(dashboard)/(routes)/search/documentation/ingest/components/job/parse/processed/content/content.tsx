@@ -1,13 +1,15 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 
+import type { DocumentationIngestJob } from '../../../../../schemas/ingest-job.schema';
+
 import DocumentationIngestJobParseProcessedContentTabs from './tabs';
 
 export default function DocumentationIngestJobParseProcessedContent({
-  ingestJobData,
   viewContentSplit,
+  ingestJobData,
 }: {
-  ingestJobData;
   viewContentSplit: boolean;
+  ingestJobData?: DocumentationIngestJob;
 }) {
   if (!viewContentSplit) return <DocumentationIngestJobParseProcessedContentTabs ingestJobData={ingestJobData} />;
 

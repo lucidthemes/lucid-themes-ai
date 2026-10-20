@@ -1,11 +1,13 @@
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
+import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
 
 export default function DocumentationIngestJobCosts({
   ingestJobStatus,
+  ingestJobData,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
+  ingestJobData?: DocumentationIngestJob;
 }) {
   if (ingestJobStatus !== 'completed') return;
 

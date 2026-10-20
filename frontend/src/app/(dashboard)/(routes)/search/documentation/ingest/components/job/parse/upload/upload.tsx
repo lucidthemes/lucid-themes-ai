@@ -3,7 +3,7 @@
 import { cn } from 'cn';
 
 import { useIngestJobNewStore } from '../../../../(routes)/new/store/ingest-job-new.store';
-import type { DocumentationIngestJobStatus } from '../../../../types/ingest-job';
+import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../../schemas/ingest-job.schema';
 
 import DocumentationIngestJobParseUploadDocumentForm from './document';
 import DocumentationIngestJobParseUploadWebpageForm from './webpage';
@@ -15,20 +15,20 @@ export default function DocumentationIngestJobParseUpload({
   ingestJobData,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  ingestJobData;
+  ingestJobData?: DocumentationIngestJob;
 }) {
   const ingestJobParseUploadType = useIngestJobNewStore((state) => state.ingestJobParseUploadType);
 
   if (
-    (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parseJob.status === 'completed') ||
+    (ingestJobStatus === 'pending' && ingestJobData.parse_job.status === 'completed') ||
     ingestJobStatus === 'completed'
   )
     return;
 
-  if (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parseJob.status === 'pending')
+  if (ingestJobStatus === 'pending' && ingestJobData.parse_job.status === 'pending')
     return <DocumentationIngestJobParseUploadLoading />;
 
-  if (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parseJob.status === 'failed')
+  if (ingestJobStatus === 'pending' && ingestJobData.parse_job.status === 'failed')
     return <DocumentationIngestJobParseUploadFailed />;
 
   const showUploadDocumentForm = !ingestJobParseUploadType || ingestJobParseUploadType === 'document';

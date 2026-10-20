@@ -6,14 +6,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 
 import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
-import type { DocumentationIngestJobStatus } from '../../../types/ingest-job';
+import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
 
 export default function DocumentationIngestJobName({
   ingestJobStatus,
   ingestJobData,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  ingestJobData;
+  ingestJobData?: DocumentationIngestJob;
 }) {
   const { ingestJobname, updateIngestJobName } = useIngestJobNewStore(
     useShallow((state) => ({
