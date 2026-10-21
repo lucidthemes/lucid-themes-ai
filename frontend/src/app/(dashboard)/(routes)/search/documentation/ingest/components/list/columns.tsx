@@ -14,6 +14,10 @@ export const DocumentationIngestJobsListcolumns = columnHelper.columns([
     header: 'Id',
   }),
 
+  columnHelper.accessor('name', {
+    header: 'Name',
+  }),
+
   columnHelper.accessor('type', {
     header: 'Type',
   }),
@@ -29,6 +33,17 @@ export const DocumentationIngestJobsListcolumns = columnHelper.columns([
   columnHelper.display({
     id: 'created_at',
     header: 'Created',
+    cell: ({ row }) => {
+      const item = row.original;
+
+      return item.created_at;
+      // return dateTimeFormat(item.created_at);
+    },
+  }),
+
+  columnHelper.display({
+    id: 'updated_at',
+    header: 'Updated',
     cell: ({ row }) => {
       const item = row.original;
 

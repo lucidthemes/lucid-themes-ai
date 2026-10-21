@@ -22,7 +22,6 @@ export default function DocumentationIngestJobParseUploadDocumentFormFieldFile({
           <Input
             {...fieldProps}
             aria-invalid={fieldState.invalid}
-            id="ingest-job-parse-document-file"
             type="file"
             className="cursor-pointer"
             accept="application/pdf"

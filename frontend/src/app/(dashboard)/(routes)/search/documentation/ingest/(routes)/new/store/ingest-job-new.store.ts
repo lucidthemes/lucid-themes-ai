@@ -3,13 +3,15 @@ import { create } from 'zustand';
 type IngestJobParseUploadType = 'document' | 'webpage';
 
 type State = {
-  ingestJobname: string | null;
+  ingestJobName: string | null;
+  ingestJobNameError: { message: string } | null;
 
   ingestJobParseUploadType: IngestJobParseUploadType | null;
 };
 
 type Action = {
   updateIngestJobName: (name: string) => void;
+  setIngestJobNameError: (error: string) => void;
 
   setIngestJobParseUploadType: (type: IngestJobParseUploadType) => void;
   resetIngestJobParseUploadType: () => void;
@@ -17,12 +19,13 @@ type Action = {
 
 export const useIngestJobNewStore = create<State & Action>((set) => ({
   // State
-  ingestJobOption: null,
-  ingestJobname: null,
+  ingestJobName: null,
+  ingestJobNameError: null,
   ingestJobParseUploadType: null,
 
   // Actions
-  updateIngestJobName: (name) => set({ ingestJobname: name }),
+  updateIngestJobName: (name) => set({ ingestJobName: name, ingestJobNameError: null }),
+  setIngestJobNameError: (error) => set({ ingestJobNameError: { message: error } }),
 
   setIngestJobParseUploadType: (type) => set({ ingestJobParseUploadType: type }),
   resetIngestJobParseUploadType: () => set({ ingestJobParseUploadType: null }),

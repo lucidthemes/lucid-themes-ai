@@ -1,4 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react';
+'use client';
+
+import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Field } from '@/components/ui/field';
@@ -8,17 +10,15 @@ import { Separator } from '@/components/ui/separator';
 
 export default function DocumentationIngestJobParseUploadDocumentFormCreditCalculator({
   documentParseTier,
-  pages,
-  setPages,
 }: {
   documentParseTier: {
     label: string;
     value: string;
     credits: number;
   };
-  pages: number;
-  setPages: Dispatch<SetStateAction<number>>;
 }) {
+  const [pages, setPages] = useState(1);
+
   const pagesLabel = pages > 1 ? 'pages' : 'page';
 
   const parseCreditsTotal = pages * documentParseTier.credits;

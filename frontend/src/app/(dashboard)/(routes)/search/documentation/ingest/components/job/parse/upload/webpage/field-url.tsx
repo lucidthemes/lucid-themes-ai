@@ -22,8 +22,7 @@ export default function DocumentationIngestJobParseUploadWebpageFormFieldUrl({
           <Input
             {...field}
             aria-invalid={fieldState.invalid}
-            id="ingest-job-parse-webpage-url"
-            name="ingest-job-parse-webpage-url"
+            name={field.name}
             type="url"
             className="cursor-text"
             placeholder="https://www.example.com"

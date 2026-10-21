@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useShallow } from 'zustand/shallow';
 
 import { toast } from '@/components/ui/toast';
 
@@ -23,13 +24,22 @@ import {
 function useDocumentationIngestJobParseUploadDocumentForm() {
   const router = useRouter();
 
-  const ingestJobname = useIngestJobNewStore((state) => state.ingestJobname);
+  // const ingestJobName = useIngestJobNewStore((state) => state.ingestJobName);
+
+  const { ingestJobName, setIngestJobNameError } = useIngestJobNewStore(
+    useShallow((state) => ({
+      ingestJobName: state.ingestJobName,
+      setIngestJobNameError: state.setIngestJobNameError,
+    })),
+  );
 
   const form = useForm<DocumentationIngestJobParseUploadDocumentForm>({
     defaultValues: {
       pages: 'all',
+      // range_from: 1,
+      // range_to: 1,
       tier: 'cost_effective',
-      tierAccept: false,
+      accept: false,
     },
     resolver: zodResolver(DocumentationIngestJobParseUploadDocumentFormSchema),
   });
@@ -41,7 +51,7 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
         // console.log('good!');
         // console.log(result.parseJobId);
 
-        router.push(`new/${result.parseJobId}`);
+        router.push(result.parseJobId);
       } else {
         toast.add({
           type: 'error',
@@ -64,12 +74,25 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
   });
 
   const onSubmit = async (data: DocumentationIngestJobParseUploadDocumentForm) => {
-    console.log(ingestJobname);
+    console.log(ingestJobName);
     console.log(data);
 
-    const name = ingestJobname ?? 'New ingest job';
+    const name = ingestJobName;
 
-    createIngestJobParseUploadDocumentMutation.mutate({ name, formData: data });
+    if (!name) {
+      setIngestJobNameError('Please enter a name');
+
+      return;
+    }
+
+    const formData = {
+      name,
+      ...data,
+    };
+
+    console.log(formData);
+
+    //createIngestJobParseUploadDocumentMutation.mutate({ name, formData: data });
   };
 
   return {
@@ -82,13 +105,18 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
 function useDocumentationIngestJobParseUploadWebpageForm() {
   const router = useRouter();
 
-  const ingestJobname = useIngestJobNewStore((state) => state.ingestJobname);
+  const { ingestJobName, setIngestJobNameError } = useIngestJobNewStore(
+    useShallow((state) => ({
+      ingestJobName: state.ingestJobName,
+      setIngestJobNameError: state.setIngestJobNameError,
+    })),
+  );
 
   const form = useForm<DocumentationIngestJobParseUploadWebpageForm>({
     defaultValues: {
       url: '',
       tier: 'cost_effective',
-      tierAccept: false,
+      accept: false,
     },
     resolver: zodResolver(DocumentationIngestJobParseUploadWebpageFormSchema),
   });
@@ -97,10 +125,9 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
     mutationFn: createIngestJobParseUploadWebpage,
     onSuccess: (result) => {
       if (result.success && result.parseJobId) {
-        // console.log('good!');
-        // console.log(result.parseJobId);
-
-        router.push(result.parseJobId);
+        console.log('good!');
+        console.log(result.parseJobId);
+        //router.push(result.parseJobId);
       } else {
         toast.add({
           type: 'error',
@@ -109,15 +136,36 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
         });
       }
     },
+    // onError: (error) => {
+    //   const errorMessage = error.message;
+    //   console.log(errorMessage);
+    // },
   });
 
   const onSubmit = async (data: DocumentationIngestJobParseUploadWebpageForm) => {
-    console.log(ingestJobname);
+    console.log(ingestJobName);
     console.log(data);
 
-    const name = ingestJobname ?? 'New ingest job';
+    const name = ingestJobName;
 
-    createIngestJobParseUploadWebpageMutation.mutate({ name, formData: data });
+    if (!name) {
+      setIngestJobNameError('Please enter a name');
+
+      return;
+    }
+
+    const { accept, ...formDataToUse } = data;
+
+    const formData = {
+      name,
+      ...formDataToUse,
+    };
+
+    console.log(formData);
+
+    // console.log(JSON.stringify(formData));
+
+    createIngestJobParseUploadWebpageMutation.mutate({ formData });
   };
 
   return {

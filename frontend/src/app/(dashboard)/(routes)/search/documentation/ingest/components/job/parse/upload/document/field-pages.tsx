@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
-import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
+'use client';
+
+import { useState } from 'react';
+import { Controller } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 
 import { Input } from '@/components/ui/input';
 import {
@@ -11,60 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Field, FieldError } from '@/components/ui/field';
+
+import type { DocumentationIngestJobParseUploadDocumentForm } from '../../../../../(routes)/new/schemas/parse-upload-form.schema';
 
 export default function DocumentationIngestJobParseUploadDocumentFormFieldPages({
-  setPages,
+  form,
 }: {
-  setPages: Dispatch<SetStateAction<number>>;
+  form: UseFormReturn<DocumentationIngestJobParseUploadDocumentForm>;
 }) {
   const [pagesOption, setPagesOption] = useState('all');
-  const [pageRangeFrom, setPageRangeFrom] = useState(1);
-  const [pageRangeTo, setPageRangeTo] = useState(1);
-  const [pageRangeUpdated, setPageRangeUpdated] = useState(false);
-
-  const handlePageRangeUpdate = ({
-    e,
-    option,
-  }: {
-    e: ChangeEvent<HTMLInputElement, HTMLInputElement>;
-    option: 'from' | 'to';
-  }) => {
-    const rangeValue = e.target.valueAsNumber;
-
-    if (!rangeValue) return;
-
-    setPageRangeUpdated(true);
-
-    if (option === 'from') {
-      if (rangeValue <= pageRangeTo) {
-        setPageRangeFrom(rangeValue);
-      } else {
-        setPageRangeFrom(rangeValue);
-        setPageRangeTo(rangeValue);
-      }
-    }
-
-    if (option === 'to') {
-      if (rangeValue >= pageRangeFrom) {
-        setPageRangeTo(rangeValue);
-      } else {
-        setPageRangeTo(rangeValue);
-        setPageRangeFrom(rangeValue);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (!pageRangeUpdated) return;
-
-    const rangeTotal = pageRangeTo - pageRangeFrom;
-
-    const updateRangeTotal = () => {
-      setPages(rangeTotal);
-    };
-
-    if (rangeTotal) updateRangeTotal();
-  }, [setPages, pageRangeFrom, pageRangeTo, pageRangeUpdated]);
 
   const pagesOptions = [
     { label: 'All pages', value: 'all' },
@@ -73,40 +32,79 @@ export default function DocumentationIngestJobParseUploadDocumentFormFieldPages(
 
   return (
     <div className="flex gap-5">
-      <Select items={pagesOptions} defaultValue="all">
-        <SelectTrigger className="w-full cursor-pointer">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Pages</SelectLabel>
-            {pagesOptions.map((option) => (
-              <SelectItem
-                key={option.value}
-                value={option.value}
-                className="cursor-pointer"
-                onClick={() => setPagesOption(option.value)}
-              >
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <Controller
+        name="pages"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <Select items={pagesOptions} name={field.name} value={field.value} onValueChange={field.onChange}>
+              <SelectTrigger className="w-full cursor-pointer">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Pages</SelectLabel>
+                  {pagesOptions.map((option) => (
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                      className="cursor-pointer"
+                      onClick={() => setPagesOption(option.value)}
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
       {pagesOption === 'range' && (
-        <div className="flex basis-1/2 items-center gap-2.5">
-          <Input
-            type="number"
-            min={1}
-            value={pageRangeFrom}
-            onChange={(e) => handlePageRangeUpdate({ e, option: 'from' })}
+        <div className="flex basis-1/2 items-baseline gap-2.5">
+          <Controller
+            name="range_from"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <Input
+                  {...field}
+                  aria-invalid={fieldState.invalid}
+                  name={field.name}
+                  type="number"
+                  min={1}
+                  value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber;
+                    field.onChange(Number.isNaN(value) ? undefined : value);
+                  }}
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
           />
           <span>to</span>
-          <Input
-            type="number"
-            min={1}
-            value={pageRangeTo}
-            onChange={(e) => handlePageRangeUpdate({ e, option: 'to' })}
+          <Controller
+            name="range_to"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <Input
+                  {...field}
+                  aria-invalid={fieldState.invalid}
+                  name={field.name}
+                  type="number"
+                  min={1}
+                  value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber;
+                    field.onChange(Number.isNaN(value) ? undefined : value);
+                  }}
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
           />
         </div>
       )}

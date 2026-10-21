@@ -27,7 +27,6 @@ export default function DocumentationIngestJobParseUploadDocumentForm() {
     value: 'cost_effective',
     credits: 3,
   });
-  const [pages, setPages] = useState(1);
   const [calculatorOpen, setCalculatorOpen] = useState(false);
 
   const { ingestJobParseUploadType, setIngestJobParseUploadType } = useIngestJobNewStore(
@@ -60,7 +59,7 @@ export default function DocumentationIngestJobParseUploadDocumentForm() {
             {ingestJobParseUploadType === 'document' && (
               <FieldGroup className="w-full">
                 <DocumentationIngestJobParseUploadDocumentFormFieldFile form={form} />
-                <DocumentationIngestJobParseUploadDocumentFormFieldPages setPages={setPages} />
+                <DocumentationIngestJobParseUploadDocumentFormFieldPages form={form} />
                 <DocumentationIngestJobParseUploadFormFieldTierSelect
                   form={form}
                   setDocumentParseTier={setDocumentParseTier}
@@ -80,11 +79,7 @@ export default function DocumentationIngestJobParseUploadDocumentForm() {
               </FieldGroup>
             )}
             {calculatorOpen && (
-              <DocumentationIngestJobParseUploadDocumentFormCreditCalculator
-                documentParseTier={documentParseTier}
-                pages={pages}
-                setPages={setPages}
-              />
+              <DocumentationIngestJobParseUploadDocumentFormCreditCalculator documentParseTier={documentParseTier} />
             )}
           </ItemContent>
         </Item>
