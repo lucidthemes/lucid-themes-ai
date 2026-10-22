@@ -40,7 +40,7 @@ export default function DocumentationIngestJobChunks({
 
   // const chunks = ingestJobData.chunks;
 
-  const chunks = ingestJobData.chunks;
+  const chunks = ingestJobData?.chunks;
 
   const isPending = false;
 

@@ -26,15 +26,15 @@ export default function DocumentationIngestJobChunksHeader({
   ingestJobData?: DocumentationIngestJob;
   chunks?: DocumentationIngestJobChunk[];
 }) {
-  const chunksTitleType = ingestJobData.source.type ?? '';
+  const chunksTitleType = ingestJobData?.source.type ?? '';
 
   return (
     <CardHeader>
       <CardTitle>
-        <span className="capitalize">{chunksTitleType}</span> chunks ({chunks.length})
+        <span className="capitalize">{chunksTitleType}</span> chunks ({chunks?.length ?? 0})
       </CardTitle>
       <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
-      {!isPending && chunks.length > 0 && (
+      {!isPending && chunks && chunks.length > 0 && (
         <CardAction className="flex gap-5 self-center">
           <Button className="cursor-pointer" variant="secondary" onClick={() => setExpanded((expanded) => !expanded)}>
             {!expanded && (

@@ -24,9 +24,12 @@ export default async function getDocumentationIngestJobs(): Promise<Documentatio
 
     const result = await response.json();
 
+    console.log(result);
+
     const parsed = z.array(DocumentationIngestJobsListSchema).safeParse(result ?? []);
 
     if (!parsed.success) {
+      console.log(parsed.error.message);
       return [];
     }
 

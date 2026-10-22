@@ -20,7 +20,10 @@ export default function DocumentationIngestJobParseProcessed({
   const [viewContentOpen, setViewContentOpen] = useState(false);
   const [viewContentSplit, setViewContentSplit] = useState(false);
 
-  if (ingestJobStatus === 'new' || (ingestJobStatus === 'pending' && ingestJobData.parse_job.status !== 'completed'))
+  if (
+    ingestJobStatus === 'new' ||
+    (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parse_job.status !== 'completed')
+  )
     return;
 
   return (

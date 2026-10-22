@@ -11,6 +11,8 @@ import {
 } from '../../components/job/heading';
 import DocumentationIngestJobLayout from '../../components/job/job-layout';
 
+import getDocumentationIngestJob from './data/get-ingest-job';
+
 export const metadata: Metadata = {
   title: 'Documentation - Ingest job',
   description: 'View a pending or completed documentation ingest jobs',
@@ -25,9 +27,9 @@ export default async function DashboardSearchDocumentationIngestJobPage({
 
   if (!slug || !isUUID(slug)) redirect('new');
 
-  const ingestJobData = {
+  const ingestJobData2 = {
     id: '9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3',
-    user_id: '03c17ec8-71fe-45c6-a591-152d0ce9fe43',
+    //user_id: '03c17ec8-71fe-45c6-a591-152d0ce9fe43',
     name: 'Test ingest job',
     source: {
       type: 'document',
@@ -65,6 +67,12 @@ export default async function DashboardSearchDocumentationIngestJobPage({
 
   // source_type: '', // pdf or url
   // source_name: '', // file name or url
+
+  const ingestJobData = await getDocumentationIngestJob(slug);
+
+  console.log(ingestJobData);
+
+  if (!ingestJobData) redirect('ingest');
 
   return (
     <DashboardLayoutContainer className="py-6">

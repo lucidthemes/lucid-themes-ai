@@ -20,15 +20,15 @@ export default function DocumentationIngestJobParseUpload({
   const ingestJobParseUploadType = useIngestJobNewStore((state) => state.ingestJobParseUploadType);
 
   if (
-    (ingestJobStatus === 'pending' && ingestJobData.parse_job.status === 'completed') ||
+    (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parse_job.status === 'completed') ||
     ingestJobStatus === 'completed'
   )
     return;
 
-  if (ingestJobStatus === 'pending' && ingestJobData.parse_job.status === 'pending')
+  if (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parse_job.status === 'pending')
     return <DocumentationIngestJobParseUploadLoading />;
 
-  if (ingestJobStatus === 'pending' && ingestJobData.parse_job.status === 'failed')
+  if (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parse_job.status === 'failed')
     return <DocumentationIngestJobParseUploadFailed />;
 
   const showUploadDocumentForm = !ingestJobParseUploadType || ingestJobParseUploadType === 'document';

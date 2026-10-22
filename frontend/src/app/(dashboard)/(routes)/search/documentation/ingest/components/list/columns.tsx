@@ -18,17 +18,31 @@ export const DocumentationIngestJobsListcolumns = columnHelper.columns([
     header: 'Name',
   }),
 
-  columnHelper.accessor('type', {
-    header: 'Type',
+  columnHelper.display({
+    id: 'source',
+    header: 'Source',
+    cell: ({ row }) => {
+      const item = row.original;
+
+      return (
+        <div className="flex flex-col gap-1">
+          <span className="capitalize">{item.source.type}</span>
+          {item.source.file_name && <span>{item.source.file_name}</span>}
+          {item.source.webpage_url && <span>{item.source.webpage_url}</span>}
+        </div>
+      );
+    },
   }),
 
-  columnHelper.accessor('status', {
+  columnHelper.display({
+    id: 'status',
     header: 'Status',
-  }),
+    cell: ({ row }) => {
+      const item = row.original;
 
-  //   columnHelper.accessor('created_at', {
-  //     header: 'Created at',
-  //   }),
+      return <span className="capitalize">{item.status}</span>;
+    },
+  }),
 
   columnHelper.display({
     id: 'created_at',

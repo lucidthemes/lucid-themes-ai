@@ -15,7 +15,6 @@ import type {
   DocumentationIngestJobParseUploadWebpageForm,
 } from '../schemas/parse-upload-form.schema';
 import { useIngestJobNewStore } from '../store/ingest-job-new.store';
-
 import {
   createIngestJobParseUploadDocument,
   createIngestJobParseUploadWebpage,
@@ -47,7 +46,7 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
   const createIngestJobParseUploadDocumentMutation = useMutation({
     mutationFn: createIngestJobParseUploadDocument,
     onSuccess: (result) => {
-      if (result.success && result.parseJobId) {
+      if (result.success) {
         // console.log('good!');
         // console.log(result.parseJobId);
 
@@ -85,6 +84,8 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
       return;
     }
 
+    // const { accept, ...formDataToUse } = data;
+
     const formData = {
       name,
       ...data,
@@ -92,7 +93,7 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
 
     console.log(formData);
 
-    //createIngestJobParseUploadDocumentMutation.mutate({ name, formData: data });
+    createIngestJobParseUploadDocumentMutation.mutate({ formData });
   };
 
   return {
@@ -124,10 +125,11 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
   const createIngestJobParseUploadWebpageMutation = useMutation({
     mutationFn: createIngestJobParseUploadWebpage,
     onSuccess: (result) => {
-      if (result.success && result.parseJobId) {
-        console.log('good!');
-        console.log(result.parseJobId);
-        //router.push(result.parseJobId);
+      if (result.success) {
+        // console.log('good!');
+        // console.log(result.parseJobId);
+
+        router.push(result.parseJobId);
       } else {
         toast.add({
           type: 'error',
@@ -154,11 +156,11 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
       return;
     }
 
-    const { accept, ...formDataToUse } = data;
+    // const { accept, ...formDataToUse } = data;
 
     const formData = {
       name,
-      ...formDataToUse,
+      ...data,
     };
 
     console.log(formData);

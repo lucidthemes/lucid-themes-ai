@@ -8,13 +8,26 @@ export const DocumentationIngestJobChunkSchema = z.object({
 
 export const DocumentationIngestJobSchema = z.object({
   id: z.uuid(),
-  user_id: z.uuid(),
+  //user_id: z.uuid(),
   name: z.string(),
   source: z.object({
     type: z.enum(['document', 'webpage']),
-    file_name: z.string().optional(),
-    file_url: z.string().optional(),
-    webpage_url: z.string().optional(),
+    file_name: z.string().nullable(),
+    file_url: z.string().nullable(),
+    webpage_url: z.string().nullable(),
+  }),
+  parse_job: z.object({
+    id: z.string(),
+    status: z.enum(['pending', 'completed', 'failed']),
+    markdown_full: z.string().nullable(),
+    text_full: z.string().nullable(),
+    tier: z.string().nullable(),
+    error_message: z.string().nullable(),
+    usage: z
+      .object({
+        credits: z.int().nullable(),
+      })
+      .nullable(),
   }),
   chunks: z.array(DocumentationIngestJobChunkSchema).optional(),
   status: z.enum(['pending', 'completed', 'failed']),
