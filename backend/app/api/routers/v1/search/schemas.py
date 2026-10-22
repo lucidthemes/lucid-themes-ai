@@ -14,19 +14,32 @@ class DocumentationIngestJobSourceType(StrEnum):
 
 
 class DocumentationIngestJobStatus(StrEnum):
-    COMPLETED = "completed"
     PENDING = "pending"
+    COMPLETED = "completed"
     FAILED = "failed"
 
 
-# New ingest job
-
-
-class DocumentationIngestJobNewTier(StrEnum):
+class DocumentationIngestJobTier(StrEnum):
     AGENTIC_PLUS = "agentic_plus"
     AGENTIC = "agentic"
     COST_EFFECTIVE = "cost_effective"
     FAST = "fast"
+
+
+class DocumentationIngestJobSource(BaseModel):
+    type: DocumentationIngestJobSourceType
+    file_name: str | None = None
+    file_url: str | None = None
+    webpage_url: str | None = None
+
+
+class DocumentationIngestJobChunk(BaseModel):
+    id: uuid.UUID
+    content: str
+    vector: str | None = None
+
+
+# New ingest job - parse
 
 
 class DocumentationIngestJobNewDocumentPages(StrEnum):
@@ -36,27 +49,76 @@ class DocumentationIngestJobNewDocumentPages(StrEnum):
 
 class DocumentationIngestJobNewBase(BaseModel):
     name: str
-    tier: DocumentationIngestJobNewTier
+    tier: DocumentationIngestJobTier
 
 
 class DocumentationIngestJobNewDocumentCreate(DocumentationIngestJobNewBase):
     file: UploadFile
     pages: DocumentationIngestJobNewDocumentPages
-    range_from: int | None
-    range_to: int | None
+    range_from: int | None = None
+    range_to: int | None = None
 
 
 class DocumentationIngestJobNewWebpageCreate(DocumentationIngestJobNewBase):
     url: HttpUrl
 
 
-# Ingest jobs list
+class DocumentationIngestJobNewResponse(BaseModel):
+    job_id: uuid.UUID
 
 
-class DocumentationIngestJob(BaseModel):
+# New ingest job - chunks
+
+
+class DocumentationIngestJobNewChunksMethod(StrEnum):
+    MARKDOWN = "markdown"
+    TEXT = "text"
+
+
+class DocumentationIngestJobNewChunksCreate(BaseModel):
+    method: DocumentationIngestJobNewChunksMethod
+    content: str
+
+
+class DocumentationIngestJobNewChunksResponse(BaseModel):
+    chunks: list[DocumentationIngestJobChunk]
+
+
+# Existing Ingest job
+
+
+class DocumentationIngestJobParseJobUsage(BaseModel):
+    credits: int | None = None
+
+
+class DocumentationIngestJobParseJob(BaseModel):
+    id: str
+    status: DocumentationIngestJobStatus
+    markdown_full: str | None = None
+    text_full: str | None = None
+    tier: DocumentationIngestJobTier | None = None
+    error_message: str | None = None
+    usage: DocumentationIngestJobParseJobUsage | None = None
+
+
+class DocumentationIngestJobResponse(BaseModel):
     id: uuid.UUID
     name: str
-    type: DocumentationIngestJobSourceType
+    source: DocumentationIngestJobSource
+    parse_job: DocumentationIngestJobParseJob
+    chunks: list[DocumentationIngestJobChunk]
+    status: DocumentationIngestJobStatus
+    created_at: datetime
+    updated_at: datetime
+
+
+# Existing Ingest jobs
+
+
+class DocumentationIngestJobsResponse(BaseModel):
+    id: uuid.UUID
+    name: str
+    source: DocumentationIngestJobSource
     status: DocumentationIngestJobStatus
     created_at: datetime
     updated_at: datetime
