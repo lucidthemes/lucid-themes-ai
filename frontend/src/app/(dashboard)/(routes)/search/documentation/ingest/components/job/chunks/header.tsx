@@ -1,6 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction, TransitionStartFunction } from 'react';
 
-import { Maximize2, Minimize2, ChevronsLeftRightEllipsis } from 'lucide-react';
+import { Maximize2, Minimize2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,12 +10,16 @@ import type {
   DocumentationIngestJob,
   DocumentationIngestJobChunk,
 } from '../../../schemas/ingest-job.schema';
+import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
+
+import DocumentationIngestJobChunksEmbeddingsButton from './embeddings-button';
 
 export default function DocumentationIngestJobChunksHeader({
   ingestJobStatus,
   expanded,
   setExpanded,
   isPending,
+  startTransition,
   ingestJobData,
   chunks,
 }: {
@@ -23,8 +27,9 @@ export default function DocumentationIngestJobChunksHeader({
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
   isPending: boolean;
+  startTransition: TransitionStartFunction;
   ingestJobData?: DocumentationIngestJob;
-  chunks?: DocumentationIngestJobChunk[];
+  chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobParseChunk[] | null;
 }) {
   const chunksTitleType = ingestJobData?.source.type ?? '';
 
@@ -50,9 +55,7 @@ export default function DocumentationIngestJobChunksHeader({
           </Button>
 
           {ingestJobStatus !== 'completed' && (
-            <Button className="cursor-pointer">
-              Generate embeddings <ChevronsLeftRightEllipsis />
-            </Button>
+            <DocumentationIngestJobChunksEmbeddingsButton startTransition={startTransition} />
           )}
         </CardAction>
       )}

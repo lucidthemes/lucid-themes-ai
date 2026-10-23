@@ -2,15 +2,14 @@
 
 import { useState } from 'react';
 import { SquareText, Settings } from 'lucide-react';
-import { Controller } from 'react-hook-form';
 
 import { CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { Input } from '@/components/ui/input';
 
 import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../../schemas/ingest-job.schema';
 import useDocumentationIngestJobParseChunksForm from '../../../../(routes)/new/hooks/use-parse-chunks-form';
+import { useIngestJobNewStore } from '../../../../(routes)/new/store/ingest-job-new.store';
 
 import DocumentationIngestJobParseProcessedFooterSettings from './footer-settings';
 
@@ -25,33 +24,18 @@ export default function DocumentationIngestJobParseProcessedFooter({
 
   const { form, onSubmit, isPending } = useDocumentationIngestJobParseChunksForm({ ingestJobData });
 
-  // if (
-  //   ingestJobStatus !== 'pending' ||
-  //   (ingestJobStatus === 'pending' && ingestJobData && ingestJobData.parse_job.status !== 'completed')
-  // )
-  //   return;
+  const ingestJobParseChunks = useIngestJobNewStore((state) => state.ingestJobParseChunks);
+
+  if (
+    (ingestJobStatus === 'pending' && ingestJobParseChunks && ingestJobParseChunks.length > 0) ||
+    ingestJobStatus === 'completed'
+  )
+    return;
 
   return (
     <CardFooter>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col items-end gap-5">
         {settingsOpen && <DocumentationIngestJobParseProcessedFooterSettings form={form} />}
-        {/* <input {...register("content", { value: "data" })} type="hidden" /> */}
-        {/* <Controller
-          name="content"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              {...field}
-              name={field.name}
-              type="text"
-              value={
-                ingestJobData?.parse_job.markdown_full
-                  ? ingestJobData?.parse_job.markdown_full
-                  : ingestJobData?.parse_job.text_full
-              }
-            />
-          )}
-        /> */}
         <div className="flex justify-end gap-5">
           <Button
             variant={settingsOpen ? 'secondary' : 'outline'}

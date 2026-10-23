@@ -1,14 +1,17 @@
-import { ChevronsLeftRightEllipsis } from 'lucide-react';
+import type { TransitionStartFunction } from 'react';
 
-import { Button } from '@/components/ui/button';
 import { CardFooter } from '@/components/ui/card';
 
-export default function DocumentationIngestJobChunksFooter() {
+import DocumentationIngestJobChunksEmbeddingsButton from './embeddings-button';
+
+export default function DocumentationIngestJobChunksFooter({
+  startTransition,
+}: {
+  startTransition: TransitionStartFunction;
+}) {
   return (
     <CardFooter className="justify-end">
-      <Button className="cursor-pointer">
-        Generate embeddings <ChevronsLeftRightEllipsis />
-      </Button>
+      <DocumentationIngestJobChunksEmbeddingsButton startTransition={startTransition} />
     </CardFooter>
   );
 }

@@ -5,10 +5,17 @@ import { z } from 'zod';
 import { getAuthAccessToken } from '@/lib/supabase/auth';
 import { serverApiUrl } from '@/lib/api-urls';
 
-import { DocumentationIngestJobChunkSchema } from '../../../schemas/ingest-job.schema';
+// import { DocumentationIngestJobChunkSchema } from '../../../schemas/ingest-job.schema';
+// import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
 
-import { DocumentationIngestJobParseChunksFormSchema } from '../schemas/parse-chunks-form.schema';
-import type { DocumentationIngestJobParseChunksForm } from '../schemas/parse-chunks-form.schema';
+import {
+  DocumentationIngestJobParseChunksFormSchema,
+  DocumentationIngestJobParseChunkSchema,
+} from '../schemas/parse-chunks-form.schema';
+import type {
+  DocumentationIngestJobParseChunksForm,
+  DocumentationIngestJobParseChunk,
+} from '../schemas/parse-chunks-form.schema';
 
 export default async function createIngestJobParseChunks({
   formData,
@@ -44,7 +51,16 @@ export default async function createIngestJobParseChunks({
     const result = await response.json();
     console.log(result);
 
-    const parsedChunks = z.array(DocumentationIngestJobChunkSchema).safeParse(result.chunks);
+    const structuredChunks = result.chunks.map((chunk: DocumentationIngestJobParseChunk, index: number) => {
+      return {
+        id: index + 1,
+        content: chunk.content,
+      };
+    });
+
+    // console.log(structuredChunks);
+
+    const parsedChunks = z.array(DocumentationIngestJobParseChunkSchema).safeParse(structuredChunks);
 
     if (!parsedChunks.success) {
       return { success: false };

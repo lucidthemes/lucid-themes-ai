@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from '@/components/ui/toast';
 
 import type { DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
+import { useIngestJobNewStore } from '../store/ingest-job-new.store';
 
 import { DocumentationIngestJobParseChunksFormSchema } from '../schemas/parse-chunks-form.schema';
 import type { DocumentationIngestJobParseChunksForm } from '../schemas/parse-chunks-form.schema';
@@ -15,6 +16,8 @@ export default function useDocumentationIngestJobParseChunksForm({
 }: {
   ingestJobData?: DocumentationIngestJob;
 }) {
+  const setIngestJobParseChunks = useIngestJobNewStore((state) => state.setIngestJobParseChunks);
+
   const chunksContent =
     ingestJobData && ingestJobData.parse_job.markdown_full
       ? ingestJobData.parse_job.markdown_full
@@ -36,6 +39,7 @@ export default function useDocumentationIngestJobParseChunksForm({
       if (result.success) {
         console.log('good!');
         console.log(result.chunks);
+        if (result.chunks) setIngestJobParseChunks(result.chunks);
       } else {
         toast.add({
           type: 'error',

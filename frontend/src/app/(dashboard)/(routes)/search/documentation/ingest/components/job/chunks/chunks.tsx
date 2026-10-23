@@ -1,19 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { useTransition } from 'react';
 
-import {
-  Card,
-  //  CardContent
-} from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
 
 import DocumentationIngestJobChunksHeader from './header';
-// import DocumentationIngestJobChunksItems from './items';
-// import DocumentationIngestJobChunksFooter from './footer';
 
 import DocumentationIngestJobChunksContent from './content';
+
+import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 
 export default function DocumentationIngestJobChunks({
   ingestJobStatus,
@@ -24,25 +22,18 @@ export default function DocumentationIngestJobChunks({
 }) {
   const [expanded, setExpanded] = useState(true);
 
-  // if (
-  //   ingestJobStatus === 'new' ||
-  //   (ingestJobStatus === 'pending' && !ingestJobData.chunks) ||
-  //   (ingestJobStatus === 'pending' && ingestJobData.chunks.length === 0)
-  // )
-  //   return;
+  const ingestJobParseChunks = useIngestJobNewStore((state) => state.ingestJobParseChunks);
+
+  const [isPending, startTransition] = useTransition();
 
   if (ingestJobStatus === 'new') return;
 
-  // const chunks = [
-  //   { id: '1', content: 'A practical talk on component APIs, accessibility, and shipping faster.' },
-  //   { id: '2', content: 'A practical talk on component APIs, accessibility, and shipping faster.' },
-  // ];
-
-  // const chunks = ingestJobData.chunks;
-
-  const chunks = ingestJobData?.chunks;
-
-  const isPending = false;
+  const chunks =
+    ingestJobStatus === 'completed' && ingestJobData
+      ? ingestJobData.chunks
+      : ingestJobStatus === 'pending'
+        ? ingestJobParseChunks
+        : null;
 
   return (
     <Card className="mx-auto w-full">
@@ -51,6 +42,7 @@ export default function DocumentationIngestJobChunks({
         expanded={expanded}
         setExpanded={setExpanded}
         isPending={isPending}
+        startTransition={startTransition}
         ingestJobData={ingestJobData}
         chunks={chunks}
       />
@@ -58,16 +50,9 @@ export default function DocumentationIngestJobChunks({
         ingestJobStatus={ingestJobStatus}
         expanded={expanded}
         isPending={isPending}
+        startTransition={startTransition}
         chunks={chunks}
       />
-      {/* {expanded && (
-        <CardContent className="flex flex-col gap-5">
-          <DocumentationIngestJobChunksItems chunks={chunks} />
-
-          {isPending && <DocumentationIngestJobLoading title="Generating embeddings" />}
-        </CardContent>
-      )}
-      {ingestJobStatus !== 'completed' && expanded && !isPending && <DocumentationIngestJobChunksFooter />} */}
     </Card>
   );
 }

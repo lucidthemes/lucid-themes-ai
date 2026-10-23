@@ -6,3 +6,10 @@ export const DocumentationIngestJobParseChunksFormSchema = z.object({
 });
 
 export type DocumentationIngestJobParseChunksForm = z.infer<typeof DocumentationIngestJobParseChunksFormSchema>;
+
+export const DocumentationIngestJobParseChunkSchema = z.object({
+  id: z.int().positive(),
+  content: z.string(),
+});
+
+export type DocumentationIngestJobParseChunk = z.infer<typeof DocumentationIngestJobParseChunkSchema>;

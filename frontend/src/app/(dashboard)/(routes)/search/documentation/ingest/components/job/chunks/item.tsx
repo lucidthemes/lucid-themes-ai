@@ -2,21 +2,35 @@
 
 import { useState } from 'react';
 import { SquareText, ChevronDown, ChevronUp, Trash } from 'lucide-react';
+import { useShallow } from 'zustand/shallow';
 
 import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { Textarea } from '@/components/ui/textarea';
 
+import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
+import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
 
 export default function DocumentationIngestJobChunksItem({
   chunk,
   showVectors,
 }: {
-  chunk: DocumentationIngestJobChunk;
+  chunk: DocumentationIngestJobChunk | DocumentationIngestJobParseChunk;
   showVectors: boolean;
 }) {
   const [open, setOpen] = useState(false);
+
+  // const removeIngestJobParseChunk = useIngestJobNewStore((state) => state.removeIngestJobParseChunk);
+
+  // updateIngestJobParseChunk
+
+  const { removeIngestJobParseChunk, updateIngestJobParseChunk } = useIngestJobNewStore(
+    useShallow((state) => ({
+      removeIngestJobParseChunk: state.removeIngestJobParseChunk,
+      updateIngestJobParseChunk: state.updateIngestJobParseChunk,
+    })),
+  );
 
   return (
     <Item variant="outline">
@@ -30,9 +44,15 @@ export default function DocumentationIngestJobChunksItem({
             <ItemContent className="gap-y-2.5">
               <div className="flex flex-col gap-y-1">
                 <ItemTitle>Content</ItemTitle>
-                <Textarea id={chunk.id} placeholder="Type your message here." defaultValue={chunk.content} />
+                <Textarea
+                  id={`chunk-${chunk.id}`}
+                  defaultValue={chunk.content}
+                  onBlur={(e) =>
+                    updateIngestJobParseChunk({ chunkId: chunk.id as number, chunkContent: e.target.value })
+                  }
+                />
               </div>
-              {showVectors && (
+              {showVectors && 'vector' in chunk && chunk.vector && (
                 <div className="flex flex-col gap-y-1">
                   <ItemTitle>Vector</ItemTitle>
                   <Textarea id={chunk.id} placeholder="Type your message here." defaultValue={chunk.vector} />
@@ -54,7 +74,13 @@ export default function DocumentationIngestJobChunksItem({
           {open && <ChevronUp />}
         </Button>
         {open && (
-          <Button variant="destructive" size="icon" className="cursor-pointer" title="Remove chunk">
+          <Button
+            variant="destructive"
+            size="icon"
+            className="cursor-pointer"
+            title="Remove chunk"
+            onClick={() => removeIngestJobParseChunk(chunk.id as number)}
+          >
             <Trash />
           </Button>
         )}
