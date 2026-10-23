@@ -170,19 +170,14 @@ async def create_search_documentation_ingest_job_webpage(
 async def create_search_documentation_ingest_job_chunks(
     data: DocumentationIngestJobNewChunksCreate,
     current_user: Annotated[str, Depends(get_current_user)],
-    # db: AsyncSession = Depends(get_write_db),
 ):
     return {
         "chunks": [
             {
-                "id": "018204a2-9e58-4618-affe-e313be132aee",
                 "content": "test content 1 python",
-                "vector": "test vector 1 python",
             },
             {
-                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
                 "content": "test content 2",
-                "vector": "test vector 2",
             },
         ],
     }

@@ -33,12 +33,6 @@ class DocumentationIngestJobSource(BaseModel):
     webpage_url: str | None = None
 
 
-class DocumentationIngestJobChunk(BaseModel):
-    id: uuid.UUID
-    content: str
-    vector: str | None = None
-
-
 # New ingest job - parse
 
 
@@ -80,8 +74,12 @@ class DocumentationIngestJobNewChunksCreate(BaseModel):
     content: str
 
 
+class DocumentationIngestJobNewChunk(BaseModel):
+    content: str
+
+
 class DocumentationIngestJobNewChunksResponse(BaseModel):
-    chunks: list[DocumentationIngestJobChunk]
+    chunks: list[DocumentationIngestJobNewChunk]
 
 
 # Existing Ingest job
@@ -99,6 +97,12 @@ class DocumentationIngestJobParseJob(BaseModel):
     tier: DocumentationIngestJobTier | None = None
     error_message: str | None = None
     usage: DocumentationIngestJobParseJobUsage | None = None
+
+
+class DocumentationIngestJobChunk(BaseModel):
+    id: uuid.UUID
+    content: str
+    vector: str | None = None
 
 
 class DocumentationIngestJobResponse(BaseModel):
