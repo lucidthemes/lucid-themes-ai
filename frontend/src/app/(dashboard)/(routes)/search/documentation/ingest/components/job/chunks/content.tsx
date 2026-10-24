@@ -53,7 +53,11 @@ export default function DocumentationIngestJobChunksContent({
               <Label htmlFor="airplane-mode">Show embedding vectors</Label>
             </div>
           )}
-          <DocumentationIngestJobChunksItems chunks={chunks} showVectors={showVectors} />
+          <DocumentationIngestJobChunksItems
+            ingestJobStatus={ingestJobStatus}
+            chunks={chunks}
+            showVectors={showVectors}
+          />
         </CardContent>
       )}
       {ingestJobStatus !== 'completed' && expanded && !isPending && (

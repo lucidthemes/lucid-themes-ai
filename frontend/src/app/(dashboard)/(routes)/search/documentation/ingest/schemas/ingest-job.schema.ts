@@ -30,6 +30,13 @@ export const DocumentationIngestJobSchema = z.object({
       .nullable(),
   }),
   chunks: z.array(DocumentationIngestJobChunkSchema).optional(),
+  embeddings_job: z.object({
+    model: z.string(),
+    usage: z.object({
+      prompt_tokens: z.int().positive(),
+      total_tokens: z.int().positive(),
+    }),
+  }),
   status: z.enum(['pending', 'completed', 'failed']),
   created_at: z.string(),
   updated_at: z.string(),

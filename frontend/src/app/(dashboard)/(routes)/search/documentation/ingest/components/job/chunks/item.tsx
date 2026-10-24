@@ -9,21 +9,19 @@ import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@/componen
 import { Textarea } from '@/components/ui/textarea';
 
 import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
-import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
+import type { DocumentationIngestJobStatus, DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
 import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
 
 export default function DocumentationIngestJobChunksItem({
+  ingestJobStatus,
   chunk,
   showVectors,
 }: {
+  ingestJobStatus: DocumentationIngestJobStatus;
   chunk: DocumentationIngestJobChunk | DocumentationIngestJobParseChunk;
   showVectors: boolean;
 }) {
   const [open, setOpen] = useState(false);
-
-  // const removeIngestJobParseChunk = useIngestJobNewStore((state) => state.removeIngestJobParseChunk);
-
-  // updateIngestJobParseChunk
 
   const { removeIngestJobParseChunk, updateIngestJobParseChunk } = useIngestJobNewStore(
     useShallow((state) => ({
@@ -73,7 +71,7 @@ export default function DocumentationIngestJobChunksItem({
           {!open && <ChevronDown />}
           {open && <ChevronUp />}
         </Button>
-        {open && (
+        {open && ingestJobStatus !== 'completed' && (
           <Button
             variant="destructive"
             size="icon"
