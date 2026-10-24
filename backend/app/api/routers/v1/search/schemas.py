@@ -61,7 +61,7 @@ class DocumentationIngestJobNewResponse(BaseModel):
     job_id: uuid.UUID
 
 
-# New ingest job - chunks
+# New ingest job - chunks + embeddings
 
 
 class DocumentationIngestJobNewChunksMethod(StrEnum):
@@ -79,6 +79,10 @@ class DocumentationIngestJobNewChunk(BaseModel):
 
 
 class DocumentationIngestJobNewChunksResponse(BaseModel):
+    chunks: list[DocumentationIngestJobNewChunk]
+
+
+class DocumentationIngestJobNewEmbeddingsCreate(BaseModel):
     chunks: list[DocumentationIngestJobNewChunk]
 
 
@@ -105,12 +109,23 @@ class DocumentationIngestJobChunk(BaseModel):
     vector: str | None = None
 
 
+class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):
+    prompt_tokens: int
+    total_tokens: int
+
+
+class DocumentationIngestJobEmbeddingsJob(BaseModel):
+    model: str
+    usage: DocumentationIngestJobEmbeddingsJobUsage
+
+
 class DocumentationIngestJobResponse(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
     parse_job: DocumentationIngestJobParseJob
     chunks: list[DocumentationIngestJobChunk]
+    embeddings_job: DocumentationIngestJobEmbeddingsJob
     status: DocumentationIngestJobStatus
     created_at: datetime
     updated_at: datetime

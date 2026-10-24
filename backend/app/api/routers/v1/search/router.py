@@ -9,6 +9,7 @@ from app.api.routers.v1.search.schemas import (
     DocumentationIngestJobNewChunksCreate,
     DocumentationIngestJobNewChunksResponse,
     DocumentationIngestJobNewDocumentCreate,
+    DocumentationIngestJobNewEmbeddingsCreate,
     DocumentationIngestJobNewResponse,
     DocumentationIngestJobNewWebpageCreate,
     DocumentationIngestJobResponse,
@@ -117,6 +118,8 @@ async def read_search_documentation_ingest_job(
             "status": "completed",
             "markdown_full": "#text",
             "text_full": "text",
+            "tier": "cost_effective",
+            "error_message": "",
             "usage": {
                 "credits": 30.0,
             },
@@ -133,7 +136,14 @@ async def read_search_documentation_ingest_job(
                 "vector": "test vector 2",
             },
         ],
-        "status": "pending",
+        "embeddings_job": {
+            "model": "text-embedding-3-small",
+            "usage": {
+                "prompt_tokens": 5,
+                "total_tokens": 5,
+            },
+        },
+        "status": "completed",
         "created_at": "2026-09-06 11:52:33",
         "updated_at": "2026-09-06 11:52:33",
     }
@@ -181,3 +191,12 @@ async def create_search_documentation_ingest_job_chunks(
             },
         ],
     }
+
+
+@router.post("/documentation/ingest/job/new/embeddings")
+async def create_search_documentation_ingest_job_embeddings(
+    data: DocumentationIngestJobNewEmbeddingsCreate,
+    current_user: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_write_db),
+):
+    return {"success": True}
