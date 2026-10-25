@@ -70,7 +70,9 @@ class DocumentationIngestJobNewChunksMethod(StrEnum):
 
 
 class DocumentationIngestJobNewChunksCreate(BaseModel):
-    method: DocumentationIngestJobNewChunksMethod
+    split_method: DocumentationIngestJobNewChunksMethod = "markdown"
+    chunk_size: int = 250
+    chunk_overlap: int = 30
     content: str
 
 
@@ -106,7 +108,7 @@ class DocumentationIngestJobParseJob(BaseModel):
 class DocumentationIngestJobChunk(BaseModel):
     id: uuid.UUID
     content: str
-    vector: str | None = None
+    embedding: str | None = None
 
 
 class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):

@@ -128,12 +128,12 @@ async def read_search_documentation_ingest_job(
             {
                 "id": "018204a2-9e58-4618-affe-e313be132aee",
                 "content": "test content 1 python",
-                "vector": "test vector 1 python",
+                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
             },
             {
                 "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
                 "content": "test content 2",
-                "vector": "test vector 2",
+                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
             },
         ],
         "embeddings_job": {
@@ -147,9 +147,6 @@ async def read_search_documentation_ingest_job(
         "created_at": "2026-09-06 11:52:33",
         "updated_at": "2026-09-06 11:52:33",
     }
-
-    # "tier": "",
-    # "error_message": "",
 
 
 @router.post(
