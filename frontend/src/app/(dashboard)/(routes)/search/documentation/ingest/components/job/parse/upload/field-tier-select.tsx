@@ -6,7 +6,7 @@ import { Controller } from 'react-hook-form';
 import type { UseFormReturn } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { Field, FieldContent, FieldError } from '@/components/ui/field';
+import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import {
   Select,
   SelectContent,
@@ -40,40 +40,39 @@ export default function DocumentationIngestJobParseUploadFormFieldTierSelect({
   ];
 
   return (
-    <Field orientation="horizontal">
-      <FieldContent>
-        <Controller
-          name="tier"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <Select items={tiers} name={field.name} value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger className="w-full cursor-pointer">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Tier</SelectLabel>
-                    {tiers.map((tier) => (
-                      <SelectItem
-                        key={tier.value}
-                        value={tier.value}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          if (setDocumentParseTier) setDocumentParseTier(tier);
-                        }}
-                      >
-                        {tier.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-      </FieldContent>
+    <div className="flex w-full items-end gap-5">
+      <Controller
+        name="tier"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="tier">LlamaParse tier</FieldLabel>
+            <Select items={tiers} name={field.name} value={field.value} onValueChange={field.onChange}>
+              <SelectTrigger className="w-full cursor-pointer">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Tier</SelectLabel>
+                  {tiers.map((tier) => (
+                    <SelectItem
+                      key={tier.value}
+                      value={tier.value}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        if (setDocumentParseTier) setDocumentParseTier(tier);
+                      }}
+                    >
+                      {tier.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
       <HoverCard>
         <HoverCardTrigger
           delay={10}
@@ -105,6 +104,6 @@ export default function DocumentationIngestJobParseUploadFormFieldTierSelect({
           </ul>
         </HoverCardContent>
       </HoverCard>
-    </Field>
+    </div>
   );
 }

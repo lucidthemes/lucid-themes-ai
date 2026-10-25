@@ -27,7 +27,9 @@ export default function useDocumentationIngestJobParseChunksForm({
 
   const form = useForm<DocumentationIngestJobParseChunksForm>({
     defaultValues: {
-      method: 'markdown',
+      split_method: 'markdown',
+      chunk_size: 250,
+      chunk_overlap: 30,
       content: chunksContent,
     },
     resolver: zodResolver(DocumentationIngestJobParseChunksFormSchema),

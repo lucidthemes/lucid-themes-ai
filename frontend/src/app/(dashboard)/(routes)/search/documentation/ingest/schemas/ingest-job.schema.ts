@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const DocumentationIngestJobChunkSchema = z.object({
   id: z.uuid(),
   content: z.string(),
-  vector: z.string().optional(),
+  embedding: z.string().optional(),
 });
 
 export const DocumentationIngestJobSchema = z.object({

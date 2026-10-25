@@ -40,7 +40,7 @@ export default function DocumentationIngestJobChunksItem({
         {open && (
           <Item variant="muted">
             <ItemContent className="gap-y-2.5">
-              <div className="flex flex-col gap-y-1">
+              <div className="flex flex-col gap-y-1.5">
                 <ItemTitle>Content</ItemTitle>
                 <Textarea
                   id={`chunk-${chunk.id}`}
@@ -48,12 +48,14 @@ export default function DocumentationIngestJobChunksItem({
                   onBlur={(e) =>
                     updateIngestJobParseChunk({ chunkId: chunk.id as number, chunkContent: e.target.value })
                   }
+                  className="opacity-100!"
+                  disabled={ingestJobStatus === 'completed' ? true : false}
                 />
               </div>
-              {showVectors && 'vector' in chunk && chunk.vector && (
+              {showVectors && 'embedding' in chunk && chunk.embedding && (
                 <div className="flex flex-col gap-y-1">
-                  <ItemTitle>Vector</ItemTitle>
-                  <Textarea id={chunk.id} placeholder="Type your message here." defaultValue={chunk.vector} />
+                  <ItemTitle>Embedding</ItemTitle>
+                  <Textarea id={chunk.id} defaultValue={chunk.embedding} className="opacity-100!" disabled />
                 </div>
               )}
             </ItemContent>

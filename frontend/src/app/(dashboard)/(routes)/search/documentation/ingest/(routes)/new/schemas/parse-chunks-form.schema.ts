@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
 export const DocumentationIngestJobParseChunksFormSchema = z.object({
-  method: z.enum(['markdown', 'text'], 'Please select an method'),
+  split_method: z.enum(['markdown', 'text'], 'Please select an method'),
+  chunk_size: z.int().positive(),
+  chunk_overlap: z.int().positive(),
   content: z.string(),
 });
 

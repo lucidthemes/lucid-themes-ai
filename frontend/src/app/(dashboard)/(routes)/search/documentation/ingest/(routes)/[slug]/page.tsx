@@ -8,6 +8,7 @@ import DashboardLayoutContainer from '../../../../../../components/container';
 import {
   DocumentationIngestJobPendingHeading,
   DocumentationIngestJobCompletedHeading,
+  DocumentationIngestJobTestingHeading,
 } from '../../components/job/heading';
 import DocumentationIngestJobLayout from '../../components/job/job-layout';
 
@@ -53,7 +54,7 @@ export default async function DashboardSearchDocumentationIngestJobPage({
       { id: '01df1db6-87f1-45f4-b34f-b6c5820addad', content: 'test content 2', vector: 'test vector 2' },
     ],
     embeddings_job: {
-      status: '',
+      // status: '',
       model: 'text-embedding-3-small',
       usage: {
         prompt_tokens: '',
@@ -80,6 +81,7 @@ export default async function DashboardSearchDocumentationIngestJobPage({
         {ingestJobData.status === 'pending' && <DocumentationIngestJobPendingHeading />}
         {ingestJobData.status === 'completed' && <DocumentationIngestJobCompletedHeading />}
         <DocumentationIngestJobLayout ingestJobStatus={ingestJobData.status} ingestJobData={ingestJobData} />
+        {ingestJobData.status === 'completed' && <DocumentationIngestJobTestingHeading />}
       </div>
     </DashboardLayoutContainer>
   );

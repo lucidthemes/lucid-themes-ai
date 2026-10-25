@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Field, FieldError } from '@/components/ui/field';
+import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 
 import type { DocumentationIngestJobParseUploadDocumentForm } from '../../../../../(routes)/new/schemas/parse-upload-form.schema';
 
@@ -26,17 +26,18 @@ export default function DocumentationIngestJobParseUploadDocumentFormFieldPages(
   const [pagesOption, setPagesOption] = useState('all');
 
   const pagesOptions = [
-    { label: 'All pages', value: 'all' },
-    { label: 'Page range', value: 'range' },
+    { label: 'All', value: 'all' },
+    { label: 'Range', value: 'range' },
   ];
 
   return (
-    <div className="flex gap-5">
+    <div className="flex items-end gap-5">
       <Controller
         name="pages"
         control={form.control}
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="pages">Pages</FieldLabel>
             <Select items={pagesOptions} name={field.name} value={field.value} onValueChange={field.onChange}>
               <SelectTrigger className="w-full cursor-pointer">
                 <SelectValue />

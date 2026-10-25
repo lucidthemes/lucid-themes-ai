@@ -1,4 +1,4 @@
-import { DatabasePlus, DatabaseCheck } from 'lucide-react';
+import { DatabasePlus, DatabaseCheck, FlaskConical } from 'lucide-react';
 
 import { Spinner } from '@/components/ui/spinner';
 
@@ -32,8 +32,21 @@ function DocumentationIngestJobCompletedHeading() {
   );
 }
 
+function DocumentationIngestJobTestingHeading() {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <FlaskConical />
+      <h1 className="font-heading text-base font-medium">Test ingest job</h1>
+      <span className="text-sm text-muted-foreground">
+        Use this ingest job embedding vectors in isolation to test responses
+      </span>
+    </div>
+  );
+}
+
 export {
   DocumentationIngestJobNewHeading,
   DocumentationIngestJobPendingHeading,
   DocumentationIngestJobCompletedHeading,
+  DocumentationIngestJobTestingHeading,
 };
