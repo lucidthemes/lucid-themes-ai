@@ -70,34 +70,36 @@ router = APIRouter(prefix="/search", tags=["search"])
 # ]
 
 
-@router.get("/documentation/ingest/jobs", response_model=list[DocumentationIngestJobsResponse])
+@router.get("/documentation/ingest/jobs", response_model=DocumentationIngestJobsResponse)
 async def read_search_documentation_ingest_jobs(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
-):
-    return [
-        {
-            "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
-            "name": "Test ingest job 1",
-            "source": {
-                "type": "document",
-                "file_name": "some-pdf-file-here.pdf",
+) -> DocumentationIngestJobsResponse:
+    return DocumentationIngestJobsResponse(
+        data=[
+            {
+                "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
+                "name": "Test ingest job 1",
+                "source": {
+                    "type": "document",
+                    "file_name": "some-pdf-file-here.pdf",
+                },
+                "status": "pending",
+                "created_at": "2026-09-06 11:52:33",
+                "updated_at": "2026-09-06 11:52:33",
             },
-            "status": "pending",
-            "created_at": "2026-09-06 11:52:33",
-            "updated_at": "2026-09-06 11:52:33",
-        },
-        {
-            "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
-            "name": "Test ingest job 2",
-            "source": {
-                "type": "webpage",
-                "webpage_url": "https://www.example.com",
+            {
+                "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
+                "name": "Test ingest job 2",
+                "source": {
+                    "type": "webpage",
+                    "webpage_url": "https://www.example.com",
+                },
+                "status": "completed",
+                "created_at": "2026-09-06 11:52:33",
+                "updated_at": "2026-09-06 11:52:33",
             },
-            "status": "completed",
-            "created_at": "2026-09-06 11:52:33",
-            "updated_at": "2026-09-06 11:52:33",
-        },
-    ]
+        ]
+    )
 
 
 @router.get("/documentation/ingest/job/{job_id}", response_model=DocumentationIngestJobResponse)

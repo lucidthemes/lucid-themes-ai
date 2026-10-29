@@ -5,6 +5,8 @@ from enum import StrEnum
 from fastapi import UploadFile
 from pydantic import BaseModel, HttpUrl
 
+from app.schemas.common import APIResponse
+
 # General
 
 
@@ -88,7 +90,7 @@ class DocumentationIngestJobNewEmbeddingsCreate(BaseModel):
     chunks: list[DocumentationIngestJobNewChunk]
 
 
-# Existing Ingest job
+# Single existing Ingest job
 
 
 class DocumentationIngestJobParseJobUsage(BaseModel):
@@ -133,13 +135,16 @@ class DocumentationIngestJobResponse(BaseModel):
     updated_at: datetime
 
 
-# Existing Ingest jobs
+# Existing Ingest jobs list
 
 
-class DocumentationIngestJobsResponse(BaseModel):
+class DocumentationIngestJobsResult(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
     status: DocumentationIngestJobStatus
     created_at: datetime
     updated_at: datetime
+
+
+DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobsResult]]
