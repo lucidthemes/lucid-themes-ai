@@ -5,10 +5,10 @@ import { z } from 'zod';
 
 import { backendAPIFetch } from '@/lib/backend-api';
 
-import { DocumentationIngestJobsResultSchema } from '../schemas/ingest-jobs-list.schema';
-import type { DocumentationIngestJobsResult } from '../schemas/ingest-jobs-list.schema';
+import { DocumentationIngestJobsSchema } from '../schemas/ingest-jobs.schema';
+import type { DocumentationIngestJobs } from '../schemas/ingest-jobs.schema';
 
-export default async function getDocumentationIngestJobs(): Promise<DocumentationIngestJobsResult[]> {
+export default async function getDocumentationIngestJobs(): Promise<DocumentationIngestJobs[]> {
   // const token = await getAuthAccessToken();
 
   // const url = `${serverApiUrl}/api/v1/search/documentation/ingest/jobs`;
@@ -43,7 +43,7 @@ export default async function getDocumentationIngestJobs(): Promise<Documentatio
   //   return [];
   // }
 
-  const { data, error } = await backendAPIFetch<null, DocumentationIngestJobsResult[]>({
+  const { data, error } = await backendAPIFetch<null, DocumentationIngestJobs[]>({
     url: '/api/v1/search/documentation/ingest/jobs',
   });
 
@@ -51,7 +51,7 @@ export default async function getDocumentationIngestJobs(): Promise<Documentatio
     return [];
   }
 
-  const parsed = z.array(DocumentationIngestJobsResultSchema).safeParse(data ?? []);
+  const parsed = z.array(DocumentationIngestJobsSchema).safeParse(data ?? []);
 
   if (!parsed.success) {
     return [];

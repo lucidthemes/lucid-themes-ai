@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { DocumentationIngestJobSchema } from './ingest-job.schema';
 
-export const DocumentationIngestJobsResultSchema = DocumentationIngestJobSchema.pick({
+export const DocumentationIngestJobsSchema = DocumentationIngestJobSchema.pick({
   id: true,
   name: true,
   source: true,
@@ -11,4 +11,4 @@ export const DocumentationIngestJobsResultSchema = DocumentationIngestJobSchema.
   updated_at: true,
 });
 
-export type DocumentationIngestJobsResult = z.infer<typeof DocumentationIngestJobsResultSchema>;
+export type DocumentationIngestJobs = z.infer<typeof DocumentationIngestJobsSchema>;

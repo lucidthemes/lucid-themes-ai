@@ -4,10 +4,10 @@ import { createColumnHelper } from '@tanstack/react-table';
 
 import type { DataTableFeatures } from '@/components/ui/data-table';
 
-import type { DocumentationIngestJobsResult } from '../../schemas/ingest-jobs-list.schema';
+import type { DocumentationIngestJobs } from '../../schemas/ingest-jobs.schema';
 import DocumentationIngestJobsListActionsButtons from './actions-buttons';
 
-const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestJobsResult>();
+const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestJobs>();
 
 export const DocumentationIngestJobsListcolumns = columnHelper.columns([
   columnHelper.accessor('id', {
