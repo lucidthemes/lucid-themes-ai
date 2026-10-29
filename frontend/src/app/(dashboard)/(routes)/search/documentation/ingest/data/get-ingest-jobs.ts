@@ -1,43 +1,61 @@
 import { z } from 'zod';
 
-import { serverApiUrl } from '@/lib/api-urls';
-import { getAuthAccessToken } from '@/lib/supabase/auth';
+// import { serverApiUrl } from '@/lib/api-urls';
+// import { getAuthAccessToken } from '@/lib/supabase/auth';
 
-import { DocumentationIngestJobsListSchema } from '../schemas/ingest-jobs-list.schema';
-import type { DocumentationIngestJobsList } from '../schemas/ingest-jobs-list.schema';
+import { backendAPIFetch } from '@/lib/backend-api';
 
-export default async function getDocumentationIngestJobs(): Promise<DocumentationIngestJobsList[]> {
-  const token = await getAuthAccessToken();
+import { DocumentationIngestJobsResultSchema } from '../schemas/ingest-jobs-list.schema';
+import type { DocumentationIngestJobsResult } from '../schemas/ingest-jobs-list.schema';
 
-  const url = `${serverApiUrl}/api/v1/search/documentation/ingest/jobs`;
+export default async function getDocumentationIngestJobs(): Promise<DocumentationIngestJobsResult[]> {
+  // const token = await getAuthAccessToken();
 
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  // const url = `${serverApiUrl}/api/v1/search/documentation/ingest/jobs`;
 
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
+  // try {
+  //   const response = await fetch(url, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
 
-    const result = await response.json();
+  //   if (!response.ok) {
+  //     throw new Error(`Response status: ${response.status}`);
+  //   }
 
-    console.log(result);
+  //   const result = await response.json();
 
-    const parsed = z.array(DocumentationIngestJobsListSchema).safeParse(result ?? []);
+  //   console.log(result);
 
-    if (!parsed.success) {
-      console.log(parsed.error.message);
-      return [];
-    }
+  //   const parsed = z.array(DocumentationIngestJobsListSchema).safeParse(result ?? []);
 
-    return parsed.data;
-    // console.log(result);
-  } catch (error) {
-    // console.error(error);
+  //   if (!parsed.success) {
+  //     console.log(parsed.error.message);
+  //     return [];
+  //   }
 
+  //   return parsed.data;
+  //   // console.log(result);
+  // } catch (error) {
+  //   // console.error(error);
+
+  //   return [];
+  // }
+
+  const { data, error } = await backendAPIFetch<null, DocumentationIngestJobsResult[]>({
+    url: '/api/v1/search/documentation/ingest/jobs',
+  });
+
+  if (!data || error) {
     return [];
   }
+
+  const parsed = z.array(DocumentationIngestJobsResultSchema).safeParse(data ?? []);
+
+  if (!parsed.success) {
+    return [];
+  }
+
+  return parsed.data;
 }

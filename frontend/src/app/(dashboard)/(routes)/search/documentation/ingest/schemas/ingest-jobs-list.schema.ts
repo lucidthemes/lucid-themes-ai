@@ -2,15 +2,7 @@ import { z } from 'zod';
 
 import { DocumentationIngestJobSchema } from './ingest-job.schema';
 
-// export const DocumentationIngestJobsListSchema = z.object({
-//   id: z.uuid(),
-//   name: z.string(),
-//   type: z.enum(['document', 'webpage']),
-//   status: z.enum(['completed', 'pending', 'failed']),
-//   created_at: z.string(),
-// });
-
-export const DocumentationIngestJobsListSchema = DocumentationIngestJobSchema.pick({
+export const DocumentationIngestJobsResultSchema = DocumentationIngestJobSchema.pick({
   id: true,
   name: true,
   source: true,
@@ -19,4 +11,4 @@ export const DocumentationIngestJobsListSchema = DocumentationIngestJobSchema.pi
   updated_at: true,
 });
 
-export type DocumentationIngestJobsList = z.infer<typeof DocumentationIngestJobsListSchema>;
+export type DocumentationIngestJobsResult = z.infer<typeof DocumentationIngestJobsResultSchema>;
