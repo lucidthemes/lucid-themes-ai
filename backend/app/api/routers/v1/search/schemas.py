@@ -123,7 +123,7 @@ class DocumentationIngestJobEmbeddingsJob(BaseModel):
     usage: DocumentationIngestJobEmbeddingsJobUsage
 
 
-class DocumentationIngestJobResponse(BaseModel):
+class DocumentationIngestJobData(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
@@ -133,6 +133,9 @@ class DocumentationIngestJobResponse(BaseModel):
     status: DocumentationIngestJobStatus
     created_at: datetime
     updated_at: datetime
+
+
+DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobData]
 
 
 # Existing Ingest jobs list

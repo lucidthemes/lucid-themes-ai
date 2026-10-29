@@ -107,48 +107,50 @@ async def read_search_documentation_ingest_job(
     job_id: uuid.UUID,
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
-):
-    return {
-        "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
-        "name": "Test ingest job 1",
-        "source": {
-            "type": "document",
-            "file_name": "some-pdf-file-here.pdf",
-        },
-        "parse_job": {
-            "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+) -> DocumentationIngestJobResponse:
+    return DocumentationIngestJobResponse(
+        data={
+            "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
+            "name": "Test ingest job 1",
+            "source": {
+                "type": "document",
+                "file_name": "some-pdf-file-here.pdf",
+            },
+            "parse_job": {
+                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "completed",
+                "markdown_full": "#text",
+                "text_full": "text",
+                "tier": "cost_effective",
+                "error_message": "",
+                "usage": {
+                    "credits": 30.0,
+                },
+            },
+            "chunks": [
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "content": "test content 1 python",
+                    "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "content": "test content 2",
+                    "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
+                },
+            ],
+            "embeddings_job": {
+                "model": "text-embedding-3-small",
+                "usage": {
+                    "prompt_tokens": 5,
+                    "total_tokens": 5,
+                },
+            },
             "status": "completed",
-            "markdown_full": "#text",
-            "text_full": "text",
-            "tier": "cost_effective",
-            "error_message": "",
-            "usage": {
-                "credits": 30.0,
-            },
-        },
-        "chunks": [
-            {
-                "id": "018204a2-9e58-4618-affe-e313be132aee",
-                "content": "test content 1 python",
-                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
-            },
-            {
-                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                "content": "test content 2",
-                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
-            },
-        ],
-        "embeddings_job": {
-            "model": "text-embedding-3-small",
-            "usage": {
-                "prompt_tokens": 5,
-                "total_tokens": 5,
-            },
-        },
-        "status": "completed",
-        "created_at": "2026-09-06 11:52:33",
-        "updated_at": "2026-09-06 11:52:33",
-    }
+            "created_at": "2026-09-06 11:52:33",
+            "updated_at": "2026-09-06 11:52:33",
+        }
+    )
 
 
 @router.post(
