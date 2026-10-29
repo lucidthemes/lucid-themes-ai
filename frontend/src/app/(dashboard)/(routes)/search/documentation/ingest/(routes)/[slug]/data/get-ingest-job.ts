@@ -49,11 +49,11 @@ export default async function getDocumentationIngestJob(jobId: string): Promise<
     return null;
   }
 
-  const parsed = DocumentationIngestJobSchema.safeParse(data);
+  const parsedResponse = DocumentationIngestJobSchema.safeParse(data);
 
-  if (!parsed.success) {
+  if (!parsedResponse.success) {
     return null;
   }
 
-  return parsed.data;
+  return parsedResponse.data;
 }

@@ -23,8 +23,6 @@ import {
 function useDocumentationIngestJobParseUploadDocumentForm() {
   const router = useRouter();
 
-  // const ingestJobName = useIngestJobNewStore((state) => state.ingestJobName);
-
   const { ingestJobName, setIngestJobNameError } = useIngestJobNewStore(
     useShallow((state) => ({
       ingestJobName: state.ingestJobName,
@@ -35,8 +33,7 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
   const form = useForm<DocumentationIngestJobParseUploadDocumentForm>({
     defaultValues: {
       pages: 'all',
-      // range_from: 1,
-      // range_to: 1,
+
       tier: 'cost_effective',
       accept: false,
     },
@@ -46,10 +43,7 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
   const createIngestJobParseUploadDocumentMutation = useMutation({
     mutationFn: createIngestJobParseUploadDocument,
     onSuccess: (result) => {
-      if (result.success) {
-        // console.log('good!');
-        // console.log(result.parseJobId);
-
+      if (result.success && result.parseJobId) {
         router.push(result.parseJobId);
       } else {
         toast.add({
@@ -73,9 +67,6 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
   });
 
   const onSubmit = async (data: DocumentationIngestJobParseUploadDocumentForm) => {
-    console.log(ingestJobName);
-    console.log(data);
-
     const name = ingestJobName;
 
     if (!name) {
@@ -84,14 +75,10 @@ function useDocumentationIngestJobParseUploadDocumentForm() {
       return;
     }
 
-    // const { accept, ...formDataToUse } = data;
-
     const formData = {
       name,
       ...data,
     };
-
-    console.log(formData);
 
     createIngestJobParseUploadDocumentMutation.mutate({ formData });
   };
@@ -125,10 +112,7 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
   const createIngestJobParseUploadWebpageMutation = useMutation({
     mutationFn: createIngestJobParseUploadWebpage,
     onSuccess: (result) => {
-      if (result.success) {
-        // console.log('good!');
-        // console.log(result.parseJobId);
-
+      if (result.success && result.parseJobId) {
         router.push(result.parseJobId);
       } else {
         toast.add({
@@ -138,16 +122,9 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
         });
       }
     },
-    // onError: (error) => {
-    //   const errorMessage = error.message;
-    //   console.log(errorMessage);
-    // },
   });
 
   const onSubmit = async (data: DocumentationIngestJobParseUploadWebpageForm) => {
-    console.log(ingestJobName);
-    console.log(data);
-
     const name = ingestJobName;
 
     if (!name) {
@@ -156,16 +133,10 @@ function useDocumentationIngestJobParseUploadWebpageForm() {
       return;
     }
 
-    // const { accept, ...formDataToUse } = data;
-
     const formData = {
       name,
       ...data,
     };
-
-    console.log(formData);
-
-    // console.log(JSON.stringify(formData));
 
     createIngestJobParseUploadWebpageMutation.mutate({ formData });
   };

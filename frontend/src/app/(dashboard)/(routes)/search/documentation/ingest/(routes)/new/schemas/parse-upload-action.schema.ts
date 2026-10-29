@@ -18,3 +18,11 @@ export const DocumentationIngestJobParseUploadWebpageActionSchema =
 export type DocumentationIngestJobParseUploadWebpageAction = z.infer<
   typeof DocumentationIngestJobParseUploadWebpageActionSchema
 >;
+
+export const DocumentationIngestJobParseUploadActionResponseSchema = z.object({
+  job_id: z.uuid(),
+});
+
+export type DocumentationIngestJobParseUploadActionResponse = z.infer<
+  typeof DocumentationIngestJobParseUploadActionResponseSchema
+>;

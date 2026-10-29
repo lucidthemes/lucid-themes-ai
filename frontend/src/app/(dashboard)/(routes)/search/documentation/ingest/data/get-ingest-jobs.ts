@@ -51,11 +51,11 @@ export default async function getDocumentationIngestJobs(): Promise<Documentatio
     return [];
   }
 
-  const parsed = z.array(DocumentationIngestJobsSchema).safeParse(data ?? []);
+  const parsedResponse = z.array(DocumentationIngestJobsSchema).safeParse(data ?? []);
 
-  if (!parsed.success) {
+  if (!parsedResponse.success) {
     return [];
   }
 
-  return parsed.data;
+  return parsedResponse.data;
 }
