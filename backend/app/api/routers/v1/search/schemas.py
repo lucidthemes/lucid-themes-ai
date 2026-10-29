@@ -59,8 +59,11 @@ class DocumentationIngestJobNewWebpageCreate(DocumentationIngestJobNewBase):
     url: HttpUrl
 
 
-class DocumentationIngestJobNewResponse(BaseModel):
+class DocumentationIngestJobNewResponseData(BaseModel):
     job_id: uuid.UUID
+
+
+DocumentationIngestJobNewResponse = APIResponse[DocumentationIngestJobNewResponseData]
 
 
 # New ingest job - chunks + embeddings
@@ -82,12 +85,9 @@ class DocumentationIngestJobNewChunk(BaseModel):
     content: str
 
 
-class DocumentationIngestJobNewChunksResponse(BaseModel):
-    chunks: list[DocumentationIngestJobNewChunk]
+DocumentationIngestJobNewChunksResponse = APIResponse[list[DocumentationIngestJobNewChunk]]
 
-
-class DocumentationIngestJobNewEmbeddingsCreate(BaseModel):
-    chunks: list[DocumentationIngestJobNewChunk]
+DocumentationIngestJobNewEmbeddingsCreate = list[DocumentationIngestJobNewChunk]
 
 
 # Single existing Ingest job
@@ -123,7 +123,7 @@ class DocumentationIngestJobEmbeddingsJob(BaseModel):
     usage: DocumentationIngestJobEmbeddingsJobUsage
 
 
-class DocumentationIngestJobData(BaseModel):
+class DocumentationIngestJobResponseData(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
@@ -135,13 +135,13 @@ class DocumentationIngestJobData(BaseModel):
     updated_at: datetime
 
 
-DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobData]
+DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
 
 
 # Existing Ingest jobs list
 
 
-class DocumentationIngestJobsResult(BaseModel):
+class DocumentationIngestJobsResponseData(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
@@ -150,4 +150,4 @@ class DocumentationIngestJobsResult(BaseModel):
     updated_at: datetime
 
 
-DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobsResult]]
+DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobsResponseData]]

@@ -1,7 +1,7 @@
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Form
+from fastapi import APIRouter, Depends, Form, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.dependencies import get_current_user
@@ -146,7 +146,7 @@ async def read_search_documentation_ingest_job(
                     "total_tokens": 5,
                 },
             },
-            "status": "completed",
+            "status": "pending",
             "created_at": "2026-09-06 11:52:33",
             "updated_at": "2026-09-06 11:52:33",
         }
@@ -160,8 +160,10 @@ async def create_search_documentation_ingest_job_document(
     data: Annotated[DocumentationIngestJobNewDocumentCreate, Form()],
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
-):
-    return {"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
+) -> DocumentationIngestJobNewResponse:
+    return DocumentationIngestJobNewResponse(
+        data={"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
+    )
 
 
 @router.post(
@@ -171,8 +173,10 @@ async def create_search_documentation_ingest_job_webpage(
     data: DocumentationIngestJobNewWebpageCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
-):
-    return {"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
+) -> DocumentationIngestJobNewResponse:
+    return DocumentationIngestJobNewResponse(
+        data={"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
+    )
 
 
 @router.post(
@@ -181,9 +185,9 @@ async def create_search_documentation_ingest_job_webpage(
 async def create_search_documentation_ingest_job_chunks(
     data: DocumentationIngestJobNewChunksCreate,
     current_user: Annotated[str, Depends(get_current_user)],
-):
-    return {
-        "chunks": [
+) -> DocumentationIngestJobNewChunksResponse:
+    return DocumentationIngestJobNewChunksResponse(
+        data=[
             {
                 "content": "test content 1 python",
             },
@@ -191,7 +195,7 @@ async def create_search_documentation_ingest_job_chunks(
                 "content": "test content 2",
             },
         ],
-    }
+    )
 
 
 @router.post("/documentation/ingest/job/new/embeddings")
@@ -199,5 +203,5 @@ async def create_search_documentation_ingest_job_embeddings(
     data: DocumentationIngestJobNewEmbeddingsCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
-):
-    return {"success": True}
+) -> Response:
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
