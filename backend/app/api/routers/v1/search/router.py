@@ -5,7 +5,9 @@ from fastapi import APIRouter, Depends, Form, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.dependencies import get_current_user
-from app.api.routers.v1.search.schemas import (
+from app.db.dependencies import get_read_db, get_write_db
+
+from .schemas import (
     DocumentationIngestJobNewChunksCreate,
     DocumentationIngestJobNewChunksResponse,
     DocumentationIngestJobNewDocumentCreate,
@@ -15,7 +17,10 @@ from app.api.routers.v1.search.schemas import (
     DocumentationIngestJobResponse,
     DocumentationIngestJobsResponse,
 )
-from app.db.dependencies import get_read_db, get_write_db
+from .service import (
+    documentation_ingest_job_chunk_split_markdown,
+    documentation_ingest_job_chunk_split_text,
+)
 
 router = APIRouter(prefix="/search", tags=["search"])
 
@@ -131,11 +136,23 @@ async def read_search_documentation_ingest_job(
                 {
                     "id": "018204a2-9e58-4618-affe-e313be132aee",
                     "content": "test content 1 python",
+                    "metadata": {
+                        "source_type": "document",
+                        "file_name": "some-pdf-file-here.pdf",
+                        "Header 1": "Intro",
+                        "Header 2": "History",
+                    },
                     "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
                 },
                 {
                     "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
                     "content": "test content 2",
+                    "metadata": {
+                        "source_type": "document",
+                        "file_name": "some-pdf-file-here.pdf",
+                        "Header 1": "Intro",
+                        "Header 2": "History",
+                    },
                     "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
                 },
             ],
@@ -184,18 +201,26 @@ async def create_search_documentation_ingest_job_webpage(
 )
 async def create_search_documentation_ingest_job_chunks(
     data: DocumentationIngestJobNewChunksCreate,
-    current_user: Annotated[str, Depends(get_current_user)],
+    _: Annotated[str, Depends(get_current_user)],
 ) -> DocumentationIngestJobNewChunksResponse:
-    return DocumentationIngestJobNewChunksResponse(
-        data=[
-            {
-                "content": "test content 1 python",
-            },
-            {
-                "content": "test content 2",
-            },
-        ],
-    )
+    chunks = []
+
+    if data.split_method == "markdown":
+        chunks = await documentation_ingest_job_chunk_split_markdown(
+            chunk_size=data.chunk_size,
+            chunk_overlap=data.chunk_overlap,
+            content=data.content,
+            source=data.source,
+        )
+    elif data.split_method == "text":
+        chunks = await documentation_ingest_job_chunk_split_text(
+            chunk_size=data.chunk_size,
+            chunk_overlap=data.chunk_overlap,
+            content=data.content,
+            source=data.source,
+        )
+
+    return DocumentationIngestJobNewChunksResponse(data=chunks)
 
 
 @router.post("/documentation/ingest/job/new/embeddings")

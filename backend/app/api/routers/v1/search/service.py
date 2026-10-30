@@ -1,5 +1,7 @@
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
+from .schemas import DocumentationIngestJobNewChunk, DocumentationIngestJobSource
+
 example_markdown = """# Markdown syntax guide
 ## Headers
 
@@ -89,38 +91,75 @@ Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
 Mauris nec nunc dignissim, vulputate ex vel, pellentesque risus. Aliquam erat volutpat. Vestibulum at aliquet nulla. Curabitur varius lorem et consectetur aliquam. Nulla luctus ultrices molestie. Praesent pharetra ipsum quis ante viverra, sed bibendum libero luctus. Suspendisse non nunc ut nulla tincidunt congue quis vel libero. Duis auctor, nunc id malesuada iaculis, purus neque vehicula eros, eleifend sagittis nibh mauris ornare mauris. In tincidunt nulla purus, id lobortis mauris sagittis at."""
 
 
-# def documentation_ingest_job_chunk_split_markdown():
-#     markdown_splitter = MarkdownHeaderTextSplitter(
-#         headers_to_split_on=[("#", "Header 1"), ("##", "Header 2")],
-#     )
-#     return markdown_splitter.split_text(example_text)
+async def documentation_ingest_job_chunk_source_metadata(source: DocumentationIngestJobSource):
+    source_metadata = {}
+    source_metadata["source_type"] = source.type
+
+    if source.type == "document":
+        source_metadata["file_name"] = source.file_name
+        source_metadata["file_url"] = source.file_url
+    elif source.type == "webpage":
+        source_metadata["webpage_url"] = source.webpage_url
+
+    return source_metadata
 
 
-# def documentation_ingest_job_chunk_split_text():
-#     text_splitter = RecursiveCharacterTextSplitter(
-#         chunk_size=1000,
-#         chunk_overlap=200,
-#     )
-#     return text_splitter.split_text(example_text)
+async def documentation_ingest_job_chunk_split_markdown(
+    chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
+) -> list[DocumentationIngestJobNewChunk]:
+    headers_to_split_on = [
+        ("#", "Header 1"),
+        ("##", "Header 2"),
+        ("###", "Header 3"),
+    ]
+
+    markdown_splitter = MarkdownHeaderTextSplitter(
+        headers_to_split_on=headers_to_split_on,
+        strip_headers=False,
+    )
+
+    sections = markdown_splitter.split_text(example_markdown)
+
+    recursive_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        add_start_index=False,
+    )
+
+    split_documents = recursive_splitter.split_documents(sections)
+
+    source_metadata = await documentation_ingest_job_chunk_source_metadata(source=source)
+
+    structured_chunks = []
+
+    for document in split_documents:
+        document_metadata = source_metadata
+        document_metadata.update(document.metadata)
+        document_item = {"content": document.page_content, "metadata": document_metadata}
+        structured_chunks.append(document_item)
+
+    return structured_chunks
 
 
-headers_to_split_on = [
-    ("#", "Header 1"),
-    ("##", "Header 2"),
-    ("###", "Header 3"),
-]
+async def documentation_ingest_job_chunk_split_text(
+    chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
+) -> list[DocumentationIngestJobNewChunk]:
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        length_function=len,
+        is_separator_regex=False,
+    )
 
-markdown_splitter = MarkdownHeaderTextSplitter(
-    headers_to_split_on=headers_to_split_on,
-    strip_headers=True,
-)
+    split_documents = text_splitter.split_text(example_text)
 
-sections = markdown_splitter.split_text(example_markdown)
+    source_metadata = await documentation_ingest_job_chunk_source_metadata(source=source)
 
-recursive_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000,
-    chunk_overlap=150,
-    add_start_index=True,
-)
+    structured_chunks = []
 
-print(recursive_splitter.split_documents(sections))
+    for document in split_documents:
+        document_metadata = source_metadata
+        document_item = {"content": document, "metadata": document_metadata}
+        structured_chunks.append(document_item)
+
+    return structured_chunks

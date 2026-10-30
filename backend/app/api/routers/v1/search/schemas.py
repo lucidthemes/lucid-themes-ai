@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from enum import StrEnum
+from typing import Any
 
 from fastapi import UploadFile
 from pydantic import BaseModel, HttpUrl
@@ -79,10 +80,12 @@ class DocumentationIngestJobNewChunksCreate(BaseModel):
     chunk_size: int = 250
     chunk_overlap: int = 30
     content: str
+    source: DocumentationIngestJobSource
 
 
 class DocumentationIngestJobNewChunk(BaseModel):
     content: str
+    metadata: dict[Any, Any]
 
 
 DocumentationIngestJobNewChunksResponse = APIResponse[list[DocumentationIngestJobNewChunk]]
@@ -110,6 +113,7 @@ class DocumentationIngestJobParseJob(BaseModel):
 class DocumentationIngestJobChunk(BaseModel):
     id: uuid.UUID
     content: str
+    metadata: dict[Any, Any]
     embedding: str | None = None
 
 
