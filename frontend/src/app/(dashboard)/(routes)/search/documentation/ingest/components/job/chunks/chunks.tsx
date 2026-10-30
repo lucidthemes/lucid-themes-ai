@@ -28,6 +28,8 @@ export default function DocumentationIngestJobChunks({
 
   if (ingestJobStatus === 'new') return;
 
+  console.log(ingestJobParseChunks);
+
   const chunks =
     ingestJobStatus === 'completed' && ingestJobData
       ? ingestJobData.chunks

@@ -6,11 +6,13 @@ import DocumentationIngestJobChunksItem from './item';
 export default function DocumentationIngestJobChunksItems({
   ingestJobStatus,
   chunks,
-  showVectors,
+  showMetadata,
+  showEmbeddings,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
   chunks: DocumentationIngestJobChunk[] | DocumentationIngestJobParseChunk[];
-  showVectors: boolean;
+  showMetadata: boolean;
+  showEmbeddings: boolean;
 }) {
   return (
     <div className="flex flex-col gap-5">
@@ -19,7 +21,8 @@ export default function DocumentationIngestJobChunksItems({
           key={chunk.id}
           ingestJobStatus={ingestJobStatus}
           chunk={chunk}
-          showVectors={showVectors}
+          showMetadata={showMetadata}
+          showEmbeddings={showEmbeddings}
         />
       ))}
     </div>

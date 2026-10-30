@@ -56,6 +56,7 @@ export default async function createIngestJobParseChunks({
       return {
         id: index + 1,
         content: chunk.content,
+        metadata: chunk.metadata,
       };
     },
   );

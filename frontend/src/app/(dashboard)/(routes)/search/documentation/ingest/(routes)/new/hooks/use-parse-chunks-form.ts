@@ -25,12 +25,15 @@ export default function useDocumentationIngestJobParseChunksForm({
         ? ingestJobData.parse_job.text_full
         : '';
 
+  const chunksSource = ingestJobData && ingestJobData.source;
+
   const form = useForm<DocumentationIngestJobParseChunksForm>({
     defaultValues: {
       split_method: 'markdown',
       chunk_size: 250,
       chunk_overlap: 30,
       content: chunksContent,
+      source: chunksSource,
     },
     resolver: zodResolver(DocumentationIngestJobParseChunksFormSchema),
   });
@@ -39,8 +42,6 @@ export default function useDocumentationIngestJobParseChunksForm({
     mutationFn: createIngestJobParseChunks,
     onSuccess: (result) => {
       if (result.success) {
-        console.log('good!');
-        console.log(result.chunks);
         if (result.chunks) setIngestJobParseChunks(result.chunks);
       } else {
         toast.add({
@@ -53,8 +54,6 @@ export default function useDocumentationIngestJobParseChunksForm({
   });
 
   const onSubmit = async (data: DocumentationIngestJobParseChunksForm) => {
-    console.log(data);
-
     createIngestJobParseChunksMutation.mutate({ formData: data });
   };
 

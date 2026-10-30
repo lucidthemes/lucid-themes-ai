@@ -1,8 +1,16 @@
 import { z } from 'zod';
 
+export const DocumentationIngestJobSourceSchema = z.object({
+  type: z.enum(['document', 'webpage']),
+  file_name: z.string().nullable(),
+  file_url: z.string().nullable(),
+  webpage_url: z.string().nullable(),
+});
+
 export const DocumentationIngestJobChunkSchema = z.object({
   id: z.uuid(),
   content: z.string(),
+  metadata: z.object().loose(),
   embedding: z.string().optional(),
 });
 
@@ -10,12 +18,7 @@ export const DocumentationIngestJobSchema = z.object({
   id: z.uuid(),
   //user_id: z.uuid(),
   name: z.string(),
-  source: z.object({
-    type: z.enum(['document', 'webpage']),
-    file_name: z.string().nullable(),
-    file_url: z.string().nullable(),
-    webpage_url: z.string().nullable(),
-  }),
+  source: DocumentationIngestJobSourceSchema,
   parse_job: z.object({
     id: z.string(),
     status: z.enum(['pending', 'completed', 'failed']),
