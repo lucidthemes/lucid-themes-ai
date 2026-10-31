@@ -36,6 +36,70 @@ class DocumentationIngestJobSource(BaseModel):
     webpage_url: str | None = None
 
 
+# Ingest jobs list
+
+
+class DocumentationIngestJobsResponseData(BaseModel):
+    id: uuid.UUID
+    name: str
+    source: DocumentationIngestJobSource
+    status: DocumentationIngestJobStatus
+    created_at: datetime
+    updated_at: datetime
+
+
+DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobsResponseData]]
+
+
+# Single Ingest job
+
+
+class DocumentationIngestJobParseJobUsage(BaseModel):
+    credits: int | None = None
+
+
+class DocumentationIngestJobParseJob(BaseModel):
+    id: str
+    status: DocumentationIngestJobStatus
+    markdown_full: str | None = None
+    text_full: str | None = None
+    tier: DocumentationIngestJobTier | None = None
+    error_message: str | None = None
+    usage: DocumentationIngestJobParseJobUsage | None = None
+
+
+class DocumentationIngestJobChunk(BaseModel):
+    id: uuid.UUID
+    content: str
+    metadata: dict[Any, Any]
+    embedding: str | None = None
+
+
+class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):
+    prompt_tokens: int
+    total_tokens: int
+
+
+class DocumentationIngestJobEmbeddingsJob(BaseModel):
+    model: str
+    usage: DocumentationIngestJobEmbeddingsJobUsage
+
+
+class DocumentationIngestJobResponseData(BaseModel):
+    id: uuid.UUID
+    name: str
+    source: DocumentationIngestJobSource
+    parse_job: DocumentationIngestJobParseJob
+    chunks: list[DocumentationIngestJobChunk]
+    embeddings_job: DocumentationIngestJobEmbeddingsJob
+    status: DocumentationIngestJobStatus
+    created_at: datetime
+    updated_at: datetime
+
+
+DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
+
+
 # New ingest job - parse
 
 
@@ -91,67 +155,3 @@ class DocumentationIngestJobNewChunk(BaseModel):
 DocumentationIngestJobNewChunksResponse = APIResponse[list[DocumentationIngestJobNewChunk]]
 
 DocumentationIngestJobNewEmbeddingsCreate = list[DocumentationIngestJobNewChunk]
-
-
-# Single existing Ingest job
-
-
-class DocumentationIngestJobParseJobUsage(BaseModel):
-    credits: int | None = None
-
-
-class DocumentationIngestJobParseJob(BaseModel):
-    id: str
-    status: DocumentationIngestJobStatus
-    markdown_full: str | None = None
-    text_full: str | None = None
-    tier: DocumentationIngestJobTier | None = None
-    error_message: str | None = None
-    usage: DocumentationIngestJobParseJobUsage | None = None
-
-
-class DocumentationIngestJobChunk(BaseModel):
-    id: uuid.UUID
-    content: str
-    metadata: dict[Any, Any]
-    embedding: str | None = None
-
-
-class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):
-    prompt_tokens: int
-    total_tokens: int
-
-
-class DocumentationIngestJobEmbeddingsJob(BaseModel):
-    model: str
-    usage: DocumentationIngestJobEmbeddingsJobUsage
-
-
-class DocumentationIngestJobResponseData(BaseModel):
-    id: uuid.UUID
-    name: str
-    source: DocumentationIngestJobSource
-    parse_job: DocumentationIngestJobParseJob
-    chunks: list[DocumentationIngestJobChunk]
-    embeddings_job: DocumentationIngestJobEmbeddingsJob
-    status: DocumentationIngestJobStatus
-    created_at: datetime
-    updated_at: datetime
-
-
-DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
-
-
-# Existing Ingest jobs list
-
-
-class DocumentationIngestJobsResponseData(BaseModel):
-    id: uuid.UUID
-    name: str
-    source: DocumentationIngestJobSource
-    status: DocumentationIngestJobStatus
-    created_at: datetime
-    updated_at: datetime
-
-
-DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobsResponseData]]

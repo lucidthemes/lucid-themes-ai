@@ -107,6 +107,15 @@ async def read_search_documentation_ingest_jobs(
     )
 
 
+@router.post("/documentation/ingest/jobs/duplicate/{job_id}")
+async def create_search_documentation_ingest_job_duplicate(
+    job_id: uuid.UUID,
+    current_user: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_write_db),
+) -> Response:
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
 @router.get("/documentation/ingest/job/{job_id}", response_model=DocumentationIngestJobResponse)
 async def read_search_documentation_ingest_job(
     job_id: uuid.UUID,
