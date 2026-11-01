@@ -76,7 +76,7 @@ router = APIRouter(prefix="/search", tags=["search"])
 
 
 @router.get("/documentation/ingest/jobs", response_model=DocumentationIngestJobsResponse)
-async def read_search_documentation_ingest_jobs(
+async def read_documentation_ingest_jobs(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
 ) -> DocumentationIngestJobsResponse:
     return DocumentationIngestJobsResponse(
@@ -108,7 +108,7 @@ async def read_search_documentation_ingest_jobs(
 
 
 @router.post("/documentation/ingest/jobs/duplicate/{job_id}")
-async def create_search_documentation_ingest_job_duplicate(
+async def create_documentation_ingest_job_duplicate(
     job_id: uuid.UUID,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
@@ -117,7 +117,7 @@ async def create_search_documentation_ingest_job_duplicate(
 
 
 @router.get("/documentation/ingest/job/{job_id}", response_model=DocumentationIngestJobResponse)
-async def read_search_documentation_ingest_job(
+async def read_documentation_ingest_job(
     job_id: uuid.UUID,
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
@@ -182,7 +182,7 @@ async def read_search_documentation_ingest_job(
 @router.post(
     "/documentation/ingest/job/new/document", response_model=DocumentationIngestJobNewResponse
 )
-async def create_search_documentation_ingest_job_document(
+async def create_documentation_ingest_job_document(
     data: Annotated[DocumentationIngestJobNewDocumentCreate, Form()],
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
@@ -195,7 +195,7 @@ async def create_search_documentation_ingest_job_document(
 @router.post(
     "/documentation/ingest/job/new/webpage", response_model=DocumentationIngestJobNewResponse
 )
-async def create_search_documentation_ingest_job_webpage(
+async def create_documentation_ingest_job_webpage(
     data: DocumentationIngestJobNewWebpageCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
@@ -208,7 +208,7 @@ async def create_search_documentation_ingest_job_webpage(
 @router.post(
     "/documentation/ingest/job/new/chunks", response_model=DocumentationIngestJobNewChunksResponse
 )
-async def create_search_documentation_ingest_job_chunks(
+async def create_documentation_ingest_job_chunks(
     data: DocumentationIngestJobNewChunksCreate,
     _: Annotated[str, Depends(get_current_user)],
 ) -> DocumentationIngestJobNewChunksResponse:
@@ -233,7 +233,7 @@ async def create_search_documentation_ingest_job_chunks(
 
 
 @router.post("/documentation/ingest/job/new/embeddings")
-async def create_search_documentation_ingest_job_embeddings(
+async def create_documentation_ingest_job_embeddings(
     data: DocumentationIngestJobNewEmbeddingsCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
