@@ -37,32 +37,36 @@ export default function DocumentationIngestJobsListActionsButtons({ item }: { it
               View
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer"
-            disabled={isPending}
-            onClick={() => {
-              startTransition(async () => {
-                const result = await duplicateIngestJob(item.id);
+          {item.status === 'completed' && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer"
+                disabled={isPending}
+                onClick={() => {
+                  startTransition(async () => {
+                    const result = await duplicateIngestJob(item.id);
 
-                if (result.success) {
-                  toast.add({
-                    type: 'success',
-                    description: 'Successfully duplicated',
+                    if (result.success) {
+                      toast.add({
+                        type: 'success',
+                        description: 'Successfully duplicated',
+                      });
+                    } else {
+                      toast.add({
+                        type: 'error',
+                        description: 'Error duplicating ingest job. Please try again.',
+                        priority: 'high',
+                      });
+                    }
                   });
-                } else {
-                  toast.add({
-                    type: 'error',
-                    description: 'Error duplicating ingest job. Please try again.',
-                    priority: 'high',
-                  });
-                }
-              });
-            }}
-          >
-            <Copy />
-            Duplicate parse
-          </DropdownMenuItem>
+                }}
+              >
+                <Copy />
+                Duplicate parse
+              </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive" className="cursor-pointer">
             <Trash />
