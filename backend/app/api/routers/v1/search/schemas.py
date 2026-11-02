@@ -66,19 +66,13 @@ class DocumentationIngestJobParseJobUsage(BaseModel):
 
 class DocumentationIngestJobParseJob(BaseModel):
     id: str
+    parse_job_id: str
     status: DocumentationIngestJobStatus
     markdown_full: str | None = None
     text_full: str | None = None
     tier: DocumentationIngestJobTier | None = None
     error_message: str | None = None
     usage: DocumentationIngestJobParseJobUsage | None = None
-
-
-class DocumentationIngestJobChunk(BaseModel):
-    id: uuid.UUID
-    content: str
-    metadata: dict[Any, Any]
-    embedding: str | None = None
 
 
 class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):
@@ -91,13 +85,21 @@ class DocumentationIngestJobEmbeddingsJob(BaseModel):
     usage: DocumentationIngestJobEmbeddingsJobUsage
 
 
+class DocumentationIngestJobChunk(BaseModel):
+    id: uuid.UUID
+    content: str
+    metadata: dict[Any, Any]
+    embedding: str
+    # embedding: str | None = None
+
+
 class DocumentationIngestJobResponseData(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
     parse_job: DocumentationIngestJobParseJob
-    chunks: list[DocumentationIngestJobChunk]
-    embeddings_job: DocumentationIngestJobEmbeddingsJob
+    embeddings_job: DocumentationIngestJobEmbeddingsJob | None = None
+    chunks: list[DocumentationIngestJobChunk] | None = None
     status: DocumentationIngestJobStatus
     created_at: datetime
     updated_at: datetime
@@ -154,6 +156,7 @@ class DocumentationIngestJobNewChunksCreate(BaseModel):
 
 
 class DocumentationIngestJobNewChunk(BaseModel):
+    id: uuid.UUID
     content: str
     metadata: dict[Any, Any]
 

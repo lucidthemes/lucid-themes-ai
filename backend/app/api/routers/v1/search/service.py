@@ -1,3 +1,5 @@
+import uuid
+
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
 from .schemas import DocumentationIngestJobNewChunk, DocumentationIngestJobSource
@@ -135,7 +137,11 @@ async def documentation_ingest_job_chunk_split_markdown(
     for document in split_documents:
         document_metadata = source_metadata
         document_metadata.update(document.metadata)
-        document_item = {"content": document.page_content, "metadata": document_metadata}
+        document_item = {
+            "id": uuid.uuid4(),
+            "content": document.page_content,
+            "metadata": document_metadata,
+        }
         structured_chunks.append(document_item)
 
     return structured_chunks
@@ -159,7 +165,7 @@ async def documentation_ingest_job_chunk_split_text(
 
     for document in split_documents:
         document_metadata = source_metadata
-        document_item = {"content": document, "metadata": document_metadata}
+        document_item = {"id": uuid.uuid4(), "content": document, "metadata": document_metadata}
         structured_chunks.append(document_item)
 
     return structured_chunks
