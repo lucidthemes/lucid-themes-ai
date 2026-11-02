@@ -11,7 +11,8 @@ export const DocumentationIngestJobChunkSchema = z.object({
   id: z.uuid(),
   content: z.string(),
   metadata: z.object().loose(),
-  embedding: z.string().optional(),
+  // embedding: z.string().optional(),
+  embedding: z.string(),
 });
 
 export const DocumentationIngestJobSchema = z.object({
@@ -20,7 +21,8 @@ export const DocumentationIngestJobSchema = z.object({
   name: z.string(),
   source: DocumentationIngestJobSourceSchema,
   parse_job: z.object({
-    id: z.string(),
+    id: z.uuid(),
+    parse_job_id: z.string(),
     status: z.enum(['pending', 'completed', 'failed']),
     markdown_full: z.string().nullable(),
     text_full: z.string().nullable(),
@@ -32,14 +34,16 @@ export const DocumentationIngestJobSchema = z.object({
       })
       .nullable(),
   }),
-  chunks: z.array(DocumentationIngestJobChunkSchema).optional(),
-  embeddings_job: z.object({
-    model: z.string(),
-    usage: z.object({
-      prompt_tokens: z.int().positive(),
-      total_tokens: z.int().positive(),
-    }),
-  }),
+  embeddings_job: z
+    .object({
+      model: z.string(),
+      usage: z.object({
+        prompt_tokens: z.int().positive(),
+        total_tokens: z.int().positive(),
+      }),
+    })
+    .nullable(),
+  chunks: z.array(DocumentationIngestJobChunkSchema).optional().nullable(),
   status: z.enum(['pending', 'completed', 'failed']),
   created_at: z.string(),
   updated_at: z.string(),

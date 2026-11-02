@@ -15,7 +15,7 @@ export default function DocumentationIngestJobChunksEmbeddingsButton({
 }: {
   startTransition: TransitionStartFunction;
 }) {
-  const ingestJobParseChunks = useIngestJobNewStore((state) => state.ingestJobParseChunks);
+  const ingestJobChunksCreated = useIngestJobNewStore((state) => state.ingestJobChunksCreated);
 
   const pathname = usePathname();
 
@@ -24,10 +24,10 @@ export default function DocumentationIngestJobChunksEmbeddingsButton({
       className="cursor-pointer"
       onClick={() => {
         startTransition(async () => {
-          if (!ingestJobParseChunks || ingestJobParseChunks.length === 0) return;
+          if (!ingestJobChunksCreated || ingestJobChunksCreated.length === 0) return;
 
           const createEmbeddings = await createIngestJobChunksEmbeddings({
-            chunks: ingestJobParseChunks,
+            chunks: ingestJobChunksCreated,
             ingestJobPathname: pathname,
           });
 

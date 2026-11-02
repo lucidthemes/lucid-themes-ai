@@ -1,17 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import type { TransitionStartFunction } from 'react';
+// import type { TransitionStartFunction } from 'react';
 
 import { CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 
 import type { DocumentationIngestJobStatus, DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
-import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
+// import type { DocumentationIngestJobChunksCreateFormChunk } from '../../../(routes)/new/schemas/chunks-create-form.schema';
 
 import DocumentationIngestJobChunksItems from './items';
-import DocumentationIngestJobChunksFooter from './footer';
+// import DocumentationIngestJobChunksFooter from './footer';
 import DocumentationIngestJobChunksEmbeddingsLoading from './loading';
 import DocumentationIngestJobChunksEmpty from './empty';
 
@@ -19,14 +19,15 @@ export default function DocumentationIngestJobChunksContent({
   ingestJobStatus,
   expanded,
   isPending,
-  startTransition,
+  // startTransition,
   chunks,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
   expanded: boolean;
   isPending: boolean;
-  startTransition: TransitionStartFunction;
-  chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobParseChunk[] | null;
+  // startTransition: TransitionStartFunction;
+  // chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[] | null;
+  chunks?: DocumentationIngestJobChunk[] | null;
 }) {
   const [showMetadata, setShowMetadata] = useState(true);
   const [showEmbeddings, setShowEmbeddings] = useState(true);
@@ -69,9 +70,9 @@ export default function DocumentationIngestJobChunksContent({
           />
         </CardContent>
       )}
-      {ingestJobStatus !== 'completed' && expanded && !isPending && (
+      {/* {ingestJobStatus !== 'completed' && expanded && !isPending && (
         <DocumentationIngestJobChunksFooter startTransition={startTransition} />
-      )}
+      )} */}
     </>
   );
 }

@@ -7,12 +7,10 @@ import { useShallow } from 'zustand/shallow';
 import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@/components/ui/item';
 import { Textarea } from '@/components/ui/textarea';
-import { Field, FieldGroup, FieldSet } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
 
 import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 import type { DocumentationIngestJobStatus, DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
-import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
+// import type { DocumentationIngestJobChunksCreateFormChunk } from '../../../(routes)/new/schemas/chunks-create-form.schema';
 
 export default function DocumentationIngestJobChunksItem({
   ingestJobStatus,
@@ -21,16 +19,17 @@ export default function DocumentationIngestJobChunksItem({
   showEmbeddings,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  chunk: DocumentationIngestJobChunk | DocumentationIngestJobParseChunk;
+  // chunk: DocumentationIngestJobChunk | DocumentationIngestJobChunksCreateFormChunk;
+  chunk: DocumentationIngestJobChunk;
   showMetadata: boolean;
   showEmbeddings: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
-  const { removeIngestJobParseChunk, updateIngestJobParseChunk } = useIngestJobNewStore(
+  const { removeIngestJobChunkCreated, updateIngestJobChunkCreated } = useIngestJobNewStore(
     useShallow((state) => ({
-      removeIngestJobParseChunk: state.removeIngestJobParseChunk,
-      updateIngestJobParseChunk: state.updateIngestJobParseChunk,
+      removeIngestJobChunkCreated: state.removeIngestJobChunkCreated,
+      updateIngestJobChunkCreated: state.updateIngestJobChunkCreated,
     })),
   );
 
@@ -52,8 +51,8 @@ export default function DocumentationIngestJobChunksItem({
                       id={`chunk-${chunk.id}-content`}
                       defaultValue={chunk.content}
                       onBlur={(e) =>
-                        updateIngestJobParseChunk({
-                          chunkId: chunk.id as number,
+                        updateIngestJobChunkCreated({
+                          chunkId: chunk.id,
                           field: 'content',
                           value: e.target.value,
                         })
@@ -69,8 +68,8 @@ export default function DocumentationIngestJobChunksItem({
                         id={`chunk-${chunk.id}-metadata`}
                         defaultValue={JSON.stringify(chunk.metadata, null, 1)}
                         onBlur={(e) =>
-                          updateIngestJobParseChunk({
-                            chunkId: chunk.id as number,
+                          updateIngestJobChunkCreated({
+                            chunkId: chunk.id,
                             field: 'metadata',
                             value: e.target.value,
                           })
@@ -78,20 +77,6 @@ export default function DocumentationIngestJobChunksItem({
                         className="opacity-100!"
                         disabled={ingestJobStatus === 'completed' ? true : false}
                       />
-                      {/* <FieldSet className="w-full">
-                        <FieldGroup className="gap-2.5">
-                          {Object.entries(chunk.metadata).map((data) => (
-                            <div key={data[0]} className="grid grid-cols-2 gap-5">
-                              <Field>
-                                <Input id={data[0]} type="text" value={data[0]} />
-                              </Field>
-                              <Field>
-                                <Input id={data[1] as string} type="text" value={data[1] as string} />
-                              </Field>
-                            </div>
-                          ))}
-                        </FieldGroup>
-                      </FieldSet> */}
                     </div>
                   )}
                 </div>
@@ -128,7 +113,7 @@ export default function DocumentationIngestJobChunksItem({
             size="icon"
             className="cursor-pointer"
             title="Remove chunk"
-            onClick={() => removeIngestJobParseChunk(chunk.id as number)}
+            onClick={() => removeIngestJobChunkCreated(chunk.id)}
           >
             <Trash />
           </Button>

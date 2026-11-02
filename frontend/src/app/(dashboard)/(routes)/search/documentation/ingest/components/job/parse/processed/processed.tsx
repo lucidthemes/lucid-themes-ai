@@ -8,7 +8,7 @@ import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../..
 
 import DocumentationIngestJobParseProcessedDocument from './document';
 import DocumentationIngestJobParseProcessedWebpage from './web-page';
-import DocumentationIngestJobParseProcessedFooter from './footer';
+// import DocumentationIngestJobParseProcessedFooter from './footer';
 
 export default function DocumentationIngestJobParseProcessed({
   ingestJobStatus,
@@ -44,7 +44,7 @@ export default function DocumentationIngestJobParseProcessed({
           ingestJobData={ingestJobData}
         />
       </CardContent>
-      <DocumentationIngestJobParseProcessedFooter ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
+      {/* <DocumentationIngestJobParseProcessedFooter ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} /> */}
     </>
   );
 }

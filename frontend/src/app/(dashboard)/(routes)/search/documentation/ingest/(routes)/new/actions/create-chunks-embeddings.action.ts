@@ -8,23 +8,27 @@ import { z } from 'zod';
 
 import { backendAPIFetch } from '@/lib/backend-api';
 
-import { DocumentationIngestJobParseChunkSchema } from '../schemas/parse-chunks-form.schema';
-import type { DocumentationIngestJobParseChunk } from '../schemas/parse-chunks-form.schema';
+// import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
+
+// import { DocumentationIngestJobChunksCreateFormChunkSchema } from '../schemas/chunks-create-form.schema';
+// import type { DocumentationIngestJobChunksCreateFormChunk } from '../schemas/chunks-create-form.schema';
+import { DocumentationIngestJobChunksEmbeddingsActionSchema } from '../schemas/chunks-embeddings-action.schema';
+import type { DocumentationIngestJobChunksEmbeddingsAction } from '../schemas/chunks-embeddings-action.schema';
 
 export default async function createIngestJobChunksEmbeddings({
   chunks,
   ingestJobPathname,
 }: {
-  chunks: DocumentationIngestJobParseChunk[];
+  chunks: DocumentationIngestJobChunksEmbeddingsAction;
   ingestJobPathname: string;
 }): Promise<{ success: boolean } | void> {
-  const parsedRequest = z.array(DocumentationIngestJobParseChunkSchema).safeParse(chunks);
+  const parsedRequest = DocumentationIngestJobChunksEmbeddingsActionSchema.safeParse(chunks);
 
   if (!parsedRequest.success) {
     return { success: false };
   }
 
-  const { error, status } = await backendAPIFetch<DocumentationIngestJobParseChunk[], null>({
+  const { error, status } = await backendAPIFetch<DocumentationIngestJobChunksEmbeddingsAction, null>({
     url: '/api/v1/search/documentation/ingest/job/new/embeddings',
     method: 'POST',
     requestData: parsedRequest.data,

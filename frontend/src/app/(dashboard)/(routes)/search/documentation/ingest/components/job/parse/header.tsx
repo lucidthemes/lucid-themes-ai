@@ -30,7 +30,7 @@ export default function DocumentationIngestJobParseHeader({
   return (
     <CardHeader>
       <CardTitle>Parse</CardTitle>
-      <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
+      <CardDescription>Select a PDF or webpage to send to LlamaParse</CardDescription>
       {ingestJobStatus === 'new' && ingestJobParseUploadType && (
         <CardAction>
           <DropdownMenu>

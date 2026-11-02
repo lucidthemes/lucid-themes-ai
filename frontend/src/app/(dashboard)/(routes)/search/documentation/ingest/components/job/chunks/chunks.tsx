@@ -8,8 +8,8 @@ import { Card } from '@/components/ui/card';
 import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
 
 import DocumentationIngestJobChunksHeader from './header';
-
 import DocumentationIngestJobChunksContent from './content';
+import DocumentationIngestJobChunksFooter from './footer';
 
 import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 
@@ -22,34 +22,43 @@ export default function DocumentationIngestJobChunks({
 }) {
   const [expanded, setExpanded] = useState(true);
 
-  const ingestJobParseChunks = useIngestJobNewStore((state) => state.ingestJobParseChunks);
+  const ingestJobChunksCreated = useIngestJobNewStore((state) => state.ingestJobChunksCreated);
 
   const [isPending, startTransition] = useTransition();
 
-  if (ingestJobStatus === 'new') return;
+  if (ingestJobStatus === 'new' || (ingestJobStatus === 'pending' && ingestJobData?.parse_job.status === 'pending'))
+    return;
 
-  console.log(ingestJobParseChunks);
+  console.log(ingestJobChunksCreated);
 
   const chunks =
     ingestJobStatus === 'completed' && ingestJobData
       ? ingestJobData.chunks
       : ingestJobStatus === 'pending'
-        ? ingestJobParseChunks
+        ? ingestJobChunksCreated
         : null;
 
   return (
     <Card className="mx-auto w-full">
       <DocumentationIngestJobChunksHeader
         ingestJobStatus={ingestJobStatus}
+        ingestJobData={ingestJobData}
         expanded={expanded}
         setExpanded={setExpanded}
         isPending={isPending}
         startTransition={startTransition}
-        ingestJobData={ingestJobData}
         chunks={chunks}
       />
       <DocumentationIngestJobChunksContent
         ingestJobStatus={ingestJobStatus}
+        expanded={expanded}
+        isPending={isPending}
+        // startTransition={startTransition}
+        chunks={chunks}
+      />
+      <DocumentationIngestJobChunksFooter
+        ingestJobStatus={ingestJobStatus}
+        ingestJobData={ingestJobData}
         expanded={expanded}
         isPending={isPending}
         startTransition={startTransition}

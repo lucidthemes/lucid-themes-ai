@@ -10,26 +10,28 @@ import type {
   DocumentationIngestJob,
   DocumentationIngestJobChunk,
 } from '../../../schemas/ingest-job.schema';
-import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
+// import type { DocumentationIngestJobChunksCreateFormChunk } from '../../../(routes)/new/schemas/chunks-create-form.schema';
 
 import DocumentationIngestJobChunksEmbeddingsButton from './embeddings-button';
 
 export default function DocumentationIngestJobChunksHeader({
   ingestJobStatus,
+  ingestJobData,
   expanded,
   setExpanded,
   isPending,
   startTransition,
-  ingestJobData,
+
   chunks,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
+  ingestJobData?: DocumentationIngestJob;
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
   isPending: boolean;
   startTransition: TransitionStartFunction;
-  ingestJobData?: DocumentationIngestJob;
-  chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobParseChunk[] | null;
+  // chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[] | null;
+  chunks?: DocumentationIngestJobChunk[] | null;
 }) {
   const chunksTitleType = ingestJobData?.source.type ?? '';
 
@@ -38,7 +40,7 @@ export default function DocumentationIngestJobChunksHeader({
       <CardTitle>
         <span className="capitalize">{chunksTitleType}</span> chunks ({chunks?.length ?? 0})
       </CardTitle>
-      <CardDescription>A practical talk on component APIs, accessibility, and shipping faster.</CardDescription>
+      <CardDescription>Create chunks and generate embeddings</CardDescription>
       {!isPending && chunks && chunks.length > 0 && (
         <CardAction className="flex gap-5 self-center">
           <Button className="cursor-pointer" variant="secondary" onClick={() => setExpanded((expanded) => !expanded)}>

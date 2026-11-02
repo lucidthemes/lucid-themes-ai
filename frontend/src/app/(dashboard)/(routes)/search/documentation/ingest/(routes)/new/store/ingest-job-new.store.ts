@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { DocumentationIngestJobParseChunk } from '../schemas/parse-chunks-form.schema';
+import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
 
 type IngestJobParseUploadType = 'document' | 'webpage';
 
@@ -10,7 +10,7 @@ type State = {
 
   ingestJobParseUploadType: IngestJobParseUploadType | null;
 
-  ingestJobParseChunks: DocumentationIngestJobParseChunk[] | null;
+  ingestJobChunksCreated: DocumentationIngestJobChunk[] | null;
 };
 
 type Action = {
@@ -20,17 +20,17 @@ type Action = {
   setIngestJobParseUploadType: (type: IngestJobParseUploadType) => void;
   resetIngestJobParseUploadType: () => void;
 
-  setIngestJobParseChunks: (chunks: DocumentationIngestJobParseChunk[]) => void;
-  updateIngestJobParseChunk: ({
+  setIngestJobChunksCreated: (chunks: DocumentationIngestJobChunk[]) => void;
+  updateIngestJobChunkCreated: ({
     chunkId,
     field,
     value,
   }: {
-    chunkId: number;
+    chunkId: string;
     field: 'content' | 'metadata';
     value: string;
   }) => void;
-  removeIngestJobParseChunk: (chunkId: number) => void;
+  removeIngestJobChunkCreated: (chunkId: string) => void;
 };
 
 export const useIngestJobNewStore = create<State & Action>((set) => ({
@@ -38,7 +38,7 @@ export const useIngestJobNewStore = create<State & Action>((set) => ({
   ingestJobName: null,
   ingestJobNameError: null,
   ingestJobParseUploadType: null,
-  ingestJobParseChunks: null,
+  ingestJobChunksCreated: null,
 
   // Actions
   updateIngestJobName: (name) => set({ ingestJobName: name, ingestJobNameError: null }),
@@ -47,15 +47,13 @@ export const useIngestJobNewStore = create<State & Action>((set) => ({
   setIngestJobParseUploadType: (type) => set({ ingestJobParseUploadType: type }),
   resetIngestJobParseUploadType: () => set({ ingestJobParseUploadType: null }),
 
-  setIngestJobParseChunks: (chunks) => set({ ingestJobParseChunks: chunks }),
-  updateIngestJobParseChunk: ({ chunkId, field, value }) =>
+  setIngestJobChunksCreated: (chunks) => set({ ingestJobChunksCreated: chunks }),
+  updateIngestJobChunkCreated: ({ chunkId, field, value }) =>
     set((state) => {
-      if (!state.ingestJobParseChunks || !chunkId || !field || !value) return state;
+      if (!state.ingestJobChunksCreated || !chunkId || !field || !value) return state;
 
-      const updatedChunks = state.ingestJobParseChunks.map((chunk) => {
+      const updatedChunks = state.ingestJobChunksCreated.map((chunk) => {
         if (chunk.id !== chunkId) return chunk;
-
-        // const formattedValue = field === 'metadata' ? JSON.parse(value) : value;
 
         const updatedChunk = {
           ...chunk,
@@ -65,14 +63,14 @@ export const useIngestJobNewStore = create<State & Action>((set) => ({
         return updatedChunk;
       });
 
-      return { ingestJobParseChunks: updatedChunks };
+      return { ingestJobChunksCreated: updatedChunks };
     }),
-  removeIngestJobParseChunk: (chunkId) =>
+  removeIngestJobChunkCreated: (chunkId) =>
     set((state) => {
-      if (!state.ingestJobParseChunks || !chunkId) return state;
+      if (!state.ingestJobChunksCreated || !chunkId) return state;
 
-      const updatedChunks = state.ingestJobParseChunks.filter((chunk) => chunk.id !== chunkId);
+      const updatedChunks = state.ingestJobChunksCreated.filter((chunk) => chunk.id !== chunkId);
 
-      return { ingestJobParseChunks: updatedChunks };
+      return { ingestJobChunksCreated: updatedChunks };
     }),
 }));

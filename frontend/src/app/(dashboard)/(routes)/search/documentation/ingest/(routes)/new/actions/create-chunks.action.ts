@@ -8,33 +8,34 @@
 import { backendAPIFetch } from '@/lib/backend-api';
 
 // import { DocumentationIngestJobChunkSchema } from '../../../schemas/ingest-job.schema';
-// import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
+import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
 
-import {
-  DocumentationIngestJobParseChunksFormSchema,
-  // DocumentationIngestJobParseChunkSchema,
-} from '../schemas/parse-chunks-form.schema';
+import { DocumentationIngestJobChunksCreateFormSchema } from '../schemas/chunks-create-form.schema';
 import type {
-  DocumentationIngestJobParseChunksForm,
-  DocumentationIngestJobParseChunk,
-} from '../schemas/parse-chunks-form.schema';
-import { DocumentationIngestJobParseChunksActionResponseSchema } from '../schemas/parse-chunks-action.schema';
-import type { DocumentationIngestJobParseChunksActionResponse } from '../schemas/parse-chunks-action.schema';
+  DocumentationIngestJobChunksCreateForm,
+  // DocumentationIngestJobChunksCreateFormChunk,
+} from '../schemas/chunks-create-form.schema';
+import { DocumentationIngestJobChunksCreateActionResponseSchema } from '../schemas/chunks-create-action.schema';
+import type { DocumentationIngestJobChunksCreateActionResponse } from '../schemas/chunks-create-action.schema';
 
-export default async function createIngestJobParseChunks({
+// import type { DocumentationIngestJobParseChunk } from '../schemas/parse-chunks-form.schema';
+// import { DocumentationIngestJobParseChunksActionResponseSchema } from '../schemas/parse-chunks-action.schema';
+// import type { DocumentationIngestJobParseChunksActionResponse } from '../schemas/parse-chunks-action.schema';
+
+export default async function createIngestJobChunks({
   formData,
 }: {
-  formData: DocumentationIngestJobParseChunksForm;
+  formData: DocumentationIngestJobChunksCreateForm;
 }) {
-  const parsedRequest = DocumentationIngestJobParseChunksFormSchema.safeParse(formData);
+  const parsedRequest = DocumentationIngestJobChunksCreateFormSchema.safeParse(formData);
 
   if (!parsedRequest.success) {
     return { success: false };
   }
 
   const { data, error } = await backendAPIFetch<
-    DocumentationIngestJobParseChunksForm,
-    DocumentationIngestJobParseChunksActionResponse
+    DocumentationIngestJobChunksCreateForm,
+    DocumentationIngestJobChunksCreateActionResponse
   >({
     url: '/api/v1/search/documentation/ingest/job/new/chunks',
     method: 'POST',
@@ -45,21 +46,19 @@ export default async function createIngestJobParseChunks({
     return { success: false };
   }
 
-  const parsedResponse = DocumentationIngestJobParseChunksActionResponseSchema.safeParse(data);
+  const parsedResponse = DocumentationIngestJobChunksCreateActionResponseSchema.safeParse(data);
 
   if (!parsedResponse.success) {
     return { success: false };
   }
 
-  const structuredChunks = parsedResponse.data.map(
-    (chunk: Omit<DocumentationIngestJobParseChunk, 'id'>, index: number) => {
-      return {
-        id: index + 1,
-        content: chunk.content,
-        metadata: chunk.metadata,
-      };
-    },
-  );
+  const structuredChunks = parsedResponse.data.map((chunk: Omit<DocumentationIngestJobChunk, 'embedding'>) => {
+    return {
+      id: chunk.id,
+      content: chunk.content,
+      metadata: chunk.metadata,
+    };
+  });
 
   return { success: true, chunks: structuredChunks };
 

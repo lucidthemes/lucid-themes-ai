@@ -1,5 +1,5 @@
 import type { DocumentationIngestJobStatus, DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
-import type { DocumentationIngestJobParseChunk } from '../../../(routes)/new/schemas/parse-chunks-form.schema';
+// import type { DocumentationIngestJobChunksCreateFormChunk } from '../../../(routes)/new/schemas/chunks-create-form.schema';
 
 import DocumentationIngestJobChunksItem from './item';
 
@@ -10,7 +10,8 @@ export default function DocumentationIngestJobChunksItems({
   showEmbeddings,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  chunks: DocumentationIngestJobChunk[] | DocumentationIngestJobParseChunk[];
+  // chunks: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[];
+  chunks: DocumentationIngestJobChunk[];
   showMetadata: boolean;
   showEmbeddings: boolean;
 }) {
