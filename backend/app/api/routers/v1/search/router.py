@@ -126,7 +126,7 @@ test_ingest_job_parse_pending = DocumentationIngestJobResponse(
         },
         "parse_job": {
             "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "parse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+            "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
             "status": "pending",
         },
         "status": "pending",
@@ -145,7 +145,7 @@ test_ingest_job_parse_completed = DocumentationIngestJobResponse(
         },
         "parse_job": {
             "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "parse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+            "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
             "status": "completed",
             "markdown_full": "#text",
             "text_full": "text",
@@ -171,7 +171,7 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
         },
         "parse_job": {
             "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "parse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+            "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
             "status": "completed",
             "markdown_full": "#text",
             "text_full": "text",
@@ -343,4 +343,137 @@ async def create_documentation_ingest_job_embeddings(
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
 ) -> Response:
+    chunks_content = []
+
+    for chunk in data:
+        chunks_content.append(chunk.content)
+
+    print(chunks_content)
+
+    # Create OpenAI embeddings
+
+    # client = AsyncOpenAI(
+    #     # This is the default and can be omitted
+    #     api_key=os.environ.get("OPENAI_API_KEY"),
+    # )
+
+    # response = await client.embeddings.create(
+    #     input=chunks_content,
+    #     model="text-embedding-3-small",
+    # )
+
+    response_test = {
+        "object": "list",
+        "data": [
+            {
+                "object": "embedding",
+                "index": 0,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 1,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 2,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 3,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 4,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 5,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 6,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 7,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 8,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 9,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 10,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 11,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+            {
+                "object": "embedding",
+                "index": 12,
+                "embedding": [0.0023064255, -0.009327292, 0.015797347, ...],
+            },
+        ],
+        "model": "text-embedding-3-small",
+        "usage": {"prompt_tokens": 8, "total_tokens": 8},
+    }
+
+    # embeddings = [data.embedding for data in response.data]
+    embeddings_test = response_test["data"]
+
+    print(embeddings_test)
+
+    # Combine chunks with created embeddings
+
+    documentation_chunks = []
+
+    for index, chunk in enumerate(data):
+        documentation_chunk = {
+            "id": chunk.id,
+            "ingest_job_id": index,
+            "content": chunk.content,
+            "metadata": chunk.metadata,
+            "embedding": embeddings_test[index]["embedding"],
+        }
+        documentation_chunks.append(documentation_chunk)
+
+    print(documentation_chunks)
+
+    # Insert chunks to documentation_chunks table
+
+    # users.insert().values(
+    #     [
+    #         {"name": "some name"},
+    #         {"name": "some other name"},
+    #         {"name": "yet another name"},
+    #     ]
+    # )
+
+    # Insert embedding job to documentation_ingest_job_embeddings_jobs table and return ID
+
+    model = response_test["model"]
+    usage = response_test["usage"]
+
+    print(model)
+    print(usage)
+
+    # Update embeddings_job_id column for current ingest job and set status to completed
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)

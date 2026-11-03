@@ -66,7 +66,7 @@ class DocumentationIngestJobParseJobUsage(BaseModel):
 
 class DocumentationIngestJobParseJob(BaseModel):
     id: str
-    parse_job_id: str
+    llamaparse_job_id: str
     status: DocumentationIngestJobStatus
     markdown_full: str | None = None
     text_full: str | None = None

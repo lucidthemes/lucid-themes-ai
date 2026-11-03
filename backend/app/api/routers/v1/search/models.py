@@ -1,9 +1,10 @@
 import uuid
 from typing import Any
 
-from sqlalchemy import Enum, ForeignKey, Uuid
+from pgvector.sqlalchemy import Vector
+from sqlalchemy import Enum, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 from app.models.common import CreatedAtMixin, IdMixin, UpdatedAtMixin
@@ -19,11 +20,6 @@ from .schemas import (
 class DocumentationIngestJobSource(Base, IdMixin, CreatedAtMixin):
     __tablename__ = "documentation_ingest_job_sources"
 
-    # id: Mapped[uuid.UUID] = mapped_column(
-    #     Uuid,
-    #     primary_key=True,
-    #     default=uuid.uuid4,
-    # )
     type: Mapped[DocumentationIngestJobSourceType] = mapped_column(
         Enum(
             DocumentationIngestJobSourceType,
@@ -31,24 +27,19 @@ class DocumentationIngestJobSource(Base, IdMixin, CreatedAtMixin):
             values_callable=lambda enum: [e.value for e in enum],
         )
     )
-    file_name: Mapped[str] = mapped_column(nullable=True)
-    file_url: Mapped[str] = mapped_column(nullable=True)
-    webpage_url: Mapped[str] = mapped_column(nullable=True)
-    # created_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    # )
+    file_name: Mapped[str | None] = mapped_column(nullable=True)
+    file_url: Mapped[str | None] = mapped_column(nullable=True)
+    webpage_url: Mapped[str | None] = mapped_column(nullable=True)
+
+    ingest_jobs: Mapped[list[DocumentationIngestJob]] = relationship(
+        back_populates="source",
+    )
 
 
 class DocumentationIngestJobParseJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
     __tablename__ = "documentation_ingest_job_parse_jobs"
 
-    # id: Mapped[uuid.UUID] = mapped_column(
-    #     Uuid,
-    #     primary_key=True,
-    #     default=uuid.uuid4,
-    # )
-    parse_job_id: Mapped[str] = mapped_column(nullable=False)
+    llamaparse_job_id: Mapped[str] = mapped_column(nullable=False)
     status: Mapped[DocumentationIngestJobStatus] = mapped_column(
         Enum(
             DocumentationIngestJobStatus,
@@ -72,61 +63,39 @@ class DocumentationIngestJobParseJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMix
         nullable=True,
         default=dict,
     )
-    # created_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    # )
-    # updated_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    #     onupdate=func.now(),
-    # )
+
+    ingest_job: Mapped[DocumentationIngestJob] = relationship(
+        back_populates="parse_job",
+    )
 
 
 class DocumentationIngestJobEmbeddingsJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
     __tablename__ = "documentation_ingest_job_embeddings_jobs"
 
-    # id: Mapped[uuid.UUID] = mapped_column(
-    #     Uuid,
-    #     primary_key=True,
-    #     default=uuid.uuid4,
-    # )
     model: Mapped[str] = mapped_column(nullable=False)
     usage: Mapped[DocumentationIngestJobEmbeddingsJobUsage] = mapped_column(
         JSONB,
         nullable=False,
         default=dict,
     )
-    # created_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    # )
-    # updated_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    #     onupdate=func.now(),
-    # )
+
+    ingest_job: Mapped[DocumentationIngestJob] = relationship(
+        back_populates="embeddings_job",
+    )
 
 
 class DocumentationIngestJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
     __tablename__ = "documentation_ingest_jobs"
 
-    # id: Mapped[uuid.UUID] = mapped_column(
-    #     Uuid,
-    #     primary_key=True,
-    #     default=uuid.uuid4,
-    # )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid,
-        default=uuid.uuid4,
-    )
+    user_id: Mapped[str] = mapped_column(nullable=False)
     name: Mapped[str] = mapped_column(nullable=False)
     source_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("documentation_ingest_job_sources.id"))
     parse_job_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("documentation_ingest_job_parse_jobs.id")
     )
-    embeddings_job_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("documentation_ingest_job_embeddings_jobs.id")
+    embeddings_job_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("documentation_ingest_job_embeddings_jobs.id"),
+        nullable=True,
     )
     status: Mapped[DocumentationIngestJobStatus] = mapped_column(
         Enum(
@@ -136,15 +105,16 @@ class DocumentationIngestJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
         ),
         default=DocumentationIngestJobStatus.PENDING,
     )
-    # created_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    # )
-    # updated_at: Mapped[datetime] = mapped_column(
-    #     DateTime(timezone=True),
-    #     server_default=func.now(),
-    #     onupdate=func.now(),
-    # )
+
+    source: Mapped[DocumentationIngestJobSource] = relationship(
+        back_populates="ingest_jobs",
+    )
+    parse_job: Mapped[DocumentationIngestJobParseJob] = relationship(
+        back_populates="ingest_job",
+    )
+    embeddings_job: Mapped[DocumentationIngestJobEmbeddingsJob] = relationship(
+        back_populates="ingest_job",
+    )
 
 
 class DocumentationChunk(Base, IdMixin, CreatedAtMixin):
@@ -163,7 +133,10 @@ class DocumentationChunk(Base, IdMixin, CreatedAtMixin):
         nullable=False,
         default=dict,
     )
-    embedding: Mapped[str] = mapped_column(nullable=False)  # this needs to be vector!
+    embedding: Mapped[list[float]] = mapped_column(
+        Vector(1536),
+        nullable=False,
+    )
     # created_at: Mapped[datetime] = mapped_column(
     #     DateTime(timezone=True),
     #     server_default=func.now(),
