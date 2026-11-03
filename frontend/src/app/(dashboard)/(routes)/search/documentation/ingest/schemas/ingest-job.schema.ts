@@ -22,7 +22,7 @@ export const DocumentationIngestJobSchema = z.object({
   source: DocumentationIngestJobSourceSchema,
   parse_job: z.object({
     id: z.uuid(),
-    parse_job_id: z.string(),
+    llamaparse_job_id: z.string(),
     status: z.enum(['pending', 'completed', 'failed']),
     markdown_full: z.string().nullable(),
     text_full: z.string().nullable(),
