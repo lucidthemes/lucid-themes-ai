@@ -1,4 +1,4 @@
-import DashboardLayoutContainer from '../../../components/container';
+import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 
 export default function DashboardSearchDocumentationPage() {
   return (

@@ -22,7 +22,7 @@ export default function DashboardLayoutHeading({
     <div className="flex items-center justify-between font-medium">
       <HeadingTag>{heading}</HeadingTag>
       {buttonUrl && (
-        <Link href="ingest/new">
+        <Link href={buttonUrl}>
           <Button className="cursor-pointer">
             <Plus /> {buttonText}
           </Button>
