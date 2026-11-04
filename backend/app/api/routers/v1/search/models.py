@@ -65,7 +65,7 @@ class DocumentationIngestJobParseJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMix
     )
 
     ingest_job: Mapped[DocumentationIngestJob] = relationship(
-        back_populates="parse_job",
+        back_populates="parse_jobs",
     )
 
 
@@ -109,7 +109,10 @@ class DocumentationIngestJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
     source: Mapped[DocumentationIngestJobSource] = relationship(
         back_populates="ingest_jobs",
     )
-    parse_job: Mapped[DocumentationIngestJobParseJob] = relationship(
+    # parse_job: Mapped[DocumentationIngestJobParseJob] = relationship(
+    #     back_populates="ingest_job",
+    # )
+    parse_jobs: Mapped[list[DocumentationIngestJobParseJob]] = relationship(
         back_populates="ingest_job",
     )
     embeddings_job: Mapped[DocumentationIngestJobEmbeddingsJob] = relationship(

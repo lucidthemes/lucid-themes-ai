@@ -97,7 +97,7 @@ class DocumentationIngestJobResponseData(BaseModel):
     id: uuid.UUID
     name: str
     source: DocumentationIngestJobSource
-    parse_job: DocumentationIngestJobParseJob
+    parse_jobs: list[DocumentationIngestJobParseJob]
     embeddings_job: DocumentationIngestJobEmbeddingsJob | None = None
     chunks: list[DocumentationIngestJobChunk] | None = None
     status: DocumentationIngestJobStatus

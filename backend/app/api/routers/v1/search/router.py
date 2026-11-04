@@ -124,11 +124,46 @@ test_ingest_job_parse_pending = DocumentationIngestJobResponse(
             "type": "document",
             "file_name": "some-pdf-file-here.pdf",
         },
-        "parse_job": {
-            "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "status": "pending",
+        "parse_jobs": [
+            {
+                "id": "00563b80-ef1c-4f0c-b5e9-8763caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "failed",
+                "error_message": "failed to parse",
+            },
+            {
+                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "pending",
+            },
+        ],
+        "status": "pending",
+        "created_at": "2026-09-06 11:52:33",
+        "updated_at": "2026-09-06 11:52:33",
+    }
+)
+
+test_ingest_job_parse_failed = DocumentationIngestJobResponse(
+    data={
+        "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
+        "name": "Test ingest job 1",
+        "source": {
+            "type": "document",
+            "file_name": "some-pdf-file-here.pdf",
         },
+        "parse_jobs": [
+            {
+                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "failed",
+                "error_message": "failed to parse",
+            },
+            {
+                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "pending",
+            },
+        ],
         "status": "pending",
         "created_at": "2026-09-06 11:52:33",
         "updated_at": "2026-09-06 11:52:33",
@@ -143,18 +178,20 @@ test_ingest_job_parse_completed = DocumentationIngestJobResponse(
             "type": "document",
             "file_name": "some-pdf-file-here.pdf",
         },
-        "parse_job": {
-            "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "status": "completed",
-            "markdown_full": "#text",
-            "text_full": "text",
-            "tier": "cost_effective",
-            "error_message": "",
-            "usage": {
-                "credits": 30.0,
-            },
-        },
+        "parse_jobs": [
+            {
+                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "completed",
+                "markdown_full": "#text",
+                "text_full": "text",
+                "tier": "cost_effective",
+                "error_message": "",
+                "usage": {
+                    "credits": 30.0,
+                },
+            }
+        ],
         "status": "pending",
         "created_at": "2026-09-06 11:52:33",
         "updated_at": "2026-09-06 11:52:33",
@@ -169,18 +206,20 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
             "type": "document",
             "file_name": "some-pdf-file-here.pdf",
         },
-        "parse_job": {
-            "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-            "status": "completed",
-            "markdown_full": "#text",
-            "text_full": "text",
-            "tier": "cost_effective",
-            "error_message": "",
-            "usage": {
-                "credits": 30.0,
-            },
-        },
+        "parse_jobs": [
+            {
+                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "completed",
+                "markdown_full": "#text",
+                "text_full": "text",
+                "tier": "cost_effective",
+                "error_message": "",
+                "usage": {
+                    "credits": 30.0,
+                },
+            }
+        ],
         "embeddings_job": {
             "model": "text-embedding-3-small",
             "usage": {
@@ -225,7 +264,7 @@ async def read_documentation_ingest_job(
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
 ) -> DocumentationIngestJobResponse:
-    return test_ingest_job_parse_completed
+    return test_ingest_job_parse_pending
     # return DocumentationIngestJobResponse(
     #     data={
     #         "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
