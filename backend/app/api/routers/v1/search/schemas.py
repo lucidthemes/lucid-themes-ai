@@ -57,6 +57,54 @@ class DocumentationIngestJobsResponseData(BaseModel):
 DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobsResponseData]]
 
 
+# Ingest sources list
+
+
+class DocumentationIngestSourcesResponseData(BaseModel):
+    id: uuid.UUID
+    type: str
+    created_at: datetime
+
+
+DocumentationIngestSourcesResponse = APIResponse[list[DocumentationIngestSourcesResponseData]]
+
+# Ingest parse  jobs list
+
+
+class DocumentationIngestParseJobsResponseData(BaseModel):
+    id: uuid.UUID
+    llamaparse_job_id: str
+    status: DocumentationIngestJobStatus
+    created_at: datetime
+
+
+DocumentationIngestParseJobsResponse = APIResponse[list[DocumentationIngestParseJobsResponseData]]
+
+# Ingest embedding jobs list
+
+
+class DocumentationIngestEmbeddingJobsResponseData(BaseModel):
+    id: uuid.UUID
+    model: str
+    created_at: datetime
+
+
+DocumentationIngestEmbeddingJobsResponse = APIResponse[
+    list[DocumentationIngestEmbeddingJobsResponseData]
+]
+
+# Ingest chunks list
+
+
+class DocumentationIngestChunksResponseData(BaseModel):
+    id: uuid.UUID
+    content: str
+    created_at: datetime
+
+
+DocumentationIngestChunksResponse = APIResponse[list[DocumentationIngestChunksResponseData]]
+
+
 # Single Ingest job
 
 

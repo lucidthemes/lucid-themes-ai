@@ -8,6 +8,8 @@ from app.api.dependencies import get_current_user
 from app.db.dependencies import get_read_db, get_write_db
 
 from .schemas import (
+    DocumentationIngestChunksResponse,
+    DocumentationIngestEmbeddingJobsResponse,
     DocumentationIngestJobNewChunksCreate,
     DocumentationIngestJobNewChunksResponse,
     DocumentationIngestJobNewDocumentCreate,
@@ -16,6 +18,8 @@ from .schemas import (
     DocumentationIngestJobNewWebpageCreate,
     DocumentationIngestJobResponse,
     DocumentationIngestJobsResponse,
+    DocumentationIngestParseJobsResponse,
+    DocumentationIngestSourcesResponse,
 )
 from .service import (
     documentation_ingest_job_chunk_split_markdown,
@@ -78,7 +82,7 @@ router = APIRouter(prefix="/search", tags=["search"])
 @router.get("/documentation/ingest/jobs", response_model=DocumentationIngestJobsResponse)
 async def read_documentation_ingest_jobs(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
-) -> DocumentationIngestJobsResponse:
+):
     return DocumentationIngestJobsResponse(
         data=[
             {
@@ -135,6 +139,24 @@ test_ingest_job_parse_pending = DocumentationIngestJobResponse(
                 "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "status": "pending",
+            },
+            {
+                "id": "00563b89-ef1c-4f0c-b5e9-8763caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "failed",
+                "error_message": "failed to parse",
+            },
+            {
+                "id": "00573b80-ef1c-4f0d-b5e9-8762caed9c1b",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "completed",
+                "markdown_full": "#text",
+                "text_full": "text",
+                "tier": "cost_effective",
+                "error_message": "",
+                "usage": {
+                    "credits": 30.0,
+                },
             },
         ],
         "status": "pending",
@@ -258,12 +280,12 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
 )
 
 
-@router.get("/documentation/ingest/job/{job_id}", response_model=DocumentationIngestJobResponse)
+@router.get("/documentation/ingest/jobs/{job_id}", response_model=DocumentationIngestJobResponse)
 async def read_documentation_ingest_job(
     job_id: uuid.UUID,
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
-) -> DocumentationIngestJobResponse:
+):
     return test_ingest_job_parse_pending
     # return DocumentationIngestJobResponse(
     #     data={
@@ -330,7 +352,7 @@ async def create_documentation_ingest_job_document(
     data: Annotated[DocumentationIngestJobNewDocumentCreate, Form()],
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
-) -> DocumentationIngestJobNewResponse:
+):
     return DocumentationIngestJobNewResponse(
         data={"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
     )
@@ -343,7 +365,7 @@ async def create_documentation_ingest_job_webpage(
     data: DocumentationIngestJobNewWebpageCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
-) -> DocumentationIngestJobNewResponse:
+):
     return DocumentationIngestJobNewResponse(
         data={"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
     )
@@ -355,7 +377,7 @@ async def create_documentation_ingest_job_webpage(
 async def create_documentation_ingest_job_chunks(
     data: DocumentationIngestJobNewChunksCreate,
     _: Annotated[str, Depends(get_current_user)],
-) -> DocumentationIngestJobNewChunksResponse:
+):
     chunks = []
 
     if data.split_method == "markdown":
@@ -516,3 +538,87 @@ async def create_documentation_ingest_job_embeddings(
     # Update embeddings_job_id column for current ingest job and set status to completed
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/documentation/ingest/sources", response_model=DocumentationIngestSourcesResponse)
+async def read_documentation_ingest_sources(
+    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+):
+    return DocumentationIngestSourcesResponse(
+        data=[
+            {
+                "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "type": "document",
+                "created_at": "2026-09-06 11:52:33",
+            },
+            {
+                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "type": "webpage",
+                "created_at": "2026-09-06 11:52:33",
+            },
+        ]
+    )
+
+
+@router.get("/documentation/ingest/parse-jobs", response_model=DocumentationIngestParseJobsResponse)
+async def read_documentation_ingest_parse_jobs(
+    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+):
+    return DocumentationIngestParseJobsResponse(
+        data=[
+            {
+                "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "completed",
+                "created_at": "2026-09-06 11:52:33",
+            },
+            {
+                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                "status": "completed",
+                "created_at": "2026-09-06 11:52:33",
+            },
+        ]
+    )
+
+
+@router.get(
+    "/documentation/ingest/embedding-jobs", response_model=DocumentationIngestEmbeddingJobsResponse
+)
+async def read_documentation_ingest_embedding_jobs(
+    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+):
+    return DocumentationIngestEmbeddingJobsResponse(
+        data=[
+            {
+                "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "model": "text-embedding-3-small",
+                "created_at": "2026-09-06 11:52:33",
+            },
+            {
+                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "model": "text-embedding-3-small",
+                "created_at": "2026-09-06 11:52:33",
+            },
+        ]
+    )
+
+
+@router.get("/documentation/ingest/chunks", response_model=DocumentationIngestChunksResponse)
+async def read_documentation_ingest_chunks(
+    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+):
+    return DocumentationIngestChunksResponse(
+        data=[
+            {
+                "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "content": "test content 1 python",
+                "created_at": "2026-09-06 11:52:33",
+            },
+            {
+                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "content": "test content 2",
+                "created_at": "2026-09-06 11:52:33",
+            },
+        ]
+    )
