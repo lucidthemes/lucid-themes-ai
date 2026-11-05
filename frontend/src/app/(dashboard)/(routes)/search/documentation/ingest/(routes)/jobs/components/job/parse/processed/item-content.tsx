@@ -1,8 +1,8 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 
-import type { DocumentationIngestJobParseJob } from '../../../../../schemas/ingest-job.schema';
+import type { DocumentationIngestJobParseJob } from '../../../../schemas/ingest-job.schema';
 
-import DocumentationIngestJobParseJobsItemContentTabs from './tabs';
+import DocumentationIngestJobParseJobsItemContentTabs from './item-content-tabs';
 
 export default function DocumentationIngestJobParseJobsItemContent({
   viewContentSplit,

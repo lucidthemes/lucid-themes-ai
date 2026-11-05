@@ -29,6 +29,12 @@ export default function DocumentationIngestJobChunks({
   // if (ingestJobStatus === 'new' || (ingestJobStatus === 'pending' && ingestJobData?.parse_job.status === 'pending'))
   //   return;
 
+  if (ingestJobStatus === 'new' || !ingestJobData) return;
+
+  const lastParseJob = ingestJobData.parse_jobs.at(-1);
+
+  if (!lastParseJob || lastParseJob.status !== 'completed') return;
+
   console.log(ingestJobChunksCreated);
 
   const chunks =

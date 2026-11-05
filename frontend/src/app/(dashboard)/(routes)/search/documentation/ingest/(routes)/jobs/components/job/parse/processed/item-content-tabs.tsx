@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-import type { DocumentationIngestJobParseJob } from '../../../../../schemas/ingest-job.schema';
+import type { DocumentationIngestJobParseJob } from '../../../../schemas/ingest-job.schema';
 
 export default function DocumentationIngestJobParseJobsItemContentTabs({
   parse_job,

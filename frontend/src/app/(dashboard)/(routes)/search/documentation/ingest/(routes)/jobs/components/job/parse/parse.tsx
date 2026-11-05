@@ -7,7 +7,7 @@ import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../..
 
 import DocumentationIngestJobParseHeader from './header';
 import DocumentationIngestJobParseUpload from './upload';
-import DocumentationIngestJobParseProcessed from './processed';
+import DocumentationIngestJobParseJobs from './processed';
 
 export default function DocumentationIngestJobParse({
   ingestJobStatus,
@@ -37,7 +37,7 @@ export default function DocumentationIngestJobParse({
     <Card className="mx-auto w-full">
       <DocumentationIngestJobParseHeader ingestJobStatus={ingestJobStatus} />
       <DocumentationIngestJobParseUpload ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
-      <DocumentationIngestJobParseProcessed ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
+      <DocumentationIngestJobParseJobs ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
     </Card>
   );
 }

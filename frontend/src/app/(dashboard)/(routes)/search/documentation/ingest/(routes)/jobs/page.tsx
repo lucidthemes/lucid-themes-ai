@@ -17,7 +17,7 @@ export default function DashboardSearchDocumentationIngestJobsPage() {
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest jobs" buttonUrl="jobs/new" buttonText="New job" />
       {/* <DashboardLayoutHeading heading="Jobs" level={2} /> */}
-      <Suspense key="documentation-ingest" fallback={<LoadingSpinner />}>
+      <Suspense key="documentation-ingest-jobs" fallback={<LoadingSpinner />}>
         <DocumentationIngestJobsList />
       </Suspense>
     </DashboardLayoutContainer>

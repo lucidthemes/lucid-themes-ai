@@ -1,13 +1,11 @@
 import type { Dispatch, SetStateAction } from 'react';
-import { FileText, GlobeCode, Check, CircleAlert } from 'lucide-react';
+import { FileText, GlobeCode } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
-import { Spinner } from '@/components/ui/spinner';
 
 import type { DocumentationIngestJob, DocumentationIngestJobParseJob } from '../../../../schemas/ingest-job.schema';
 
-import DocumentationIngestJobParseJobsItemContent from './content';
+import DocumentationIngestJobParseJobsItemContent from './item-content';
 import DocumentationIngestJobParseJobsItemStatus from './item-status';
 import DocumentationIngestJobParseJobsItemButtons from './item-buttons';
 
@@ -45,7 +43,7 @@ export default function DocumentationIngestJobParseJobsItem({
             </>
           )}
         </div>
-        {viewContentOpen && (
+        {parse_job.status === 'completed' && viewContentOpen && (
           <DocumentationIngestJobParseJobsItemContent viewContentSplit={viewContentSplit} parse_job={parse_job} />
         )}
       </ItemContent>

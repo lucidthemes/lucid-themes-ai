@@ -1,4 +1,4 @@
-import { Check, CircleAlert } from 'lucide-react';
+import { CircleAlert } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,24 @@ export default function DocumentationIngestJobParseJobsItemStatus({
 }: {
   parse_job: DocumentationIngestJobParseJob;
 }) {
-  if (parse_job.status === 'pending') return <Spinner className="size-5" />;
-
-  if (parse_job.status === 'completed') return <Check className="size-5 text-green-500" />;
+  if (parse_job.status === 'pending') {
+    return (
+      <HoverCard>
+        <HoverCardTrigger
+          delay={10}
+          closeDelay={100}
+          render={
+            <Button variant="outline" size="icon">
+              <Spinner />
+            </Button>
+          }
+        />
+        <HoverCardContent className="flex w-fit max-w-64 flex-col gap-0.5">
+          <span className="font-medium">Processing LlamaParse job</span>
+        </HoverCardContent>
+      </HoverCard>
+    );
+  }
 
   if (parse_job.status === 'failed') {
     return (
@@ -27,7 +42,8 @@ export default function DocumentationIngestJobParseJobsItemStatus({
           }
         />
         <HoverCardContent className="flex w-fit max-w-64 flex-col gap-0.5">
-          <span>{parse_job.error_message ?? 'Unknown error'}</span>
+          <span className="font-medium">LlamaParse job failed</span>
+          Error: {parse_job.error_message ?? 'Unknown error'}
         </HoverCardContent>
       </HoverCard>
     );

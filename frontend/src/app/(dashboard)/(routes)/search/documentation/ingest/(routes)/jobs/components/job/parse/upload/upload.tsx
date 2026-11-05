@@ -7,8 +7,8 @@ import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../..
 
 import DocumentationIngestJobParseUploadDocumentForm from './document';
 import DocumentationIngestJobParseUploadWebpageForm from './webpage';
-import DocumentationIngestJobParseUploadLoading from './loading';
-import DocumentationIngestJobParseUploadFailed from './failed';
+// import DocumentationIngestJobParseUploadLoading from './loading';
+// import DocumentationIngestJobParseUploadFailed from './failed';
 
 export default function DocumentationIngestJobParseUpload({
   ingestJobStatus,

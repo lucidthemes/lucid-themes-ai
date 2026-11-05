@@ -1,4 +1,11 @@
+import { Suspense } from 'react';
 import { Metadata } from 'next';
+
+import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
+import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
+import { LoadingSpinner } from '@/components/loading';
+
+import DocumentationIngestParseJobsList from './components/list';
 
 export const metadata: Metadata = {
   title: 'Documentation - Ingest parse jobs',
@@ -6,5 +13,12 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardSearchDocumentationIngestParseJobsPage() {
-  return <p>ingest parse jobs!</p>;
+  return (
+    <DashboardLayoutContainer>
+      <DashboardLayoutHeading heading="Ingest parse jobs" />
+      <Suspense key="documentation-ingest-parse-jobs" fallback={<LoadingSpinner />}>
+        <DocumentationIngestParseJobsList />
+      </Suspense>
+    </DashboardLayoutContainer>
+  );
 }

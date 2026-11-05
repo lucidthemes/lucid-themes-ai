@@ -42,7 +42,7 @@ export default async function getDocumentationIngestJob(jobId: string): Promise<
   // }
 
   const { data, error } = await backendAPIFetch<null, DocumentationIngestJob>({
-    url: `/api/v1/search/documentation/ingest/job/${jobId}`,
+    url: `/api/v1/search/documentation/ingest/jobs/${jobId}`,
   });
 
   if (!data || error) {

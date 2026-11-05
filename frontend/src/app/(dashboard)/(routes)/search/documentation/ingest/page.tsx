@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { Eye, Plus } from 'lucide-react';
 
 import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
@@ -9,6 +10,10 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 
 import DocumentationIngestJobsList from './(routes)/jobs/components/list';
+import DocumentationIngestSourcesList from './(routes)/sources/components/list';
+import DocumentationIngestParseJobsList from './(routes)/parse-jobs/components/list';
+import DocumentationIngestEmbeddingJobsList from './(routes)/embedding-jobs/components/list';
+import DocumentationIngestChunksList from './(routes)/chunks/components/list';
 
 export const metadata: Metadata = {
   title: 'Documentation - Ingest',
@@ -22,12 +27,19 @@ export default function DashboardSearchDocumentationIngestPage() {
       <div className="grid grid-cols-2 gap-10">
         <Card className="col-span-2">
           <CardHeader>
-            <CardTitle>Jobs</CardTitle>
+            <CardTitle>
+              <Link href="ingest/jobs">Jobs</Link>
+            </CardTitle>
             <CardDescription>Card Description</CardDescription>
-            <CardAction>
+            <CardAction className="flex gap-5">
               <Link href="ingest/jobs">
-                <Button variant="link" className="cursor-pointer">
-                  View more
+                <Button variant="outline" className="cursor-pointer">
+                  <Eye /> View more
+                </Button>
+              </Link>
+              <Link href="ingest/jobs/new">
+                <Button className="cursor-pointer">
+                  <Plus /> New job
                 </Button>
               </Link>
             </CardAction>
@@ -40,7 +52,9 @@ export default function DashboardSearchDocumentationIngestPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Sources</CardTitle>
+            <CardTitle>
+              <Link href="ingest/sources">Sources</Link>
+            </CardTitle>
             <CardDescription>Card Description</CardDescription>
             <CardAction>
               <Link href="ingest/sources">
@@ -51,12 +65,16 @@ export default function DashboardSearchDocumentationIngestPage() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <p>sources list...</p>
+            <Suspense key="documentation-ingest-sources" fallback={<LoadingSpinner />}>
+              <DocumentationIngestSourcesList />
+            </Suspense>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Parse jobs</CardTitle>
+            <CardTitle>
+              <Link href="ingest/parse-jobs">Parse jobs</Link>
+            </CardTitle>
             <CardDescription>Card Description</CardDescription>
             <CardAction>
               <Link href="ingest/parse-jobs">
@@ -67,12 +85,16 @@ export default function DashboardSearchDocumentationIngestPage() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <p>parse jobs list...</p>
+            <Suspense key="documentation-ingest-parse-jobs" fallback={<LoadingSpinner />}>
+              <DocumentationIngestParseJobsList />
+            </Suspense>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Embedding jobs</CardTitle>
+            <CardTitle>
+              <Link href="ingest/embedding-jobs">Embedding jobs</Link>
+            </CardTitle>
             <CardDescription>Card Description</CardDescription>
             <CardAction>
               <Link href="ingest/embedding-jobs">
@@ -83,12 +105,16 @@ export default function DashboardSearchDocumentationIngestPage() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <p>embedding jobs list...</p>
+            <Suspense key="documentation-ingest-embedding-jobs" fallback={<LoadingSpinner />}>
+              <DocumentationIngestEmbeddingJobsList />
+            </Suspense>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Chunks</CardTitle>
+            <CardTitle>
+              <Link href="ingest/chunks">Chunks</Link>
+            </CardTitle>
             <CardDescription>Card Description</CardDescription>
             <CardAction>
               <Link href="ingest/chunks">
@@ -99,7 +125,9 @@ export default function DashboardSearchDocumentationIngestPage() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <p>chunks list...</p>
+            <Suspense key="documentation-ingest-chunks" fallback={<LoadingSpinner />}>
+              <DocumentationIngestChunksList />
+            </Suspense>
           </CardContent>
         </Card>
       </div>
