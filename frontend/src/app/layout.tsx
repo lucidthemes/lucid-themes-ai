@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import { Toaster } from '@/components/ui/toast';
+import { AppSheet } from '@/components/sheet';
 import AppProviders from '@/lib/providers/app-providers';
 import { DEFAULT_METADATA } from '@/lib/metadata';
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AppProviders>{children}</AppProviders>
         <Toaster />
+        <AppSheet />
       </body>
     </html>
   );
