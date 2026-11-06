@@ -1,12 +1,15 @@
 'use client';
 
+import { useShallow } from 'zustand/shallow';
 import { Eye } from 'lucide-react';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import type { DataTableFeatures } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
+import { useAppSheetStore } from '@/store/sheet.store';
 
 import type { DocumentationIngestSources } from '../../schemas/ingest-sources.schema';
+import DocumentationIngestSourcesListcolumnsViewButton from './view-button';
 
 const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestSources>();
 
@@ -44,9 +47,7 @@ export const DocumentationIngestSourcesListcolumns = columnHelper.columns([
 
       return (
         <div className="text-right">
-          <Button variant="ghost" size="icon" className="cursor-pointer">
-            <Eye />
-          </Button>
+          <DocumentationIngestSourcesListcolumnsViewButton item={item} />
         </div>
       );
     },

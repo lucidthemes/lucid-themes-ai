@@ -4,6 +4,7 @@ import { DocumentationIngestEmbeddingJobSchema } from './ingest-embedding-job.sc
 
 export const DocumentationIngestEmbeddingJobsSchema = DocumentationIngestEmbeddingJobSchema.pick({
   id: true,
+  provider: true,
   model: true,
   created_at: true,
 });

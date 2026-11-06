@@ -24,7 +24,7 @@ export default function DashboardSearchDocumentationIngestPage() {
   return (
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Documentation ingest" />
-      <div className="grid grid-cols-2 gap-10">
+      <div className="flex flex-col gap-10 lg:grid lg:grid-cols-2">
         <Card className="col-span-2">
           <CardHeader>
             <CardTitle>

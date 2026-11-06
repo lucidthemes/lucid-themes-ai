@@ -7,5 +7,5 @@ import type { DocumentationIngestJobs } from '../../schemas/ingest-jobs.schema';
 import { DocumentationIngestJobsListcolumns } from './columns';
 
 export default function DocumentationIngestJobsListTable({ ingestJobs }: { ingestJobs: DocumentationIngestJobs[] }) {
-  return <DataTable columns={DocumentationIngestJobsListcolumns} data={ingestJobs} />;
+  return <DataTable columns={DocumentationIngestJobsListcolumns} data={ingestJobs} layoutFixed={true} />;
 }

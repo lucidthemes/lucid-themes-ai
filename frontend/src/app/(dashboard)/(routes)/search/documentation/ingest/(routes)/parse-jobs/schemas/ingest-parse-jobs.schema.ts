@@ -7,6 +7,7 @@ export const DocumentationIngestParseJobsSchema = DocumentationIngestParseJobSch
   llamaparse_job_id: true,
   status: true,
   created_at: true,
+  updated_at: true,
 });
 
 export type DocumentationIngestParseJobs = z.infer<typeof DocumentationIngestParseJobsSchema>;

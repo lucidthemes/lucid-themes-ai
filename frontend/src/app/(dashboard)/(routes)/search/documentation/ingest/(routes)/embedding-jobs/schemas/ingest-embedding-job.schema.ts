@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const DocumentationIngestEmbeddingJobSchema = z.object({
   id: z.uuid(),
+  provider: z.string(),
   model: z.string(),
   usage: z.object({
     prompt_tokens: z.int().positive(),

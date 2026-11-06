@@ -16,7 +16,7 @@ export const DocumentationIngestParseJobsListcolumns = columnHelper.columns([
   }),
 
   columnHelper.accessor('llamaparse_job_id', {
-    header: 'Llamaparse job id',
+    header: 'LlamaParse job id',
   }),
 
   columnHelper.display({
@@ -36,6 +36,17 @@ export const DocumentationIngestParseJobsListcolumns = columnHelper.columns([
       const item = row.original;
 
       return item.created_at;
+      // return dateTimeFormat(item.created_at);
+    },
+  }),
+
+  columnHelper.display({
+    id: 'updated_at',
+    header: 'Updated',
+    cell: ({ row }) => {
+      const item = row.original;
+
+      return item.updated_at;
       // return dateTimeFormat(item.created_at);
     },
   }),

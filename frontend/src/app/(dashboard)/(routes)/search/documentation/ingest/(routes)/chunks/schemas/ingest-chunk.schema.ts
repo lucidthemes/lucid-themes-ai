@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const DocumentationIngestChunkSchema = z.object({
   id: z.uuid(),
+  ingest_job_id: z.uuid(),
   content: z.string(),
   metadata: z.object().loose(),
   embedding: z.string(),
