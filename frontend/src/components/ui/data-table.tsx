@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from 'cn';
 import { useTable, type ColumnDef, type RowData } from '@tanstack/react-table';
 import {
   columnFilteringFeature,
@@ -25,18 +26,21 @@ export type DataTableFeatures = typeof features;
 interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];
   data: TData[];
+  layoutFixed?: boolean;
 }
 
-export function DataTable<TData extends RowData>({ columns, data }: DataTableProps<TData>) {
+export function DataTable<TData extends RowData>({ columns, data, layoutFixed = false }: DataTableProps<TData>) {
   const table = useTable({
     features,
     data,
     columns,
   });
 
+  const layoutFixedClass = layoutFixed ? '2xl:table-fixed' : '';
+
   return (
     <div className="overflow-hidden rounded-md border">
-      <Table className="table-fixed overflow-x-scroll">
+      <Table className={cn('table-auto overflow-x-scroll', layoutFixedClass)}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
