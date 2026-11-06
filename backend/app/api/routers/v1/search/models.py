@@ -17,8 +17,8 @@ from .schemas import (
 )
 
 
-class DocumentationIngestJobSource(Base, IdMixin, CreatedAtMixin):
-    __tablename__ = "documentation_ingest_job_sources"
+class DocumentationIngestSource(Base, IdMixin, CreatedAtMixin):
+    __tablename__ = "documentation_ingest_sources"
 
     type: Mapped[DocumentationIngestJobSourceType] = mapped_column(
         Enum(
@@ -36,9 +36,13 @@ class DocumentationIngestJobSource(Base, IdMixin, CreatedAtMixin):
     )
 
 
-class DocumentationIngestJobParseJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
-    __tablename__ = "documentation_ingest_job_parse_jobs"
+class DocumentationIngestParseJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
+    __tablename__ = "documentation_ingest_parse_jobs"
 
+    ingest_job_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("documentation_ingest_jobs.id"),
+        nullable=False,
+    )
     llamaparse_job_id: Mapped[str] = mapped_column(nullable=False)
     status: Mapped[DocumentationIngestJobStatus] = mapped_column(
         Enum(
@@ -69,9 +73,10 @@ class DocumentationIngestJobParseJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMix
     )
 
 
-class DocumentationIngestJobEmbeddingsJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
-    __tablename__ = "documentation_ingest_job_embeddings_jobs"
+class DocumentationIngestEmbeddingJob(Base, IdMixin, CreatedAtMixin):
+    __tablename__ = "documentation_ingest_embedding_jobs"
 
+    provider: Mapped[str] = mapped_column(nullable=False)
     model: Mapped[str] = mapped_column(nullable=False)
     usage: Mapped[DocumentationIngestJobEmbeddingsJobUsage] = mapped_column(
         JSONB,
@@ -80,7 +85,7 @@ class DocumentationIngestJobEmbeddingsJob(Base, IdMixin, CreatedAtMixin, Updated
     )
 
     ingest_job: Mapped[DocumentationIngestJob] = relationship(
-        back_populates="embeddings_job",
+        back_populates="embedding_job",
     )
 
 
@@ -89,12 +94,12 @@ class DocumentationIngestJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
 
     user_id: Mapped[str] = mapped_column(nullable=False)
     name: Mapped[str] = mapped_column(nullable=False)
-    source_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("documentation_ingest_job_sources.id"))
-    parse_job_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("documentation_ingest_job_parse_jobs.id")
-    )
-    embeddings_job_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("documentation_ingest_job_embeddings_jobs.id"),
+    source_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("documentation_ingest_sources.id"))
+    # parse_job_id: Mapped[uuid.UUID] = mapped_column(
+    #     ForeignKey("documentation_ingest_parse_jobs.id")
+    # )
+    embedding_job_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("documentation_ingest_embedding_jobs.id"),
         nullable=True,
     )
     status: Mapped[DocumentationIngestJobStatus] = mapped_column(
@@ -106,16 +111,13 @@ class DocumentationIngestJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
         default=DocumentationIngestJobStatus.PENDING,
     )
 
-    source: Mapped[DocumentationIngestJobSource] = relationship(
+    source: Mapped[DocumentationIngestSource] = relationship(
         back_populates="ingest_jobs",
     )
-    # parse_job: Mapped[DocumentationIngestJobParseJob] = relationship(
-    #     back_populates="ingest_job",
-    # )
-    parse_jobs: Mapped[list[DocumentationIngestJobParseJob]] = relationship(
+    parse_jobs: Mapped[list[DocumentationIngestParseJob]] = relationship(
         back_populates="ingest_job",
     )
-    embeddings_job: Mapped[DocumentationIngestJobEmbeddingsJob] = relationship(
+    embedding_job: Mapped[DocumentationIngestEmbeddingJob] = relationship(
         back_populates="ingest_job",
     )
 

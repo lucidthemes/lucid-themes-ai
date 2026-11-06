@@ -88,10 +88,10 @@ async def read_documentation_ingest_jobs(
             {
                 "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
                 "name": "Test ingest job 1",
-                "source": {
-                    "type": "document",
-                    "file_name": "some-pdf-file-here.pdf",
-                },
+                # "source": {
+                #     "type": "document",
+                #     "file_name": "some-pdf-file-here.pdf",
+                # },
                 "status": "pending",
                 "created_at": "2026-09-06 11:52:33",
                 "updated_at": "2026-09-06 11:52:33",
@@ -99,10 +99,10 @@ async def read_documentation_ingest_jobs(
             {
                 "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
                 "name": "Test ingest job 2",
-                "source": {
-                    "type": "webpage",
-                    "webpage_url": "https://www.example.com",
-                },
+                # "source": {
+                #     "type": "webpage",
+                #     "webpage_url": "https://www.example.com",
+                # },
                 "status": "completed",
                 "created_at": "2026-09-06 11:52:33",
                 "updated_at": "2026-09-06 11:52:33",
@@ -568,15 +568,19 @@ async def read_documentation_ingest_parse_jobs(
         data=[
             {
                 "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
                 "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "status": "completed",
                 "created_at": "2026-09-06 11:52:33",
+                "updated_at": "2026-09-06 11:52:33",
             },
             {
                 "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
                 "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "status": "completed",
                 "created_at": "2026-09-06 11:52:33",
+                "updated_at": "2026-09-06 11:52:33",
             },
         ]
     )
@@ -592,12 +596,16 @@ async def read_documentation_ingest_embedding_jobs(
         data=[
             {
                 "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "provider": "OpenAI",
                 "model": "text-embedding-3-small",
+                "usage": {"prompt_tokens": 8, "total_tokens": 8},
                 "created_at": "2026-09-06 11:52:33",
             },
             {
                 "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "provider": "OpenAI",
                 "model": "text-embedding-3-small",
+                "usage": {"prompt_tokens": 8, "total_tokens": 8},
                 "created_at": "2026-09-06 11:52:33",
             },
         ]
@@ -612,12 +620,28 @@ async def read_documentation_ingest_chunks(
         data=[
             {
                 "id": "018204a2-9e58-4618-affe-e313be132aee",
+                "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
                 "content": "test content 1 python",
+                "metadata": {
+                    "source_type": "document",
+                    "file_name": "some-pdf-file-here.pdf",
+                    "Header 1": "Intro",
+                    "Header 2": "History",
+                },
+                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
                 "created_at": "2026-09-06 11:52:33",
             },
             {
                 "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
                 "content": "test content 2",
+                "metadata": {
+                    "source_type": "document",
+                    "file_name": "some-pdf-file-here.pdf",
+                    "Header 1": "Intro",
+                    "Header 2": "History",
+                },
+                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
                 "created_at": "2026-09-06 11:52:33",
             },
         ]
