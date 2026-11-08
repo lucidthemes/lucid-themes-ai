@@ -38,7 +38,7 @@ function DocumentationIngestJobTestingHeading() {
       <FlaskConical />
       <h1 className="font-heading text-base font-medium">Test ingest job</h1>
       <span className="text-sm text-muted-foreground">
-        Use this ingest job embedding vectors in isolation to test responses
+        Use this ingest job embeddings in isolation to test responses
       </span>
     </div>
   );

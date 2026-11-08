@@ -3,33 +3,29 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-// import { getAuthAccessToken } from '@/lib/supabase/auth';
-// import { serverApiUrl } from '@/lib/api-urls';
-
 import { backendAPIFetch } from '@/lib/backend-api';
 
-// import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
-
-// import { DocumentationIngestJobChunksCreateFormChunkSchema } from '../schemas/chunks-create-form.schema';
-// import type { DocumentationIngestJobChunksCreateFormChunk } from '../schemas/chunks-create-form.schema';
 import { DocumentationIngestJobChunksEmbeddingsActionSchema } from '../schemas/chunks-embeddings-action.schema';
 import type { DocumentationIngestJobChunksEmbeddingsAction } from '../schemas/chunks-embeddings-action.schema';
 
 export default async function createIngestJobChunksEmbeddings({
+  ingestJobId,
   chunks,
   ingestJobPathname,
 }: {
+  ingestJobId: string;
   chunks: DocumentationIngestJobChunksEmbeddingsAction;
   ingestJobPathname: string;
 }): Promise<{ success: boolean } | void> {
+  const parsedIngestJobId = z.uuid().safeParse(ingestJobId);
   const parsedRequest = DocumentationIngestJobChunksEmbeddingsActionSchema.safeParse(chunks);
 
-  if (!parsedRequest.success) {
+  if (!parsedIngestJobId.success || !parsedRequest.success) {
     return { success: false };
   }
 
   const { error, status } = await backendAPIFetch<DocumentationIngestJobChunksEmbeddingsAction, null>({
-    url: '/api/v1/search/documentation/ingest/job/new/embeddings',
+    url: `/api/v1/search/documentation/ingest/jobs/${ingestJobId}/embeddings`,
     method: 'POST',
     requestData: parsedRequest.data,
   });

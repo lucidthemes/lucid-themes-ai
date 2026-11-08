@@ -25,7 +25,7 @@ export default function DocumentationIngestJobChunksHeader({
   chunks,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  ingestJobData?: DocumentationIngestJob;
+  ingestJobData: DocumentationIngestJob;
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
   isPending: boolean;
@@ -33,6 +33,8 @@ export default function DocumentationIngestJobChunksHeader({
   // chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[] | null;
   chunks?: DocumentationIngestJobChunk[] | null;
 }) {
+  if (!ingestJobData) return;
+
   const chunksTitleType = ingestJobData?.source.type ?? '';
 
   return (
@@ -57,7 +59,10 @@ export default function DocumentationIngestJobChunksHeader({
           </Button>
 
           {ingestJobStatus !== 'completed' && (
-            <DocumentationIngestJobChunksEmbeddingsButton startTransition={startTransition} />
+            <DocumentationIngestJobChunksEmbeddingsButton
+              ingestJobData={ingestJobData}
+              startTransition={startTransition}
+            />
           )}
         </CardAction>
       )}

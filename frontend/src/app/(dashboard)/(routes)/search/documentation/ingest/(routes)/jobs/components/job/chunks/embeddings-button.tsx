@@ -9,10 +9,13 @@ import { toast } from '@/components/ui/toast';
 
 import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 import createIngestJobChunksEmbeddings from '../../../(routes)/new/actions/create-chunks-embeddings.action';
+import type { DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
 
 export default function DocumentationIngestJobChunksEmbeddingsButton({
+  ingestJobData,
   startTransition,
 }: {
+  ingestJobData: DocumentationIngestJob;
   startTransition: TransitionStartFunction;
 }) {
   const ingestJobChunksCreated = useIngestJobNewStore((state) => state.ingestJobChunksCreated);
@@ -27,6 +30,7 @@ export default function DocumentationIngestJobChunksEmbeddingsButton({
           if (!ingestJobChunksCreated || ingestJobChunksCreated.length === 0) return;
 
           const createEmbeddings = await createIngestJobChunksEmbeddings({
+            ingestJobId: ingestJobData.id,
             chunks: ingestJobChunksCreated,
             ingestJobPathname: pathname,
           });
