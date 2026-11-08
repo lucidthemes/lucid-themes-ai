@@ -22,64 +22,14 @@ from .schemas import (
     DocumentationIngestSourcesResponse,
 )
 from .service import (
-    documentation_ingest_job_chunk_split_markdown,
-    documentation_ingest_job_chunk_split_text,
+    documentation_ingest_chunk_split_markdown,
+    documentation_ingest_chunk_split_text,
 )
 
-router = APIRouter(prefix="/search", tags=["search"])
+router = APIRouter(prefix="/search/documentation/ingest", tags=["Search documentation - ingest"])
 
 
-# class Result(BaseModel):
-#     name: str
-#     description: str | None
-
-
-# results = [
-#     Result(name="Plumbus", description="A multi-purpose household device."),
-#     Result(name="Portal Gun", description="A portal opening device."),
-#     Result(name="Meeseeks Box", description="A box that summons a Meeseeks."),
-# ]
-
-
-# @router.get("/")
-# async def read_search(
-#     current_user: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
-# ):
-#     return results
-
-
-# ingest_job = DocumentationIngestJob(
-#     id="00000599-a0b0-4ec2-80de-ec7bc5fbe76d",
-#     name="New ingest job 1!",
-#     type="document",
-#     status="completed",
-#     created_at="2026-09-06 11:52:33",
-#     updated_at="2026-09-06 11:52:33",
-# )
-
-# ingest_jobs = [
-#     DocumentationIngestJobsResponse(
-#         id="00000599-a0b0-4ec2-80de-ec7bc5fbe76d",
-#         name="New ingest job 1!",
-#         # source=[
-#         #     type='document',
-#         # ],
-#         status="completed",
-#         created_at="2026-09-06 11:52:33",
-#         updated_at="2026-09-06 11:52:33",
-#     ),
-#     DocumentationIngestJobsResponse(
-#         id="00fa61ce-1505-42f1-b119-601663dad1dc",
-#         name="New ingest job 2!",
-#         type="document",
-#         status="completed",
-#         created_at="2026-09-06 11:52:33",
-#         updated_at="2026-09-06 11:52:33",
-#     ),
-# ]
-
-
-@router.get("/documentation/ingest/jobs", response_model=DocumentationIngestJobsResponse)
+@router.get("/jobs", response_model=DocumentationIngestJobsResponse)
 async def read_documentation_ingest_jobs(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
 ):
@@ -88,10 +38,6 @@ async def read_documentation_ingest_jobs(
             {
                 "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
                 "name": "Test ingest job 1",
-                # "source": {
-                #     "type": "document",
-                #     "file_name": "some-pdf-file-here.pdf",
-                # },
                 "status": "pending",
                 "created_at": "2026-09-06 11:52:33",
                 "updated_at": "2026-09-06 11:52:33",
@@ -99,25 +45,12 @@ async def read_documentation_ingest_jobs(
             {
                 "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
                 "name": "Test ingest job 2",
-                # "source": {
-                #     "type": "webpage",
-                #     "webpage_url": "https://www.example.com",
-                # },
                 "status": "completed",
                 "created_at": "2026-09-06 11:52:33",
                 "updated_at": "2026-09-06 11:52:33",
             },
         ]
     )
-
-
-@router.post("/documentation/ingest/jobs/duplicate/{job_id}")
-async def create_documentation_ingest_job_duplicate(
-    job_id: uuid.UUID,
-    current_user: Annotated[str, Depends(get_current_user)],
-    db: AsyncSession = Depends(get_write_db),
-) -> Response:
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 test_ingest_job_parse_pending = DocumentationIngestJobResponse(
@@ -130,33 +63,9 @@ test_ingest_job_parse_pending = DocumentationIngestJobResponse(
         },
         "parse_jobs": [
             {
-                "id": "00563b80-ef1c-4f0c-b5e9-8763caed9c1b",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "failed",
-                "error_message": "failed to parse",
-            },
-            {
                 "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "status": "pending",
-            },
-            {
-                "id": "00563b89-ef1c-4f0c-b5e9-8763caed9c1b",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "failed",
-                "error_message": "failed to parse",
-            },
-            {
-                "id": "00573b80-ef1c-4f0d-b5e9-8762caed9c1b",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "completed",
-                "markdown_full": "#text",
-                "text_full": "text",
-                "tier": "cost_effective",
-                "error_message": "",
-                "usage": {
-                    "credits": 30.0,
-                },
             },
         ],
         "status": "pending",
@@ -179,11 +88,6 @@ test_ingest_job_parse_failed = DocumentationIngestJobResponse(
                 "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
                 "status": "failed",
                 "error_message": "failed to parse",
-            },
-            {
-                "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "pending",
             },
         ],
         "status": "pending",
@@ -243,6 +147,7 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
             }
         ],
         "embeddings_job": {
+            "provider": "OpenAI",
             "model": "text-embedding-3-small",
             "usage": {
                 "prompt_tokens": 5,
@@ -280,74 +185,34 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
 )
 
 
-@router.get("/documentation/ingest/jobs/{job_id}", response_model=DocumentationIngestJobResponse)
+@router.get("/jobs/{job_id}", response_model=DocumentationIngestJobResponse)
 async def read_documentation_ingest_job(
     job_id: uuid.UUID,
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
 ):
-    return test_ingest_job_parse_pending
-    # return DocumentationIngestJobResponse(
-    #     data={
-    #         "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
-    #         "name": "Test ingest job 1",
-    #         "source": {
-    #             "type": "document",
-    #             "file_name": "some-pdf-file-here.pdf",
-    #         },
-    #         "parse_job": {
-    #             "id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-    #             "parse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-    #             "status": "completed",
-    #             "markdown_full": "#text",
-    #             "text_full": "text",
-    #             "tier": "cost_effective",
-    #             "error_message": "",
-    #             "usage": {
-    #                 "credits": 30.0,
-    #             },
-    #         },
-    #         "chunks": [
-    #             {
-    #                 "id": "018204a2-9e58-4618-affe-e313be132aee",
-    #                 "content": "test content 1 python",
-    #                 "metadata": {
-    #                     "source_type": "document",
-    #                     "file_name": "some-pdf-file-here.pdf",
-    #                     "Header 1": "Intro",
-    #                     "Header 2": "History",
-    #                 },
-    #                 "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
-    #             },
-    #             {
-    #                 "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-    #                 "content": "test content 2",
-    #                 "metadata": {
-    #                     "source_type": "document",
-    #                     "file_name": "some-pdf-file-here.pdf",
-    #                     "Header 1": "Intro",
-    #                     "Header 2": "History",
-    #                 },
-    #                 "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
-    #             },
-    #         ],
-    #         "embeddings_job": {
-    #             "model": "text-embedding-3-small",
-    #             "usage": {
-    #                 "prompt_tokens": 5,
-    #                 "total_tokens": 5,
-    #             },
-    #         },
-    #         "status": "pending",
-    #         "created_at": "2026-09-06 11:52:33",
-    #         "updated_at": "2026-09-06 11:52:33",
-    #     }
-    # )
+    return test_ingest_job_parse_completed
 
 
-@router.post(
-    "/documentation/ingest/job/new/document", response_model=DocumentationIngestJobNewResponse
-)
+@router.delete("/jobs/{job_id}")
+async def delete_documentation_ingest_job(
+    job_id: uuid.UUID,
+    current_user: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_write_db),
+) -> Response:
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/jobs/{job_id}/duplicate")
+async def duplicate_documentation_ingest_job(
+    job_id: uuid.UUID,
+    current_user: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_write_db),
+) -> Response:
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/jobs/document", response_model=DocumentationIngestJobNewResponse)
 async def create_documentation_ingest_job_document(
     data: Annotated[DocumentationIngestJobNewDocumentCreate, Form()],
     current_user: Annotated[str, Depends(get_current_user)],
@@ -358,9 +223,7 @@ async def create_documentation_ingest_job_document(
     )
 
 
-@router.post(
-    "/documentation/ingest/job/new/webpage", response_model=DocumentationIngestJobNewResponse
-)
+@router.post("/jobs/webpage", response_model=DocumentationIngestJobNewResponse)
 async def create_documentation_ingest_job_webpage(
     data: DocumentationIngestJobNewWebpageCreate,
     current_user: Annotated[str, Depends(get_current_user)],
@@ -372,7 +235,8 @@ async def create_documentation_ingest_job_webpage(
 
 
 @router.post(
-    "/documentation/ingest/job/new/chunks", response_model=DocumentationIngestJobNewChunksResponse
+    "/jobs/{job_id}/chunks",
+    response_model=DocumentationIngestJobNewChunksResponse,
 )
 async def create_documentation_ingest_job_chunks(
     data: DocumentationIngestJobNewChunksCreate,
@@ -381,14 +245,14 @@ async def create_documentation_ingest_job_chunks(
     chunks = []
 
     if data.split_method == "markdown":
-        chunks = await documentation_ingest_job_chunk_split_markdown(
+        chunks = documentation_ingest_chunk_split_markdown(
             chunk_size=data.chunk_size,
             chunk_overlap=data.chunk_overlap,
             content=data.content,
             source=data.source,
         )
     elif data.split_method == "text":
-        chunks = await documentation_ingest_job_chunk_split_text(
+        chunks = documentation_ingest_chunk_split_text(
             chunk_size=data.chunk_size,
             chunk_overlap=data.chunk_overlap,
             content=data.content,
@@ -398,8 +262,9 @@ async def create_documentation_ingest_job_chunks(
     return DocumentationIngestJobNewChunksResponse(data=chunks)
 
 
-@router.post("/documentation/ingest/job/new/embeddings")
+@router.post("/jobs/{job_id}/embeddings")
 async def create_documentation_ingest_job_embeddings(
+    job_id: uuid.UUID,
     data: DocumentationIngestJobNewEmbeddingsCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
@@ -527,7 +392,7 @@ async def create_documentation_ingest_job_embeddings(
     #     ]
     # )
 
-    # Insert embedding job to documentation_ingest_job_embeddings_jobs table and return ID
+    # Insert embedding job to documentation_ingest_embedding_jobs table and return ID
 
     model = response_test["model"]
     usage = response_test["usage"]
@@ -540,7 +405,7 @@ async def create_documentation_ingest_job_embeddings(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.get("/documentation/ingest/sources", response_model=DocumentationIngestSourcesResponse)
+@router.get("/sources", response_model=DocumentationIngestSourcesResponse)
 async def read_documentation_ingest_sources(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
 ):
@@ -563,7 +428,7 @@ async def read_documentation_ingest_sources(
     )
 
 
-@router.get("/documentation/ingest/parse-jobs", response_model=DocumentationIngestParseJobsResponse)
+@router.get("/parse-jobs", response_model=DocumentationIngestParseJobsResponse)
 async def read_documentation_ingest_parse_jobs(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
 ):
@@ -604,9 +469,7 @@ async def read_documentation_ingest_parse_jobs(
     )
 
 
-@router.get(
-    "/documentation/ingest/embedding-jobs", response_model=DocumentationIngestEmbeddingJobsResponse
-)
+@router.get("/embedding-jobs", response_model=DocumentationIngestEmbeddingJobsResponse)
 async def read_documentation_ingest_embedding_jobs(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
 ):
@@ -632,7 +495,7 @@ async def read_documentation_ingest_embedding_jobs(
     )
 
 
-@router.get("/documentation/ingest/chunks", response_model=DocumentationIngestChunksResponse)
+@router.get("/chunks", response_model=DocumentationIngestChunksResponse)
 async def read_documentation_ingest_chunks(
     _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
 ):

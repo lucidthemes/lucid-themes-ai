@@ -93,7 +93,7 @@ Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
 Mauris nec nunc dignissim, vulputate ex vel, pellentesque risus. Aliquam erat volutpat. Vestibulum at aliquet nulla. Curabitur varius lorem et consectetur aliquam. Nulla luctus ultrices molestie. Praesent pharetra ipsum quis ante viverra, sed bibendum libero luctus. Suspendisse non nunc ut nulla tincidunt congue quis vel libero. Duis auctor, nunc id malesuada iaculis, purus neque vehicula eros, eleifend sagittis nibh mauris ornare mauris. In tincidunt nulla purus, id lobortis mauris sagittis at."""
 
 
-async def documentation_ingest_job_chunk_source_metadata(source: DocumentationIngestJobSource):
+def documentation_ingest_chunk_source_metadata(source: DocumentationIngestJobSource):
     source_metadata = {}
     source_metadata["source_type"] = source.type
 
@@ -106,7 +106,7 @@ async def documentation_ingest_job_chunk_source_metadata(source: DocumentationIn
     return source_metadata
 
 
-async def documentation_ingest_job_chunk_split_markdown(
+def documentation_ingest_chunk_split_markdown(
     chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
 ) -> list[DocumentationIngestJobNewChunk]:
     headers_to_split_on = [
@@ -130,7 +130,7 @@ async def documentation_ingest_job_chunk_split_markdown(
 
     split_documents = recursive_splitter.split_documents(sections)
 
-    source_metadata = await documentation_ingest_job_chunk_source_metadata(source=source)
+    source_metadata = documentation_ingest_chunk_source_metadata(source=source)
 
     structured_chunks = []
 
@@ -147,7 +147,7 @@ async def documentation_ingest_job_chunk_split_markdown(
     return structured_chunks
 
 
-async def documentation_ingest_job_chunk_split_text(
+def documentation_ingest_chunk_split_text(
     chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
 ) -> list[DocumentationIngestJobNewChunk]:
     text_splitter = RecursiveCharacterTextSplitter(
@@ -159,7 +159,7 @@ async def documentation_ingest_job_chunk_split_text(
 
     split_documents = text_splitter.split_text(example_text)
 
-    source_metadata = await documentation_ingest_job_chunk_source_metadata(source=source)
+    source_metadata = documentation_ingest_chunk_source_metadata(source=source)
 
     structured_chunks = []
 

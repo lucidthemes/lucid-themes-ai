@@ -8,12 +8,6 @@ from pydantic import BaseModel, HttpUrl
 
 from app.schemas.common import APIResponse
 
-from .enums import (
-    DocumentationIngestJobSourceType,
-    DocumentationIngestJobStatus,
-    DocumentationIngestJobTier,
-)
-
 # General
 
 
@@ -35,7 +29,7 @@ class DocumentationIngestStatus(StrEnum):
 #     FAST = "fast"
 
 
-# Ingest sources
+# Ingest source
 
 
 class DocumentationIngestSourceType(StrEnum):
@@ -52,10 +46,12 @@ class DocumentationIngestSource(BaseModel):
     created_at: datetime
 
 
+# Ingest sources list
+
 DocumentationIngestSourcesResponse = APIResponse[list[DocumentationIngestSource]]
 
 
-# Ingest parse jobs
+# Ingest parse job
 
 
 class DocumentationIngestParseJobTier(StrEnum):
@@ -83,10 +79,12 @@ class DocumentationIngestParseJob(BaseModel):
     updated_at: datetime
 
 
+# Ingest parse jobs list
+
 DocumentationIngestParseJobsResponse = APIResponse[list[DocumentationIngestParseJob]]
 
 
-# Ingest embedding jobs
+# Ingest embedding job
 
 
 class DocumentationIngestEmbeddingJobUsage(BaseModel):
@@ -103,10 +101,12 @@ class DocumentationIngestEmbeddingJob(BaseModel):
     created_at: datetime
 
 
+# Ingest embedding jobs list
+
 DocumentationIngestEmbeddingJobsResponse = APIResponse[list[DocumentationIngestEmbeddingJob]]
 
 
-# Ingest chunks
+# Ingest chunk
 
 
 class DocumentationIngestChunk(BaseModel):
@@ -118,10 +118,12 @@ class DocumentationIngestChunk(BaseModel):
     created_at: datetime
 
 
+# Ingest chunks list
+
 DocumentationIngestChunksResponse = APIResponse[list[DocumentationIngestChunk]]
 
 
-# Ingest jobs
+# Ingest jobs list
 
 
 class DocumentationIngestJobs(BaseModel):
@@ -135,14 +137,63 @@ class DocumentationIngestJobs(BaseModel):
 DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobs]]
 
 
-# old ---
+# Single ingest job
 
 
 class DocumentationIngestJobSource(BaseModel):
-    type: DocumentationIngestJobSourceType
+    type: DocumentationIngestSourceType
     file_name: str | None = None
     file_url: str | None = None
     webpage_url: str | None = None
+
+
+class DocumentationIngestJobParseJob(BaseModel):
+    id: uuid.UUID
+    llamaparse_job_id: str
+    status: DocumentationIngestStatus
+    markdown_full: str | None = None
+    text_full: str | None = None
+    tier: DocumentationIngestParseJobTier | None = None
+    error_message: str | None = None
+    usage: DocumentationIngestParseJobUsage | None = None
+
+
+class DocumentationIngestJobEmbeddingJob(BaseModel):
+    provider: str
+    model: str
+    usage: DocumentationIngestEmbeddingJobUsage
+
+
+class DocumentationIngestJobChunk(BaseModel):
+    id: uuid.UUID
+    content: str
+    metadata: dict[Any, Any]
+    embedding: str
+
+
+class DocumentationIngestJobResponseData(BaseModel):
+    id: uuid.UUID
+    name: str
+    source: DocumentationIngestJobSource
+    parse_jobs: list[DocumentationIngestJobParseJob]
+    embeddings_job: DocumentationIngestJobEmbeddingJob | None = None
+    chunks: list[DocumentationIngestJobChunk] | None = None
+    status: DocumentationIngestStatus
+    created_at: datetime
+    updated_at: datetime
+
+
+DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
+
+
+# old ---
+
+
+# class DocumentationIngestJobSource(BaseModel):
+#     type: DocumentationIngestJobSourceType
+#     file_name: str | None = None
+#     file_url: str | None = None
+#     webpage_url: str | None = None
 
 
 # Ingest jobs list
@@ -211,52 +262,52 @@ class DocumentationIngestJobSource(BaseModel):
 # Single Ingest job
 
 
-class DocumentationIngestJobParseJobUsage(BaseModel):
-    credits: int | None = None
+# class DocumentationIngestJobParseJobUsage(BaseModel):
+#     credits: int | None = None
 
 
-class DocumentationIngestJobParseJob(BaseModel):
-    id: str
-    llamaparse_job_id: str
-    status: DocumentationIngestJobStatus
-    markdown_full: str | None = None
-    text_full: str | None = None
-    tier: DocumentationIngestJobTier | None = None
-    error_message: str | None = None
-    usage: DocumentationIngestJobParseJobUsage | None = None
+# class DocumentationIngestJobParseJob(BaseModel):
+#     id: str
+#     llamaparse_job_id: str
+#     status: DocumentationIngestJobStatus
+#     markdown_full: str | None = None
+#     text_full: str | None = None
+#     tier: DocumentationIngestJobTier | None = None
+#     error_message: str | None = None
+#     usage: DocumentationIngestJobParseJobUsage | None = None
 
 
-class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):
-    prompt_tokens: int
-    total_tokens: int
+# class DocumentationIngestJobEmbeddingsJobUsage(BaseModel):
+#     prompt_tokens: int
+#     total_tokens: int
 
 
-class DocumentationIngestJobEmbeddingsJob(BaseModel):
-    model: str
-    usage: DocumentationIngestJobEmbeddingsJobUsage
+# class DocumentationIngestJobEmbeddingsJob(BaseModel):
+#     model: str
+#     usage: DocumentationIngestJobEmbeddingsJobUsage
 
 
-class DocumentationIngestJobChunk(BaseModel):
-    id: uuid.UUID
-    content: str
-    metadata: dict[Any, Any]
-    embedding: str
-    # embedding: str | None = None
+# class DocumentationIngestJobChunk(BaseModel):
+#     id: uuid.UUID
+#     content: str
+#     metadata: dict[Any, Any]
+#     embedding: str
+#     # embedding: str | None = None
 
 
-class DocumentationIngestJobResponseData(BaseModel):
-    id: uuid.UUID
-    name: str
-    source: DocumentationIngestJobSource
-    parse_jobs: list[DocumentationIngestJobParseJob]
-    embeddings_job: DocumentationIngestJobEmbeddingsJob | None = None
-    chunks: list[DocumentationIngestJobChunk] | None = None
-    status: DocumentationIngestJobStatus
-    created_at: datetime
-    updated_at: datetime
+# class DocumentationIngestJobResponseData(BaseModel):
+#     id: uuid.UUID
+#     name: str
+#     source: DocumentationIngestJobSource
+#     parse_jobs: list[DocumentationIngestJobParseJob]
+#     embeddings_job: DocumentationIngestJobEmbeddingsJob | None = None
+#     chunks: list[DocumentationIngestJobChunk] | None = None
+#     status: DocumentationIngestJobStatus
+#     created_at: datetime
+#     updated_at: datetime
 
 
-DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
+# DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
 
 
 # New ingest job - parse
@@ -269,7 +320,7 @@ class DocumentationIngestJobNewDocumentPages(StrEnum):
 
 class DocumentationIngestJobNewBase(BaseModel):
     name: str
-    tier: DocumentationIngestJobTier
+    tier: DocumentationIngestParseJobTier
 
 
 class DocumentationIngestJobNewDocumentCreate(DocumentationIngestJobNewBase):
