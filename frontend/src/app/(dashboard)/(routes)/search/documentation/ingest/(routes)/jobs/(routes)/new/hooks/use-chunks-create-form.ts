@@ -18,12 +18,14 @@ export default function useDocumentationIngestJobChunksCreateForm({
 }) {
   const setIngestJobChunksCreated = useIngestJobNewStore((state) => state.setIngestJobChunksCreated);
 
-  // const chunksContent =
-  //   ingestJobData && ingestJobData.parse_job.markdown_full
-  //     ? ingestJobData.parse_job.markdown_full
-  //     : ingestJobData && ingestJobData.parse_job.text_full
-  //       ? ingestJobData.parse_job.text_full
-  //       : '';
+  const lastParseJob = ingestJobData?.parse_jobs.at(-1);
+
+  const chunksContent =
+    lastParseJob && lastParseJob.markdown_full
+      ? lastParseJob.markdown_full
+      : lastParseJob && lastParseJob.text_full
+        ? lastParseJob.text_full
+        : '';
 
   const chunksSource = ingestJobData && ingestJobData.source;
 
@@ -32,7 +34,7 @@ export default function useDocumentationIngestJobChunksCreateForm({
       split_method: 'markdown',
       chunk_size: 250,
       chunk_overlap: 30,
-      //content: chunksContent,
+      content: chunksContent,
       source: chunksSource,
     },
     resolver: zodResolver(DocumentationIngestJobChunksCreateFormSchema),
@@ -60,7 +62,9 @@ export default function useDocumentationIngestJobChunksCreateForm({
   });
 
   const onSubmit = async (data: DocumentationIngestJobChunksCreateForm) => {
-    createIngestJobChunksMutation.mutate({ formData: data });
+    if (!ingestJobData) return;
+
+    createIngestJobChunksMutation.mutate({ ingestJobId: ingestJobData.id, formData: data });
   };
 
   return {

@@ -21,14 +21,14 @@ export default function DocumentationIngestJobChunksFooter({
   chunks,
 }: {
   ingestJobStatus: DocumentationIngestJobStatus;
-  ingestJobData?: DocumentationIngestJob;
+  ingestJobData: DocumentationIngestJob;
   expanded: boolean;
   isPending: boolean;
   startTransition: TransitionStartFunction;
   // chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[] | null;
   chunks?: DocumentationIngestJobChunk[] | null;
 }) {
-  if (ingestJobStatus === 'completed') return;
+  if (ingestJobStatus === 'completed' || !ingestJobData) return;
 
   return (
     <CardFooter className="justify-end">
@@ -36,7 +36,7 @@ export default function DocumentationIngestJobChunksFooter({
         <DocumentationIngestJobChunksCreateForm ingestJobStatus={ingestJobStatus} ingestJobData={ingestJobData} />
       )}
       {chunks && chunks.length > 0 && expanded && !isPending && (
-        <DocumentationIngestJobChunksEmbeddingsButton startTransition={startTransition} />
+        <DocumentationIngestJobChunksEmbeddingsButton ingestJobData={ingestJobData} startTransition={startTransition} />
       )}
     </CardFooter>
   );

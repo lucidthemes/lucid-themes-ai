@@ -18,7 +18,9 @@ export default function DocumentationIngestJobCostsEmbeddings({
       </ItemMedia>
       <ItemContent>
         <ItemTitle>Embeddings</ItemTitle>
-        <ItemDescription>{ingestJobData.embeddings_job.model}</ItemDescription>
+        <ItemDescription>
+          {ingestJobData.embeddings_job.provider} - {ingestJobData.embeddings_job.model}
+        </ItemDescription>
       </ItemContent>
       <ItemActions>
         <ul className="flex flex-col items-end gap-1.5">

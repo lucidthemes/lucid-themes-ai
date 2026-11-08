@@ -1,22 +1,20 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
+
 import { backendAPIFetch } from '@/lib/backend-api';
 
-import { DocumentationIngestJobDuplicateActionSchema } from '../schemas/duplicate-ingest-job.schema';
-import type { DocumentationIngestJobDuplicateAction } from '../schemas/duplicate-ingest-job.schema';
-
 export default async function duplicateIngestJob(ingestJobId: string) {
-  const parsedRequest = DocumentationIngestJobDuplicateActionSchema.safeParse(ingestJobId);
+  const parsedIngestJobId = z.uuid().safeParse(ingestJobId);
 
-  if (!parsedRequest.success) {
+  if (!parsedIngestJobId.success) {
     return { success: false };
   }
 
-  const { error, status } = await backendAPIFetch<DocumentationIngestJobDuplicateAction, null>({
-    url: `/api/v1/search/documentation/ingest/jobs/duplicate/${ingestJobId}`,
+  const { error, status } = await backendAPIFetch({
+    url: `/api/v1/search/documentation/ingest/jobs/${ingestJobId}/duplicate`,
     method: 'POST',
-    requestData: parsedRequest.data,
   });
 
   if (error || status !== 204) {

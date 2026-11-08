@@ -1,35 +1,27 @@
 'use server';
 
-// import { z } from 'zod';
-
-// import { getAuthAccessToken } from '@/lib/supabase/auth';
-// import { serverApiUrl } from '@/lib/api-urls';
+import { z } from 'zod';
 
 import { backendAPIFetch } from '@/lib/backend-api';
 
-// import { DocumentationIngestJobChunkSchema } from '../../../schemas/ingest-job.schema';
 import type { DocumentationIngestJobChunk } from '../../../schemas/ingest-job.schema';
 
 import { DocumentationIngestJobChunksCreateFormSchema } from '../schemas/chunks-create-form.schema';
-import type {
-  DocumentationIngestJobChunksCreateForm,
-  // DocumentationIngestJobChunksCreateFormChunk,
-} from '../schemas/chunks-create-form.schema';
+import type { DocumentationIngestJobChunksCreateForm } from '../schemas/chunks-create-form.schema';
 import { DocumentationIngestJobChunksCreateActionResponseSchema } from '../schemas/chunks-create-action.schema';
 import type { DocumentationIngestJobChunksCreateActionResponse } from '../schemas/chunks-create-action.schema';
 
-// import type { DocumentationIngestJobParseChunk } from '../schemas/parse-chunks-form.schema';
-// import { DocumentationIngestJobParseChunksActionResponseSchema } from '../schemas/parse-chunks-action.schema';
-// import type { DocumentationIngestJobParseChunksActionResponse } from '../schemas/parse-chunks-action.schema';
-
 export default async function createIngestJobChunks({
+  ingestJobId,
   formData,
 }: {
+  ingestJobId: string;
   formData: DocumentationIngestJobChunksCreateForm;
 }) {
+  const parsedIngestJobId = z.uuid().safeParse(ingestJobId);
   const parsedRequest = DocumentationIngestJobChunksCreateFormSchema.safeParse(formData);
 
-  if (!parsedRequest.success) {
+  if (!parsedIngestJobId.success || !parsedRequest.success) {
     return { success: false };
   }
 
@@ -37,7 +29,7 @@ export default async function createIngestJobChunks({
     DocumentationIngestJobChunksCreateForm,
     DocumentationIngestJobChunksCreateActionResponse
   >({
-    url: '/api/v1/search/documentation/ingest/job/new/chunks',
+    url: `/api/v1/search/documentation/ingest/jobs/${ingestJobId}/chunks`,
     method: 'POST',
     requestData: parsedRequest.data,
   });
