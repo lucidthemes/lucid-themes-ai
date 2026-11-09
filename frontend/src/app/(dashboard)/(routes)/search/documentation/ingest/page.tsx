@@ -66,7 +66,7 @@ export default function DashboardSearchDocumentationIngestPage() {
           </CardHeader>
           <CardContent>
             <Suspense key="documentation-ingest-sources" fallback={<LoadingSpinner />}>
-              <DocumentationIngestSourcesList />
+              <DocumentationIngestSourcesList showControls={false} />
             </Suspense>
           </CardContent>
         </Card>
