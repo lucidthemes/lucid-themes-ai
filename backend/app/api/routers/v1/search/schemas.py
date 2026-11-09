@@ -186,6 +186,68 @@ class DocumentationIngestJobResponseData(BaseModel):
 DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
 
 
+# New ingest job
+
+# Parse
+
+
+class DocumentationIngestJobParseBase(BaseModel):
+    name: str
+    tier: DocumentationIngestParseJobTier
+
+
+class DocumentationIngestJobParseDocumentPages(StrEnum):
+    ALL = "all"
+    RANGE = "range"
+
+
+class DocumentationIngestJobParseDocumentCreate(DocumentationIngestJobParseBase):
+    file: UploadFile
+    pages: DocumentationIngestJobParseDocumentPages
+    range_from: int | None = None
+    range_to: int | None = None
+
+
+class DocumentationIngestJobParseWebpageCreate(DocumentationIngestJobParseBase):
+    url: HttpUrl
+
+
+class DocumentationIngestJobParseResponseData(BaseModel):
+    id: uuid.UUID
+
+
+DocumentationIngestJobParseResponse = APIResponse[DocumentationIngestJobParseResponseData]
+
+# Chunks
+
+
+class DocumentationIngestJobChunksMethod(StrEnum):
+    MARKDOWN = "markdown"
+    TEXT = "text"
+
+
+class DocumentationIngestJobChunksCreate(BaseModel):
+    split_method: DocumentationIngestJobChunksMethod = "markdown"
+    chunk_size: int = 250
+    chunk_overlap: int = 30
+    content: str
+    source: DocumentationIngestJobSource
+
+
+class DocumentationIngestJobChunksResponseChunk(BaseModel):
+    id: uuid.UUID
+    content: str
+    metadata: dict[Any, Any]
+
+
+DocumentationIngestJobChunksResponse = APIResponse[list[DocumentationIngestJobChunksResponseChunk]]
+
+
+# Embeddings
+
+DocumentationIngestJobEmbeddingsCreate = list[DocumentationIngestJobChunksResponseChunk]
+
+
 # old ---
 
 
@@ -313,56 +375,56 @@ DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
 # New ingest job - parse
 
 
-class DocumentationIngestJobNewDocumentPages(StrEnum):
-    ALL = "all"
-    RANGE = "range"
+# class DocumentationIngestJobNewDocumentPages(StrEnum):
+#     ALL = "all"
+#     RANGE = "range"
 
 
-class DocumentationIngestJobNewBase(BaseModel):
-    name: str
-    tier: DocumentationIngestParseJobTier
+# class DocumentationIngestJobNewBase(BaseModel):
+#     name: str
+#     tier: DocumentationIngestParseJobTier
 
 
-class DocumentationIngestJobNewDocumentCreate(DocumentationIngestJobNewBase):
-    file: UploadFile
-    pages: DocumentationIngestJobNewDocumentPages
-    range_from: int | None = None
-    range_to: int | None = None
+# class DocumentationIngestJobNewDocumentCreate(DocumentationIngestJobNewBase):
+#     file: UploadFile
+#     pages: DocumentationIngestJobNewDocumentPages
+#     range_from: int | None = None
+#     range_to: int | None = None
 
 
-class DocumentationIngestJobNewWebpageCreate(DocumentationIngestJobNewBase):
-    url: HttpUrl
+# class DocumentationIngestJobNewWebpageCreate(DocumentationIngestJobNewBase):
+#     url: HttpUrl
 
 
-class DocumentationIngestJobNewResponseData(BaseModel):
-    job_id: uuid.UUID
+# class DocumentationIngestJobNewResponseData(BaseModel):
+#     job_id: uuid.UUID
 
 
-DocumentationIngestJobNewResponse = APIResponse[DocumentationIngestJobNewResponseData]
+# DocumentationIngestJobNewResponse = APIResponse[DocumentationIngestJobNewResponseData]
 
 
 # New ingest job - chunks + embeddings
 
 
-class DocumentationIngestJobNewChunksMethod(StrEnum):
-    MARKDOWN = "markdown"
-    TEXT = "text"
+# class DocumentationIngestJobNewChunksMethod(StrEnum):
+#     MARKDOWN = "markdown"
+#     TEXT = "text"
 
 
-class DocumentationIngestJobNewChunksCreate(BaseModel):
-    split_method: DocumentationIngestJobNewChunksMethod = "markdown"
-    chunk_size: int = 250
-    chunk_overlap: int = 30
-    content: str
-    source: DocumentationIngestJobSource
+# class DocumentationIngestJobNewChunksCreate(BaseModel):
+#     split_method: DocumentationIngestJobNewChunksMethod = "markdown"
+#     chunk_size: int = 250
+#     chunk_overlap: int = 30
+#     content: str
+#     source: DocumentationIngestJobSource
 
 
-class DocumentationIngestJobNewChunk(BaseModel):
-    id: uuid.UUID
-    content: str
-    metadata: dict[Any, Any]
+# class DocumentationIngestJobNewChunk(BaseModel):
+#     id: uuid.UUID
+#     content: str
+#     metadata: dict[Any, Any]
 
 
-DocumentationIngestJobNewChunksResponse = APIResponse[list[DocumentationIngestJobNewChunk]]
+# DocumentationIngestJobNewChunksResponse = APIResponse[list[DocumentationIngestJobNewChunk]]
 
-DocumentationIngestJobNewEmbeddingsCreate = list[DocumentationIngestJobNewChunk]
+# DocumentationIngestJobNewEmbeddingsCreate = list[DocumentationIngestJobNewChunk]

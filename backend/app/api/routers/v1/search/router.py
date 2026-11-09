@@ -10,12 +10,12 @@ from app.db.dependencies import get_read_db, get_write_db
 from .schemas import (
     DocumentationIngestChunksResponse,
     DocumentationIngestEmbeddingJobsResponse,
-    DocumentationIngestJobNewChunksCreate,
-    DocumentationIngestJobNewChunksResponse,
-    DocumentationIngestJobNewDocumentCreate,
-    DocumentationIngestJobNewEmbeddingsCreate,
-    DocumentationIngestJobNewResponse,
-    DocumentationIngestJobNewWebpageCreate,
+    DocumentationIngestJobChunksCreate,
+    DocumentationIngestJobChunksResponse,
+    DocumentationIngestJobEmbeddingsCreate,
+    DocumentationIngestJobParseDocumentCreate,
+    DocumentationIngestJobParseResponse,
+    DocumentationIngestJobParseWebpageCreate,
     DocumentationIngestJobResponse,
     DocumentationIngestJobsResponse,
     DocumentationIngestParseJobsResponse,
@@ -212,34 +212,30 @@ async def duplicate_documentation_ingest_job(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.post("/jobs/document", response_model=DocumentationIngestJobNewResponse)
+@router.post("/jobs/document", response_model=DocumentationIngestJobParseResponse)
 async def create_documentation_ingest_job_document(
-    data: Annotated[DocumentationIngestJobNewDocumentCreate, Form()],
+    data: Annotated[DocumentationIngestJobParseDocumentCreate, Form()],
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
 ):
-    return DocumentationIngestJobNewResponse(
-        data={"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
-    )
+    return DocumentationIngestJobParseResponse(data={"id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"})
 
 
-@router.post("/jobs/webpage", response_model=DocumentationIngestJobNewResponse)
+@router.post("/jobs/webpage", response_model=DocumentationIngestJobParseResponse)
 async def create_documentation_ingest_job_webpage(
-    data: DocumentationIngestJobNewWebpageCreate,
+    data: DocumentationIngestJobParseWebpageCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
 ):
-    return DocumentationIngestJobNewResponse(
-        data={"job_id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"}
-    )
+    return DocumentationIngestJobParseResponse(data={"id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"})
 
 
 @router.post(
     "/jobs/{job_id}/chunks",
-    response_model=DocumentationIngestJobNewChunksResponse,
+    response_model=DocumentationIngestJobChunksResponse,
 )
 async def create_documentation_ingest_job_chunks(
-    data: DocumentationIngestJobNewChunksCreate,
+    data: DocumentationIngestJobChunksCreate,
     _: Annotated[str, Depends(get_current_user)],
 ):
     chunks = []
@@ -259,13 +255,13 @@ async def create_documentation_ingest_job_chunks(
             source=data.source,
         )
 
-    return DocumentationIngestJobNewChunksResponse(data=chunks)
+    return DocumentationIngestJobChunksResponse(data=chunks)
 
 
 @router.post("/jobs/{job_id}/embeddings")
 async def create_documentation_ingest_job_embeddings(
     job_id: uuid.UUID,
-    data: DocumentationIngestJobNewEmbeddingsCreate,
+    data: DocumentationIngestJobEmbeddingsCreate,
     current_user: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
 ) -> Response:

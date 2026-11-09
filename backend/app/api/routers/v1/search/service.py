@@ -2,7 +2,7 @@ import uuid
 
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
-from .schemas import DocumentationIngestJobNewChunk, DocumentationIngestJobSource
+from .schemas import DocumentationIngestJobChunksResponseChunk, DocumentationIngestJobSource
 
 example_markdown = """# Markdown syntax guide
 ## Headers
@@ -108,7 +108,7 @@ def documentation_ingest_chunk_source_metadata(source: DocumentationIngestJobSou
 
 def documentation_ingest_chunk_split_markdown(
     chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
-) -> list[DocumentationIngestJobNewChunk]:
+) -> list[DocumentationIngestJobChunksResponseChunk]:
     headers_to_split_on = [
         ("#", "Header 1"),
         ("##", "Header 2"),
@@ -149,7 +149,7 @@ def documentation_ingest_chunk_split_markdown(
 
 def documentation_ingest_chunk_split_text(
     chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
-) -> list[DocumentationIngestJobNewChunk]:
+) -> list[DocumentationIngestJobChunksResponseChunk]:
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
