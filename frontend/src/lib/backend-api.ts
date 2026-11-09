@@ -22,6 +22,7 @@ async function backendAPIFetch<TRequestData, TResponseData>({
   requestData,
   requestDataFormat = 'JSON',
   clientComponent = false,
+  cacheTags,
 }: {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -29,6 +30,7 @@ async function backendAPIFetch<TRequestData, TResponseData>({
   requestData?: TRequestData;
   requestDataFormat?: 'JSON' | 'form';
   clientComponent?: boolean;
+  cacheTags?: string[];
 }): Promise<BackendAPIResult<TResponseData>> {
   // url
   const fetchUrl = !clientComponent ? serverComponentAPIUrl + url : clientComponentAPIUrl + url;
@@ -69,6 +71,9 @@ async function backendAPIFetch<TRequestData, TResponseData>({
       method: fetchMethod,
       headers: fetchHeaders,
       body: fetchBody,
+      next: {
+        tags: cacheTags,
+      },
     });
 
     if (!response.ok) {

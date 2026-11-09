@@ -8,6 +8,7 @@ import { DocumentationIngestEmbeddingJobSchema } from '../schemas/ingest-embeddi
 export default async function getDocumentationIngestEmbeddingJobs(): Promise<DocumentationIngestEmbeddingJob[]> {
   const { data, error } = await backendAPIFetch<null, DocumentationIngestEmbeddingJob[]>({
     url: '/api/v1/search/documentation/ingest/embedding-jobs',
+    cacheTags: ['documentation-ingest-embedding-jobs'],
   });
 
   if (!data || error) {

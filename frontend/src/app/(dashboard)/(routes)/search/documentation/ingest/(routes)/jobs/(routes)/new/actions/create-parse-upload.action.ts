@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
+
 import { backendAPIFetch } from '@/lib/backend-api';
 
 import {
@@ -44,7 +46,11 @@ async function createIngestJobParseUploadDocument({
     return { success: false };
   }
 
-  return { success: true, parseJobId: parsedResponse.data.job_id };
+  revalidateTag('documentation-ingest-jobs', 'max');
+  revalidateTag('documentation-ingest-sources', 'max');
+  revalidateTag('documentation-ingest-parse-jobs', 'max');
+
+  return { success: true, parseJobId: parsedResponse.data.id };
 }
 
 async function createIngestJobParseUploadWebpage({
@@ -77,7 +83,11 @@ async function createIngestJobParseUploadWebpage({
     return { success: false };
   }
 
-  return { success: true, parseJobId: parsedResponse.data.job_id };
+  revalidateTag('documentation-ingest-jobs', 'max');
+  revalidateTag('documentation-ingest-sources', 'max');
+  revalidateTag('documentation-ingest-parse-jobs', 'max');
+
+  return { success: true, parseJobId: parsedResponse.data.id };
 }
 
 export { createIngestJobParseUploadDocument, createIngestJobParseUploadWebpage };

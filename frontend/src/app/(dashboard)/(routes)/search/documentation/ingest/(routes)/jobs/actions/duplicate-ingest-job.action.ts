@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
 import { backendAPIFetch } from '@/lib/backend-api';
@@ -21,7 +21,7 @@ export default async function duplicateIngestJob(ingestJobId: string) {
     return { success: false };
   }
 
-  revalidatePath('/ingest');
+  revalidateTag('documentation-ingest-jobs', 'max');
 
   return { success: true };
 }

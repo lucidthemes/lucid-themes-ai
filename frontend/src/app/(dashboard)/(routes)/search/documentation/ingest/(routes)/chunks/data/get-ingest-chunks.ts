@@ -8,6 +8,7 @@ import { DocumentationIngestChunkSchema } from '../schemas/ingest-chunk.schema';
 export default async function getDocumentationIngestChunks(): Promise<DocumentationIngestChunk[]> {
   const { data, error } = await backendAPIFetch<null, DocumentationIngestChunk[]>({
     url: '/api/v1/search/documentation/ingest/chunks',
+    cacheTags: ['documentation-ingest-chunks'],
   });
 
   if (!data || error) {
