@@ -5,7 +5,13 @@ import { backendAPIFetch } from '@/lib/backend-api';
 import type { DocumentationIngestSource } from '../schemas/ingest-source.schema';
 import { DocumentationIngestSourceSchema } from '../schemas/ingest-source.schema';
 
-export default async function getDocumentationIngestSources(): Promise<DocumentationIngestSource[]> {
+export default async function getDocumentationIngestSources(
+  page?: number,
+  limit?: number,
+  search?: string,
+  filter_type?: string,
+  sort?: string,
+): Promise<DocumentationIngestSource[]> {
   const { data, error } = await backendAPIFetch<null, DocumentationIngestSource[]>({
     url: '/api/v1/search/documentation/ingest/sources',
     cacheTags: ['documentation-ingest-sources'],
