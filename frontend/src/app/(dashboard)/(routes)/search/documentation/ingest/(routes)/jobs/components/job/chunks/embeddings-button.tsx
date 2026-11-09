@@ -30,9 +30,9 @@ export default function DocumentationIngestJobChunksEmbeddingsButton({
           if (!ingestJobChunksCreated || ingestJobChunksCreated.length === 0) return;
 
           const createEmbeddings = await createIngestJobChunksEmbeddings({
-            ingestJobId: ingestJobData.id,
+            jobId: ingestJobData.id,
+            jobPathname: pathname,
             chunks: ingestJobChunksCreated,
-            ingestJobPathname: pathname,
           });
 
           if (createEmbeddings && createEmbeddings.success === false) {

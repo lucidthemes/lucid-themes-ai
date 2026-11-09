@@ -8,6 +8,7 @@ import { DocumentationIngestParseJobSchema } from '../schemas/ingest-parse-job.s
 export default async function getDocumentationIngestParseJobs(): Promise<DocumentationIngestParseJob[]> {
   const { data, error } = await backendAPIFetch<null, DocumentationIngestParseJob[]>({
     url: '/api/v1/search/documentation/ingest/parse-jobs',
+    cacheTags: ['documentation-ingest-parse-jobs'],
   });
 
   if (!data || error) {
