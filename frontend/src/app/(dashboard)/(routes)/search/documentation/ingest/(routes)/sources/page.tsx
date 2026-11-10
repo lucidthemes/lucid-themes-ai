@@ -19,25 +19,25 @@ export default async function DashboardSearchDocumentationIngestSourcesPage({
   searchParams: Promise<{
     page?: number;
     limit?: number;
-    search?: string;
+    search_query?: string;
     filter_type?: string;
-    sort?: string;
+    sort_by?: string;
   }>;
 }) {
-  const { page = 1, limit = 12, search = '', filter_type = '', sort = '' } = await searchParams;
+  const { page = 1, limit = 10, search_query = '', filter_type = '', sort_by = '' } = await searchParams;
 
   return (
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest sources" />
       <div className="flex flex-col gap-5">
-        <DocumentationIngestSourcesListHeader search={search} />
+        <DocumentationIngestSourcesListHeader search_query={search_query} />
         <Suspense key="documentation-ingest-sources" fallback={<LoadingSpinner />}>
           <DocumentationIngestSourcesList
             page={page}
             limit={limit}
-            search={search}
+            search_query={search_query}
             filter_type={filter_type}
-            sort={sort}
+            sort_by={sort_by}
           />
         </Suspense>
       </div>

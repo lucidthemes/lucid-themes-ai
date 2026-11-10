@@ -6,21 +6,21 @@ import DocumentationIngestSourcesListTable from './table';
 interface DocumentationIngestSourcesListProps {
   page?: number;
   limit?: number;
-  search?: string;
+  search_query?: string;
   filter_type?: string;
-  sort?: string;
+  sort_by?: string;
   showControls?: boolean;
 }
 
 export default async function DocumentationIngestSourcesList({
   page,
   limit,
-  search,
+  search_query,
   filter_type,
-  sort,
+  sort_by,
   showControls = true,
 }: DocumentationIngestSourcesListProps) {
-  const ingestSources = await getDocumentationIngestSources(page, limit, search, filter_type, sort);
+  const ingestSources = await getDocumentationIngestSources(page, limit, search_query, filter_type, sort_by);
 
   //console.log(ingestSources);
 
