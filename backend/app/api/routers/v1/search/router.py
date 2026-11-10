@@ -20,18 +20,28 @@ from .schemas import (
     DocumentationIngestJobsResponse,
     DocumentationIngestParseJobsResponse,
     DocumentationIngestSourcesResponse,
+    DocumentationIngestSourceType,
 )
 from .service import (
     documentation_ingest_chunk_split_markdown,
     documentation_ingest_chunk_split_text,
 )
 
-router = APIRouter(prefix="/search/documentation/ingest", tags=["Search documentation - ingest"])
+router = APIRouter(prefix="/search/documentation/ingest", tags=["Search - Documentation"])
 
 
-@router.get("/jobs", response_model=DocumentationIngestJobsResponse)
+@router.get(
+    "/jobs",
+    response_model=DocumentationIngestJobsResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest jobs",
+    description="Return a list of ingest jobs",
+)
 async def read_documentation_ingest_jobs(
-    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+    limit: int = 10,
+    offset: int = 0,
 ):
     return DocumentationIngestJobsResponse(
         data=[
@@ -185,7 +195,13 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
 )
 
 
-@router.get("/jobs/{job_id}", response_model=DocumentationIngestJobResponse)
+@router.get(
+    "/jobs/{job_id}",
+    response_model=DocumentationIngestJobResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest job",
+    description="Return a specified ingest job",
+)
 async def read_documentation_ingest_job(
     job_id: uuid.UUID,
     _: Annotated[str, Depends(get_current_user)],
@@ -194,7 +210,12 @@ async def read_documentation_ingest_job(
     return test_ingest_job_parse_completed
 
 
-@router.delete("/jobs/{job_id}")
+@router.delete(
+    "/jobs/{job_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete ingest job",
+    description="Delete a specified ingest job",
+)
 async def delete_documentation_ingest_job(
     job_id: uuid.UUID,
     current_user: Annotated[str, Depends(get_current_user)],
@@ -203,7 +224,12 @@ async def delete_documentation_ingest_job(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.post("/jobs/{job_id}/duplicate")
+@router.post(
+    "/jobs/{job_id}/duplicate",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Duplicate ingest job",
+    description="Duplicate a specified ingest job",
+)
 async def duplicate_documentation_ingest_job(
     job_id: uuid.UUID,
     current_user: Annotated[str, Depends(get_current_user)],
@@ -212,7 +238,13 @@ async def duplicate_documentation_ingest_job(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.post("/jobs/document", response_model=DocumentationIngestJobParseResponse)
+@router.post(
+    "/jobs/document",
+    response_model=DocumentationIngestJobParseResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create ingest job document",
+    description="Create an ingest job with a document to parse",
+)
 async def create_documentation_ingest_job_document(
     data: Annotated[DocumentationIngestJobParseDocumentCreate, Form()],
     current_user: Annotated[str, Depends(get_current_user)],
@@ -221,7 +253,13 @@ async def create_documentation_ingest_job_document(
     return DocumentationIngestJobParseResponse(data={"id": "00000599-a0b0-4ec2-80de-ec7bc5fbe76d"})
 
 
-@router.post("/jobs/webpage", response_model=DocumentationIngestJobParseResponse)
+@router.post(
+    "/jobs/webpage",
+    response_model=DocumentationIngestJobParseResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create ingest job webpage",
+    description="Create an ingest job with a webpage to parse",
+)
 async def create_documentation_ingest_job_webpage(
     data: DocumentationIngestJobParseWebpageCreate,
     current_user: Annotated[str, Depends(get_current_user)],
@@ -233,6 +271,7 @@ async def create_documentation_ingest_job_webpage(
 @router.post(
     "/jobs/{job_id}/chunks",
     response_model=DocumentationIngestJobChunksResponse,
+    status_code=status.HTTP_201_CREATED,
 )
 async def create_documentation_ingest_job_chunks(
     data: DocumentationIngestJobChunksCreate,
@@ -258,7 +297,10 @@ async def create_documentation_ingest_job_chunks(
     return DocumentationIngestJobChunksResponse(data=chunks)
 
 
-@router.post("/jobs/{job_id}/embeddings")
+@router.post(
+    "/jobs/{job_id}/embeddings",
+    status_code=status.HTTP_201_CREATED,
+)
 async def create_documentation_ingest_job_embeddings(
     job_id: uuid.UUID,
     data: DocumentationIngestJobEmbeddingsCreate,
@@ -401,10 +443,27 @@ async def create_documentation_ingest_job_embeddings(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.get("/sources", response_model=DocumentationIngestSourcesResponse)
+@router.get(
+    "/sources",
+    response_model=DocumentationIngestSourcesResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest sources",
+    description="Return a list of ingest sources",
+)
 async def read_documentation_ingest_sources(
-    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+    limit: int = 10,
+    offset: int = 0,
+    query: str | None = None,
+    type: DocumentationIngestSourceType | None = None,
+    sort_by_desc: bool = True,
 ):
+    print(limit)
+    print(offset)
+    print(query)
+    print(type)
+    print(sort_by_desc)
     return DocumentationIngestSourcesResponse(
         data=[
             {
@@ -424,9 +483,18 @@ async def read_documentation_ingest_sources(
     )
 
 
-@router.get("/parse-jobs", response_model=DocumentationIngestParseJobsResponse)
+@router.get(
+    "/parse-jobs",
+    response_model=DocumentationIngestParseJobsResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest parse jobs",
+    description="Return a list of ingest parse jobs",
+)
 async def read_documentation_ingest_parse_jobs(
-    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+    limit: int = 10,
+    offset: int = 0,
 ):
     return DocumentationIngestParseJobsResponse(
         data=[
@@ -465,9 +533,18 @@ async def read_documentation_ingest_parse_jobs(
     )
 
 
-@router.get("/embedding-jobs", response_model=DocumentationIngestEmbeddingJobsResponse)
+@router.get(
+    "/embedding-jobs",
+    response_model=DocumentationIngestEmbeddingJobsResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest embedding jobs",
+    description="Return a list of ingest embedding jobs",
+)
 async def read_documentation_ingest_embedding_jobs(
-    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+    limit: int = 10,
+    offset: int = 0,
 ):
     return DocumentationIngestEmbeddingJobsResponse(
         data=[
@@ -491,9 +568,18 @@ async def read_documentation_ingest_embedding_jobs(
     )
 
 
-@router.get("/chunks", response_model=DocumentationIngestChunksResponse)
+@router.get(
+    "/chunks",
+    response_model=DocumentationIngestChunksResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest chunks",
+    description="Return a list of ingest chunks",
+)
 async def read_documentation_ingest_chunks(
-    _: Annotated[str, Depends(get_current_user)], db: AsyncSession = Depends(get_read_db)
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+    limit: int = 10,
+    offset: int = 0,
 ):
     return DocumentationIngestChunksResponse(
         data=[
