@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const ListSearchFormSchema = z.object({
-  search: z
+  search_query: z
     .string()
     .transform((val) => val.trim())
     .pipe(

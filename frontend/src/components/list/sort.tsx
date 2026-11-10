@@ -12,32 +12,22 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface ListSortProps {
-  options?: {
-    id: number;
-    value: string;
-    label: string;
-  }[];
-}
-
-export default function ListSort({
-  options = [
-    { id: 1, value: 'date_desc', label: 'Date (newest)' },
-    { id: 2, value: 'date_asc', label: 'Date (oldest)' },
-  ],
-}: ListSortProps) {
+export default function ListSort() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  if (!options) return;
-
-  const activeSort = searchParams.get('sort') || '';
+  const activeSort = searchParams.get('sort_by') || '';
 
   const onSortValueChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set('sort', value);
+    params.set('sort_by', value);
     router.push(`?${params.toString()}`);
   };
+
+  const options = [
+    { id: 1, value: 'date_desc', label: 'Date (newest)' },
+    { id: 2, value: 'date_asc', label: 'Date (oldest)' },
+  ];
 
   return (
     <Select

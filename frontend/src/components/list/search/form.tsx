@@ -8,21 +8,21 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '
 
 import useListSearchForm from '@/components/list/search/use-form';
 
-export default function ListSearchForm({ placeholder, search }: { placeholder: string; search?: string }) {
-  const { form, onSubmit } = useListSearchForm(search);
+export default function ListSearchForm({ placeholder, search_query }: { placeholder: string; search_query?: string }) {
+  const { form, onSubmit } = useListSearchForm(search_query);
 
   return (
     <form id="list-search-form" className="w-full lg:w-80" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
-          name="search"
+          name="search_query"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <InputGroup>
                 <InputGroupInput
                   {...field}
-                  id="search"
+                  id="search_query"
                   aria-invalid={fieldState.invalid}
                   placeholder={placeholder}
                   autoComplete="on"
