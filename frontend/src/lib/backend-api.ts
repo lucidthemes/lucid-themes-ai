@@ -23,6 +23,11 @@ async function backendAPIFetch<TRequestData, TResponseData>({
   requestDataFormat = 'JSON',
   clientComponent = false,
   cacheTags,
+  limit,
+  offset,
+  searchQuery,
+  filters,
+  sortByDesc = true,
 }: {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -31,9 +36,39 @@ async function backendAPIFetch<TRequestData, TResponseData>({
   requestDataFormat?: 'JSON' | 'form';
   clientComponent?: boolean;
   cacheTags?: string[];
+  limit?: number;
+  offset?: number;
+  searchQuery?: string;
+  filters?: { name: string; value: string }[] | null;
+  sortByDesc?: boolean;
 }): Promise<BackendAPIResult<TResponseData>> {
   // url
-  const fetchUrl = !clientComponent ? serverComponentAPIUrl + url : clientComponentAPIUrl + url;
+  //const fetchUrl = !clientComponent ? serverComponentAPIUrl + url : clientComponentAPIUrl + url;
+
+  const baseUrl = !clientComponent ? serverComponentAPIUrl : clientComponentAPIUrl;
+
+  // const requestUrl = new URL(baseUrl + url);
+  //console.log(requestUrl);
+
+  const fetchParams = new URLSearchParams();
+
+  // if (limit || offset || searchQuery) {
+  if (limit) fetchParams.append('limit', limit.toString());
+
+  if (offset) fetchParams.append('offset', offset.toString());
+
+  if (searchQuery) fetchParams.append('query', searchQuery);
+
+  if (filters) {
+    filters.forEach((filter) => fetchParams.append(filter.name.replace('filter_', ''), filter.value));
+  }
+
+  if (sortByDesc === false) fetchParams.append('sort_by_desc', false as unknown as string);
+
+  //console.log(fetchParams);
+
+  const fetchUrl = fetchParams.size ? new URL(`${baseUrl}${url}?${fetchParams}`) : new URL(`${baseUrl}${url}`);
+  console.log(fetchUrl);
 
   // method
   const fetchMethod = method;
