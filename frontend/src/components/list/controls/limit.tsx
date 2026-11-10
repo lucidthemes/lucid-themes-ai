@@ -7,7 +7,7 @@ import useListControlLimit from './use-limit';
 
 export default function ListControlLimit({
   currentValue = 12,
-  limitOptions = [6, 12, 18, 24],
+  limitOptions = [5, 10, 15, 20],
   label = 'Items per page',
   className,
 }: {
@@ -22,8 +22,8 @@ export default function ListControlLimit({
     <Field orientation="horizontal" className={`w-fit ${className}`}>
       <FieldLabel htmlFor="select-items-per-page">{label}</FieldLabel>
       <Select
-        items={limitOptions}
-        defaultValue={currentValue?.toString()}
+        items={limitOptions as []}
+        value={currentValue?.toString()}
         onValueChange={(value) => {
           if (value) onLimitValueChange(value);
         }}

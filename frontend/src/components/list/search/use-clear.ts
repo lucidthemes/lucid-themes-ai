@@ -6,7 +6,7 @@ export default function useListSearchClear() {
 
   const handleSearchRemove = () => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete('search');
+    params.delete('search_query');
     router.push(`?${params.toString()}`);
   };
 
