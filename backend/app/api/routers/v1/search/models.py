@@ -2,7 +2,7 @@ import uuid
 from typing import Any
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Enum, ForeignKey, Uuid
+from sqlalchemy import Enum, ForeignKey, String, Uuid
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -94,7 +94,7 @@ class DocumentationIngestJob(Base, IdMixin, CreatedAtMixin, UpdatedAtMixin):
     __tablename__ = "documentation_ingest_jobs"
 
     user_id: Mapped[uuid.UUID] = mapped_column(Uuid, nullable=False)
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
     source_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("documentation_ingest_sources.id"))
     embedding_job_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("documentation_ingest_embedding_jobs.id"),

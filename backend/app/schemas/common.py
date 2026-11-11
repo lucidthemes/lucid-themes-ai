@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class APIResponse[T](BaseModel):
     data: T
+    count: int | None = None
 
 
 class APIErrorDetail(BaseModel):

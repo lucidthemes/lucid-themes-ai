@@ -1,10 +1,11 @@
 import uuid
 from datetime import datetime
 from enum import StrEnum
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import UploadFile
 from pydantic import BaseModel, HttpUrl
+from pydantic.types import StringConstraints
 
 from app.schemas.common import APIResponse
 
@@ -192,7 +193,7 @@ DocumentationIngestJobResponse = APIResponse[DocumentationIngestJobResponseData]
 
 
 class DocumentationIngestJobParseBase(BaseModel):
-    name: str
+    name: Annotated[str, StringConstraints(min_length=1, max_length=100)]
     tier: DocumentationIngestParseJobTier
 
 

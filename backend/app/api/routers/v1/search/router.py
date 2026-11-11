@@ -21,6 +21,7 @@ from .schemas import (
     DocumentationIngestParseJobsResponse,
     DocumentationIngestSourcesResponse,
     DocumentationIngestSourceType,
+    DocumentationIngestStatus,
 )
 from .service import (
     documentation_ingest_chunk_split_markdown,
@@ -42,7 +43,18 @@ async def read_documentation_ingest_jobs(
     db: AsyncSession = Depends(get_read_db),
     limit: int = 10,
     offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+    status: DocumentationIngestStatus | None = None,
 ):
+    print(limit)
+    print(offset)
+    print(sort_by_desc)
+    print(include_count)
+    print(query)
+    print(status)
+
     return DocumentationIngestJobsResponse(
         data=[
             {
@@ -455,32 +467,55 @@ async def read_documentation_ingest_sources(
     db: AsyncSession = Depends(get_read_db),
     limit: int = 10,
     offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
     query: str | None = None,
     type: DocumentationIngestSourceType | None = None,
-    sort_by_desc: bool = True,
 ):
     print(limit)
     print(offset)
+    print(sort_by_desc)
+    print(include_count)
     print(query)
     print(type)
-    print(sort_by_desc)
-    return DocumentationIngestSourcesResponse(
-        data=[
-            {
-                "id": "018204a2-9e58-4618-affe-e313be132aee",
-                "type": "document",
-                "file_name": "test",
-                "file_url": "test",
-                "webpage_url": "test",
-                "created_at": "2026-09-06 11:52:33",
-            },
-            {
-                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                "type": "webpage",
-                "created_at": "2026-09-06 11:52:33",
-            },
-        ]
-    )
+
+    if include_count:
+        return DocumentationIngestSourcesResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "type": "document",
+                    "file_name": "test",
+                    "file_url": "test",
+                    "webpage_url": "test",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "type": "webpage",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ],
+            count=10,
+        )
+    else:
+        return DocumentationIngestSourcesResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "type": "document",
+                    "file_name": "test",
+                    "file_url": "test",
+                    "webpage_url": "test",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "type": "webpage",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ]
+        )
 
 
 @router.get(
@@ -495,7 +530,18 @@ async def read_documentation_ingest_parse_jobs(
     db: AsyncSession = Depends(get_read_db),
     limit: int = 10,
     offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+    status: DocumentationIngestStatus | None = None,
 ):
+    print(limit)
+    print(offset)
+    print(sort_by_desc)
+    print(include_count)
+    print(query)
+    print(status)
+
     return DocumentationIngestParseJobsResponse(
         data=[
             {
@@ -545,7 +591,16 @@ async def read_documentation_ingest_embedding_jobs(
     db: AsyncSession = Depends(get_read_db),
     limit: int = 10,
     offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
 ):
+    print(limit)
+    print(offset)
+    print(sort_by_desc)
+    print(include_count)
+    print(query)
+
     return DocumentationIngestEmbeddingJobsResponse(
         data=[
             {
@@ -580,7 +635,16 @@ async def read_documentation_ingest_chunks(
     db: AsyncSession = Depends(get_read_db),
     limit: int = 10,
     offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
 ):
+    print(limit)
+    print(offset)
+    print(sort_by_desc)
+    print(include_count)
+    print(query)
+
     return DocumentationIngestChunksResponse(
         data=[
             {
