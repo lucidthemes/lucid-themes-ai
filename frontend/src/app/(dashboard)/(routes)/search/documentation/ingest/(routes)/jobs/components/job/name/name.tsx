@@ -39,6 +39,7 @@ export default function DocumentationIngestJobName({
             name="name"
             aria-invalid={ingestJobNameError ? true : false}
             type="text"
+            maxLength={100}
             disabled={nameInputDisabled}
             defaultValue={ingestJobData && ingestJobData.name ? ingestJobData.name : ''}
             onBlur={(e) => {

@@ -11,6 +11,7 @@ type BackendAPIError = {
 
 type BackendAPIResult<TResponseData> = {
   data: TResponseData | null;
+  count: number | null;
   error: BackendAPIError | null;
   status: number | null;
 };
@@ -21,54 +22,30 @@ async function backendAPIFetch<TRequestData, TResponseData>({
   requireAuth = true,
   requestData,
   requestDataFormat = 'JSON',
+  requestQueryParams,
   clientComponent = false,
   cacheTags,
-  limit,
-  offset,
-  searchQuery,
-  filters,
-  sortByDesc = true,
 }: {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   requireAuth?: boolean;
   requestData?: TRequestData;
   requestDataFormat?: 'JSON' | 'form';
+  requestQueryParams?: object;
   clientComponent?: boolean;
   cacheTags?: string[];
-  limit?: number;
-  offset?: number;
-  searchQuery?: string;
-  filters?: { name: string; value: string }[] | null;
-  sortByDesc?: boolean;
 }): Promise<BackendAPIResult<TResponseData>> {
   // url
-  //const fetchUrl = !clientComponent ? serverComponentAPIUrl + url : clientComponentAPIUrl + url;
 
   const baseUrl = !clientComponent ? serverComponentAPIUrl : clientComponentAPIUrl;
 
-  // const requestUrl = new URL(baseUrl + url);
-  //console.log(requestUrl);
-
   const fetchParams = new URLSearchParams();
 
-  // if (limit || offset || searchQuery) {
-  if (limit) fetchParams.append('limit', limit.toString());
-
-  if (offset) fetchParams.append('offset', offset.toString());
-
-  if (searchQuery) fetchParams.append('query', searchQuery);
-
-  if (filters) {
-    filters.forEach((filter) => fetchParams.append(filter.name.replace('filter_', ''), filter.value));
+  if (requestQueryParams) {
+    Object.entries(requestQueryParams).forEach(([key, value]) => fetchParams.append(key, value.toString()));
   }
 
-  if (sortByDesc === false) fetchParams.append('sort_by_desc', false as unknown as string);
-
-  //console.log(fetchParams);
-
   const fetchUrl = fetchParams.size ? new URL(`${baseUrl}${url}?${fetchParams}`) : new URL(`${baseUrl}${url}`);
-  console.log(fetchUrl);
 
   // method
   const fetchMethod = method;
@@ -116,6 +93,7 @@ async function backendAPIFetch<TRequestData, TResponseData>({
 
       return {
         data: null,
+        count: null,
         error: {
           message: typeof result?.detail === 'string' ? result.detail : `Request failed with status ${response.status}`,
           detail: result?.detail ?? null,
@@ -127,6 +105,7 @@ async function backendAPIFetch<TRequestData, TResponseData>({
     if (response.status === 204) {
       return {
         data: null,
+        count: null,
         error: null,
         status: response.status,
       };
@@ -136,12 +115,14 @@ async function backendAPIFetch<TRequestData, TResponseData>({
 
     return {
       data: result.data,
+      count: result.count,
       error: null,
       status: response.status,
     };
   } catch (error: unknown) {
     return {
       data: null,
+      count: null,
       error: {
         message: error instanceof Error ? error.message : 'An unexpected error occurred',
       },

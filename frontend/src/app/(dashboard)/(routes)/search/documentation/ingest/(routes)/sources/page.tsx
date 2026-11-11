@@ -38,6 +38,8 @@ export default async function DashboardSearchDocumentationIngestSourcesPage({
             search_query={search_query}
             filter_type={filter_type}
             sort_by={sort_by}
+            includeCount={true}
+            showControls={true}
           />
         </Suspense>
       </div>

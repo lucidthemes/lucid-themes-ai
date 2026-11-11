@@ -9,6 +9,7 @@ interface DocumentationIngestSourcesListProps {
   search_query?: string;
   filter_type?: string;
   sort_by?: string;
+  includeCount?: boolean;
   showControls?: boolean;
 }
 
@@ -18,17 +19,21 @@ export default async function DocumentationIngestSourcesList({
   search_query,
   filter_type,
   sort_by,
-  showControls = true,
+  includeCount = false,
+  showControls = false,
 }: DocumentationIngestSourcesListProps) {
-  const ingestSources = await getDocumentationIngestSources(page, limit, search_query, filter_type, sort_by);
-
-  //console.log(ingestSources);
-
-  const totalCount = 2;
+  const { sources, totalCount } = await getDocumentationIngestSources(
+    page,
+    limit,
+    search_query,
+    filter_type,
+    sort_by,
+    includeCount,
+  );
 
   return (
     <>
-      <DocumentationIngestSourcesListTable ingestSources={ingestSources} />
+      <DocumentationIngestSourcesListTable ingestSources={sources} />
       {showControls && page && limit && <ListControls page={page} limit={limit} totalCount={totalCount} />}
     </>
   );
