@@ -66,7 +66,7 @@ export default function DashboardSearchDocumentationIngestPage() {
           </CardHeader>
           <CardContent>
             <Suspense key="documentation-ingest-sources" fallback={<LoadingSpinner />}>
-              <DocumentationIngestSourcesList limit={5} showControls={false} />
+              <DocumentationIngestSourcesList limit={5} />
             </Suspense>
           </CardContent>
         </Card>
@@ -86,7 +86,7 @@ export default function DashboardSearchDocumentationIngestPage() {
           </CardHeader>
           <CardContent>
             <Suspense key="documentation-ingest-parse-jobs" fallback={<LoadingSpinner />}>
-              <DocumentationIngestParseJobsList />
+              <DocumentationIngestParseJobsList limit={5} />
             </Suspense>
           </CardContent>
         </Card>
@@ -106,7 +106,7 @@ export default function DashboardSearchDocumentationIngestPage() {
           </CardHeader>
           <CardContent>
             <Suspense key="documentation-ingest-embedding-jobs" fallback={<LoadingSpinner />}>
-              <DocumentationIngestEmbeddingJobsList />
+              <DocumentationIngestEmbeddingJobsList limit={5} />
             </Suspense>
           </CardContent>
         </Card>
@@ -126,7 +126,7 @@ export default function DashboardSearchDocumentationIngestPage() {
           </CardHeader>
           <CardContent>
             <Suspense key="documentation-ingest-chunks" fallback={<LoadingSpinner />}>
-              <DocumentationIngestChunksList />
+              <DocumentationIngestChunksList limit={5} />
             </Suspense>
           </CardContent>
         </Card>

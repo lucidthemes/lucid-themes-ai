@@ -8,7 +8,7 @@ export default function DocumentationIngestSourcesListHeader({ search_query }: {
   return (
     <div className="flex flex-col justify-between gap-5 lg:flex-row">
       <div className="flex flex-col items-center gap-5 lg:flex-row">
-        <ListSearch placeholder="Source Id or Type" search_query={search_query} />
+        <ListSearch placeholder="Source Id" search_query={search_query} />
         <Separator orientation="vertical" className="mt-2 hidden h-6! lg:block" />
         <DocumentationIngestSourcesListFilters />
       </div>
