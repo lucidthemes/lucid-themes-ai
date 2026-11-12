@@ -2,7 +2,530 @@ import uuid
 
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
-from .schemas import DocumentationIngestJobChunksResponseChunk, DocumentationIngestJobSource
+# from sqlalchemy import func, select
+# from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.ext.asyncio import AsyncSession
+
+# from app.api.utils import is_valid_uuid
+# from .models import (
+#     DocumentationChunk,
+#     DocumentationIngestEmbeddingJob,
+#     DocumentationIngestJob,
+#     DocumentationIngestParseJob,
+#     DocumentationIngestSource,
+# )
+from .schemas import (
+    DocumentationIngestChunksResponse,
+    DocumentationIngestEmbeddingJobsResponse,
+    DocumentationIngestJobChunksResponseChunk,
+    DocumentationIngestJobSource,
+    DocumentationIngestJobsResponse,
+    DocumentationIngestParseJobsResponse,
+    DocumentationIngestSourcesResponse,
+    DocumentationIngestSourceType,
+    DocumentationIngestStatus,
+    # DocumentationIngestJobResponse
+)
+
+# from fastapi import HTTPException
+
+
+async def get_documentation_ingest_jobs(
+    db: AsyncSession,
+    limit: int = 10,
+    offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+    status: DocumentationIngestStatus | None = None,
+):
+    # stmt = select(
+    #     DocumentationIngestJob.id,
+    #     DocumentationIngestJob.name,
+    #     DocumentationIngestJob.status,
+    #     DocumentationIngestJob.created_at,
+    #     DocumentationIngestJob.updated_at,
+    # )
+
+    # stmt = stmt.limit(limit).offset(offset)
+
+    # if sort_by_desc:
+    #     stmt = stmt.order_by(DocumentationIngestJob.created_at.desc())
+    # else:
+    #     stmt = stmt.order_by(DocumentationIngestJob.created_at.asc())
+
+    # filters = []
+
+    # if query:
+    #     if is_valid_uuid(query):
+    #         filters.append(DocumentationIngestJob.id == query)
+    #     else:
+    #         filters.append(DocumentationIngestJob.name.ilike(f"%{query}%"))
+
+    # if status:
+    #     filters.append(DocumentationIngestJob.status == status)
+
+    # stmt = stmt.where(*filters)
+
+    # result = await db.execute(stmt)
+    # jobs = result.scalars().all()
+
+    # total_count = None
+
+    # if include_count:
+    #     count_stmt = select(func.count()).select_from(DocumentationIngestJob).where(*filters)
+
+    #     count_result = await db.execute(count_stmt)
+    #     total_count = count_result.scalar_one()
+
+    # return DocumentationIngestJobsResponse(data=jobs, count=total_count)
+
+    if include_count:
+        return DocumentationIngestJobsResponse(
+            data=[
+                {
+                    "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
+                    "name": "Test ingest job 1",
+                    "status": "pending",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
+                    "name": "Test ingest job 2",
+                    "status": "completed",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+            ],
+            count=2,
+        )
+    else:
+        return DocumentationIngestJobsResponse(
+            data=[
+                {
+                    "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
+                    "name": "Test ingest job 1",
+                    "status": "pending",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
+                    "name": "Test ingest job 2",
+                    "status": "completed",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+            ]
+        )
+
+
+async def get_documentation_ingest_job(
+    job_id: uuid.UUID,
+    db: AsyncSession,
+):
+    # stmt = (
+    #     select(DocumentationIngestJob)
+    #     .where(DocumentationIngestJob.id == job_id)
+    #     .options(
+    #         joinedload(DocumentationIngestJob.source),
+    #         selectinload(DocumentationIngestJob.parse_jobs),
+    #         joinedload(DocumentationIngestJob.embedding_job),
+    #     )
+    # )
+
+    # result = await db.execute(stmt)
+    # job = result.unique().scalar_one_or_none()
+
+    # if not job:
+    #     raise HTTPException(status_code=404, detail="Job not found")
+
+    # return DocumentationIngestJobResponse(data=job)
+    return "test"
+
+
+async def get_documentation_ingest_sources(
+    db: AsyncSession,
+    limit: int = 10,
+    offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+    type: DocumentationIngestSourceType | None = None,
+):
+    # stmt = select(DocumentationIngestSource)
+
+    # stmt = stmt.limit(limit).offset(offset)
+
+    # if sort_by_desc:
+    #     stmt = stmt.order_by(DocumentationIngestSource.created_at.desc())
+    # else:
+    #     stmt = stmt.order_by(DocumentationIngestSource.created_at.asc())
+
+    # filters = []
+
+    # if query and is_valid_uuid(query):
+    #     filters.append(DocumentationIngestSource.id == query)
+
+    # if type:
+    #     filters.append(DocumentationIngestSource.type == type)
+
+    # stmt = stmt.where(*filters)
+
+    # result = await db.execute(stmt)
+    # sources = result.scalars().all()
+
+    # total_count = None
+
+    # if include_count:
+    #     count_stmt = select(func.count()).select_from(DocumentationIngestSource).where(*filters)
+
+    #     count_result = await db.execute(count_stmt)
+    #     total_count = count_result.scalar_one()
+
+    # return DocumentationIngestSourcesResponse(data=sources, count=total_count)
+
+    if include_count:
+        return DocumentationIngestSourcesResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "type": "document",
+                    "file_name": "test",
+                    "file_url": "test",
+                    "webpage_url": "test",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "type": "webpage",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ],
+            count=2,
+        )
+    else:
+        return DocumentationIngestSourcesResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "type": "document",
+                    "file_name": "test",
+                    "file_url": "test",
+                    "webpage_url": "test",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "type": "webpage",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ]
+        )
+
+
+async def get_documentation_ingest_parse_jobs(
+    db: AsyncSession,
+    limit: int = 10,
+    offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+    status: DocumentationIngestStatus | None = None,
+):
+    # stmt = select(DocumentationIngestParseJob)
+
+    # stmt = stmt.limit(limit).offset(offset)
+
+    # if sort_by_desc:
+    #     stmt = stmt.order_by(DocumentationIngestParseJob.created_at.desc())
+    # else:
+    #     stmt = stmt.order_by(DocumentationIngestParseJob.created_at.asc())
+
+    # filters = []
+
+    # if query and is_valid_uuid(query):
+    #     filters.append(DocumentationIngestParseJob.id == query)
+
+    # if status:
+    #     filters.append(DocumentationIngestParseJob.status == status)
+
+    # stmt = stmt.where(*filters)
+
+    # result = await db.execute(stmt)
+    # parse_jobs = result.scalars().all()
+
+    # total_count = None
+
+    # if include_count:
+    #     count_stmt = select(func.count()).select_from(DocumentationIngestParseJob).where(*filters)
+
+    #     count_result = await db.execute(count_stmt)
+    #     total_count = count_result.scalar_one()
+
+    # return DocumentationIngestParseJobsResponse(data=parse_jobs, count=total_count)
+
+    if include_count:
+        return DocumentationIngestParseJobsResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
+                    "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                    "status": "completed",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
+                    "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                    "status": "completed",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "00573b80-ef1c-4f0d-b5e9-8762caed9c1b",
+                    "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
+                    "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                    "status": "completed",
+                    "markdown_full": "#text",
+                    "text_full": "text",
+                    "tier": "cost_effective",
+                    "error_message": "test",
+                    "usage": {
+                        "credits": 30.0,
+                    },
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+            ],
+            count=3,
+        )
+    else:
+        return DocumentationIngestParseJobsResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
+                    "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                    "status": "completed",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
+                    "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                    "status": "completed",
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "00573b80-ef1c-4f0d-b5e9-8762caed9c1b",
+                    "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
+                    "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
+                    "status": "completed",
+                    "markdown_full": "#text",
+                    "text_full": "text",
+                    "tier": "cost_effective",
+                    "error_message": "test",
+                    "usage": {
+                        "credits": 30.0,
+                    },
+                    "created_at": "2026-09-06 11:52:33",
+                    "updated_at": "2026-09-06 11:52:33",
+                },
+            ]
+        )
+
+
+async def get_documentation_ingest_embedding_jobs(
+    db: AsyncSession,
+    limit: int = 10,
+    offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+):
+    # stmt = select(DocumentationIngestEmbeddingJob)
+
+    # stmt = stmt.limit(limit).offset(offset)
+
+    # if sort_by_desc:
+    #     stmt = stmt.order_by(DocumentationIngestEmbeddingJob.created_at.desc())
+    # else:
+    #     stmt = stmt.order_by(DocumentationIngestEmbeddingJob.created_at.asc())
+
+    # filters = []
+
+    # if query and is_valid_uuid(query):
+    #     filters.append(DocumentationIngestEmbeddingJob.id == query)
+
+    # stmt = stmt.where(*filters)
+
+    # result = await db.execute(stmt)
+    # embedding_jobs = result.scalars().all()
+
+    # total_count = None
+
+    # if include_count:
+    #     count_stmt = (
+    #         select(func.count()).select_from(DocumentationIngestEmbeddingJob).where(*filters)
+    #     )
+
+    #     count_result = await db.execute(count_stmt)
+    #     total_count = count_result.scalar_one()
+
+    # return DocumentationIngestEmbeddingJobsResponse(data=embedding_jobs, count=total_count)
+
+    if include_count:
+        return DocumentationIngestEmbeddingJobsResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "parse_job_id": "018204a2-9e59-4618-affe-e313be132aee",
+                    "provider": "OpenAI",
+                    "model": "text-embedding-3-small",
+                    "usage": {"prompt_tokens": 8, "total_tokens": 8},
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "parse_job_id": "018304a2-9e59-4618-affe-e313be132aee",
+                    "provider": "OpenAI",
+                    "model": "text-embedding-3-small",
+                    "usage": {"prompt_tokens": 8, "total_tokens": 8},
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ],
+            count=2,
+        )
+    else:
+        return DocumentationIngestEmbeddingJobsResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "parse_job_id": "018204a2-9e59-4618-affe-e313be132aee",
+                    "provider": "OpenAI",
+                    "model": "text-embedding-3-small",
+                    "usage": {"prompt_tokens": 8, "total_tokens": 8},
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "parse_job_id": "018304a2-9e59-4618-affe-e313be132aee",
+                    "provider": "OpenAI",
+                    "model": "text-embedding-3-small",
+                    "usage": {"prompt_tokens": 8, "total_tokens": 8},
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ]
+        )
+
+
+async def get_documentation_ingest_chunks(
+    db: AsyncSession,
+    limit: int = 10,
+    offset: int = 0,
+    sort_by_desc: bool = True,
+    include_count: bool = False,
+    query: str | None = None,
+):
+    # stmt = select(DocumentationChunk)
+
+    # stmt = stmt.limit(limit).offset(offset)
+
+    # if sort_by_desc:
+    #     stmt = stmt.order_by(DocumentationChunk.created_at.desc())
+    # else:
+    #     stmt = stmt.order_by(DocumentationChunk.created_at.asc())
+
+    # filters = []
+
+    # if query and is_valid_uuid(query):
+    #     filters.append(DocumentationChunk.id == query)
+
+    # stmt = stmt.where(*filters)
+
+    # result = await db.execute(stmt)
+    # chunks = result.scalars().all()
+
+    # total_count = None
+
+    # if include_count:
+    #     count_stmt = select(func.count()).select_from(DocumentationChunk).where(*filters)
+
+    #     count_result = await db.execute(count_stmt)
+    #     total_count = count_result.scalar_one()
+
+    # return DocumentationIngestChunksResponse(data=chunks, count=total_count)
+
+    if include_count:
+        return DocumentationIngestChunksResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
+                    "content": "test content 1 python",
+                    "metadata": {
+                        "source_type": "document",
+                        "file_name": "some-pdf-file-here.pdf",
+                        "Header 1": "Intro",
+                        "Header 2": "History",
+                    },
+                    "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
+                    "content": "test content 2",
+                    "metadata": {
+                        "source_type": "document",
+                        "file_name": "some-pdf-file-here.pdf",
+                        "Header 1": "Intro",
+                        "Header 2": "History",
+                    },
+                    "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ],
+            count=3,
+        )
+    else:
+        return DocumentationIngestChunksResponse(
+            data=[
+                {
+                    "id": "018204a2-9e58-4618-affe-e313be132aee",
+                    "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
+                    "content": "test content 1 python",
+                    "metadata": {
+                        "source_type": "document",
+                        "file_name": "some-pdf-file-here.pdf",
+                        "Header 1": "Intro",
+                        "Header 2": "History",
+                    },
+                    "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+                {
+                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
+                    "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
+                    "content": "test content 2",
+                    "metadata": {
+                        "source_type": "document",
+                        "file_name": "some-pdf-file-here.pdf",
+                        "Header 1": "Intro",
+                        "Header 2": "History",
+                    },
+                    "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
+                    "created_at": "2026-09-06 11:52:33",
+                },
+            ]
+        )
+
 
 example_markdown = """# Markdown syntax guide
 ## Headers

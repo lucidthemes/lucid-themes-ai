@@ -26,6 +26,11 @@ from .schemas import (
 from .service import (
     documentation_ingest_chunk_split_markdown,
     documentation_ingest_chunk_split_text,
+    get_documentation_ingest_chunks,
+    get_documentation_ingest_embedding_jobs,
+    get_documentation_ingest_jobs,
+    get_documentation_ingest_parse_jobs,
+    get_documentation_ingest_sources,
 )
 
 router = APIRouter(prefix="/search/documentation/ingest", tags=["Search - Documentation"])
@@ -48,30 +53,15 @@ async def read_documentation_ingest_jobs(
     query: str | None = None,
     status: DocumentationIngestStatus | None = None,
 ):
-    print(limit)
-    print(offset)
-    print(sort_by_desc)
-    print(include_count)
-    print(query)
-    print(status)
+    # print(limit)
+    # print(offset)
+    # print(sort_by_desc)
+    # print(include_count)
+    # print(query)
+    # print(status)
 
-    return DocumentationIngestJobsResponse(
-        data=[
-            {
-                "id": "9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3",
-                "name": "Test ingest job 1",
-                "status": "pending",
-                "created_at": "2026-09-06 11:52:33",
-                "updated_at": "2026-09-06 11:52:33",
-            },
-            {
-                "id": "00fa61ce-1505-42f1-b119-601663dad1dc",
-                "name": "Test ingest job 2",
-                "status": "completed",
-                "created_at": "2026-09-06 11:52:33",
-                "updated_at": "2026-09-06 11:52:33",
-            },
-        ]
+    return await get_documentation_ingest_jobs(
+        db, limit, offset, sort_by_desc, include_count, query, status
     )
 
 
@@ -472,50 +462,16 @@ async def read_documentation_ingest_sources(
     query: str | None = None,
     type: DocumentationIngestSourceType | None = None,
 ):
-    print(limit)
-    print(offset)
-    print(sort_by_desc)
-    print(include_count)
-    print(query)
-    print(type)
+    # print(limit)
+    # print(offset)
+    # print(sort_by_desc)
+    # print(include_count)
+    # print(query)
+    # print(type)
 
-    if include_count:
-        return DocumentationIngestSourcesResponse(
-            data=[
-                {
-                    "id": "018204a2-9e58-4618-affe-e313be132aee",
-                    "type": "document",
-                    "file_name": "test",
-                    "file_url": "test",
-                    "webpage_url": "test",
-                    "created_at": "2026-09-06 11:52:33",
-                },
-                {
-                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                    "type": "webpage",
-                    "created_at": "2026-09-06 11:52:33",
-                },
-            ],
-            count=10,
-        )
-    else:
-        return DocumentationIngestSourcesResponse(
-            data=[
-                {
-                    "id": "018204a2-9e58-4618-affe-e313be132aee",
-                    "type": "document",
-                    "file_name": "test",
-                    "file_url": "test",
-                    "webpage_url": "test",
-                    "created_at": "2026-09-06 11:52:33",
-                },
-                {
-                    "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                    "type": "webpage",
-                    "created_at": "2026-09-06 11:52:33",
-                },
-            ]
-        )
+    return await get_documentation_ingest_sources(
+        db, limit, offset, sort_by_desc, include_count, query, type
+    )
 
 
 @router.get(
@@ -535,47 +491,15 @@ async def read_documentation_ingest_parse_jobs(
     query: str | None = None,
     status: DocumentationIngestStatus | None = None,
 ):
-    print(limit)
-    print(offset)
-    print(sort_by_desc)
-    print(include_count)
-    print(query)
-    print(status)
+    # print(limit)
+    # print(offset)
+    # print(sort_by_desc)
+    # print(include_count)
+    # print(query)
+    # print(status)
 
-    return DocumentationIngestParseJobsResponse(
-        data=[
-            {
-                "id": "018204a2-9e58-4618-affe-e313be132aee",
-                "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "completed",
-                "created_at": "2026-09-06 11:52:33",
-                "updated_at": "2026-09-06 11:52:33",
-            },
-            {
-                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "completed",
-                "created_at": "2026-09-06 11:52:33",
-                "updated_at": "2026-09-06 11:52:33",
-            },
-            {
-                "id": "00573b80-ef1c-4f0d-b5e9-8762caed9c1b",
-                "ingest_job_id": "018205a2-9e58-4618-affe-e313be132aee",
-                "llamaparse_job_id": "00563b80-ef1c-4f0c-b5e9-8762caed9c1b",
-                "status": "completed",
-                "markdown_full": "#text",
-                "text_full": "text",
-                "tier": "cost_effective",
-                "error_message": "test",
-                "usage": {
-                    "credits": 30.0,
-                },
-                "created_at": "2026-09-06 11:52:33",
-                "updated_at": "2026-09-06 11:52:33",
-            },
-        ]
+    return await get_documentation_ingest_parse_jobs(
+        db, limit, offset, sort_by_desc, include_count, query, status
     )
 
 
@@ -595,31 +519,14 @@ async def read_documentation_ingest_embedding_jobs(
     include_count: bool = False,
     query: str | None = None,
 ):
-    print(limit)
-    print(offset)
-    print(sort_by_desc)
-    print(include_count)
-    print(query)
+    # print(limit)
+    # print(offset)
+    # print(sort_by_desc)
+    # print(include_count)
+    # print(query)
 
-    return DocumentationIngestEmbeddingJobsResponse(
-        data=[
-            {
-                "id": "018204a2-9e58-4618-affe-e313be132aee",
-                "parse_job_id": "018204a2-9e59-4618-affe-e313be132aee",
-                "provider": "OpenAI",
-                "model": "text-embedding-3-small",
-                "usage": {"prompt_tokens": 8, "total_tokens": 8},
-                "created_at": "2026-09-06 11:52:33",
-            },
-            {
-                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                "parse_job_id": "018304a2-9e59-4618-affe-e313be132aee",
-                "provider": "OpenAI",
-                "model": "text-embedding-3-small",
-                "usage": {"prompt_tokens": 8, "total_tokens": 8},
-                "created_at": "2026-09-06 11:52:33",
-            },
-        ]
+    return await get_documentation_ingest_embedding_jobs(
+        db, limit, offset, sort_by_desc, include_count, query
     )
 
 
@@ -639,39 +546,12 @@ async def read_documentation_ingest_chunks(
     include_count: bool = False,
     query: str | None = None,
 ):
-    print(limit)
-    print(offset)
-    print(sort_by_desc)
-    print(include_count)
-    print(query)
+    # print(limit)
+    # print(offset)
+    # print(sort_by_desc)
+    # print(include_count)
+    # print(query)
 
-    return DocumentationIngestChunksResponse(
-        data=[
-            {
-                "id": "018204a2-9e58-4618-affe-e313be132aee",
-                "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
-                "content": "test content 1 python",
-                "metadata": {
-                    "source_type": "document",
-                    "file_name": "some-pdf-file-here.pdf",
-                    "Header 1": "Intro",
-                    "Header 2": "History",
-                },
-                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
-                "created_at": "2026-09-06 11:52:33",
-            },
-            {
-                "id": "01df1db6-87f1-45f4-b34f-b6c5820addad",
-                "ingest_job_id": "018204a2-9e58-4618-affe-e313be132eee",
-                "content": "test content 2",
-                "metadata": {
-                    "source_type": "document",
-                    "file_name": "some-pdf-file-here.pdf",
-                    "Header 1": "Intro",
-                    "Header 2": "History",
-                },
-                "embedding": "[1.5, -0.4, 7.2, 19.6, 20.2]",
-                "created_at": "2026-09-06 11:52:33",
-            },
-        ]
+    return await get_documentation_ingest_chunks(
+        db, limit, offset, sort_by_desc, include_count, query
     )
