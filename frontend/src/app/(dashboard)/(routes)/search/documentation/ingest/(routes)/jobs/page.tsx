@@ -4,8 +4,9 @@ import { Metadata } from 'next';
 import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
 import { LoadingSpinner } from '@/components/loading';
+import ListHeader from '@/components/list/header';
 
-import DocumentationIngestJobsListHeader from './components/list/header';
+import DocumentationIngestJobsListFilters from './components/list/filters';
 import DocumentationIngestJobsList from './components/list';
 
 export const metadata: Metadata = {
@@ -30,7 +31,11 @@ export default async function DashboardSearchDocumentationIngestJobsPage({
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest jobs" buttonUrl="jobs/new" buttonText="New job" />
       <div className="flex flex-col gap-5">
-        <DocumentationIngestJobsListHeader search_query={search_query} />
+        <ListHeader
+          searchPlaceholder="Job Id or Name"
+          search_query={search_query}
+          filters={<DocumentationIngestJobsListFilters />}
+        />
         <Suspense key="documentation-ingest-jobs" fallback={<LoadingSpinner />}>
           <DocumentationIngestJobsList
             page={page}

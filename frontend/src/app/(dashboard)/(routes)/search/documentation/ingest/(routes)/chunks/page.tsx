@@ -4,8 +4,8 @@ import { Metadata } from 'next';
 import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
 import { LoadingSpinner } from '@/components/loading';
+import ListHeader from '@/components/list/header';
 
-import DocumentationIngestChunksListHeader from './components/list/header';
 import DocumentationIngestChunksList from './components/list';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default async function DashboardSearchDocumentationIngestChunksPage({
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest chunks" />
       <div className="flex flex-col gap-5">
-        <DocumentationIngestChunksListHeader search_query={search_query} />
+        <ListHeader searchPlaceholder="Chunk Id" search_query={search_query} />
         <Suspense key="documentation-ingest-chunks" fallback={<LoadingSpinner />}>
           <DocumentationIngestChunksList
             page={page}

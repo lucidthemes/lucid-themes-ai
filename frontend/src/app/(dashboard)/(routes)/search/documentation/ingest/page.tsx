@@ -24,7 +24,7 @@ export default function DashboardSearchDocumentationIngestPage() {
   return (
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Documentation ingest" />
-      <div className="flex flex-col gap-10 lg:grid lg:grid-cols-2">
+      <div className="flex flex-col gap-10 xl:grid xl:grid-cols-2">
         <Card className="col-span-2">
           <CardHeader>
             <CardTitle>
@@ -46,7 +46,7 @@ export default function DashboardSearchDocumentationIngestPage() {
           </CardHeader>
           <CardContent>
             <Suspense key="documentation-ingest-jobs" fallback={<LoadingSpinner />}>
-              <DocumentationIngestJobsList />
+              <DocumentationIngestJobsList limit={5} />
             </Suspense>
           </CardContent>
         </Card>

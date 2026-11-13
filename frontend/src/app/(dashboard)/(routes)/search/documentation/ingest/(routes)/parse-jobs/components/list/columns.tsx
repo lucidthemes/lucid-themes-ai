@@ -15,10 +15,6 @@ export const DocumentationIngestParseJobsListColumns = columnHelper.columns([
     header: 'Id',
   }),
 
-  // columnHelper.accessor('llamaparse_job_id', {
-  //   header: 'LlamaParse job id',
-  // }),
-
   columnHelper.display({
     id: 'status',
     header: 'Status',

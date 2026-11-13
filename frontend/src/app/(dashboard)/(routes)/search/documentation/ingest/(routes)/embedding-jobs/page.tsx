@@ -4,8 +4,8 @@ import { Metadata } from 'next';
 import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
 import { LoadingSpinner } from '@/components/loading';
+import ListHeader from '@/components/list/header';
 
-import DocumentationIngestEmbeddingJobsListHeader from './components/list/header';
 import DocumentationIngestEmbeddingJobsList from './components/list';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default async function DashboardSearchDocumentationIngestEmbeddingJobsPag
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest embedding jobs" />
       <div className="flex flex-col gap-5">
-        <DocumentationIngestEmbeddingJobsListHeader search_query={search_query} />
+        <ListHeader searchPlaceholder="Embedding Job Id" search_query={search_query} />
         <Suspense key="documentation-ingest-embedding-jobs" fallback={<LoadingSpinner />}>
           <DocumentationIngestEmbeddingJobsList
             page={page}

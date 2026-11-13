@@ -6,12 +6,11 @@ import { useTransition } from 'react';
 import { Card } from '@/components/ui/card';
 
 import type { DocumentationIngestJobStatus, DocumentationIngestJob } from '../../../schemas/ingest-job.schema';
+import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 
 import DocumentationIngestJobChunksHeader from './header';
 import DocumentationIngestJobChunksContent from './content';
 import DocumentationIngestJobChunksFooter from './footer';
-
-import { useIngestJobNewStore } from '../../../(routes)/new/store/ingest-job-new.store';
 
 export default function DocumentationIngestJobChunks({
   ingestJobStatus,
@@ -59,7 +58,6 @@ export default function DocumentationIngestJobChunks({
         ingestJobStatus={ingestJobStatus}
         expanded={expanded}
         isPending={isPending}
-        // startTransition={startTransition}
         chunks={chunks}
       />
       <DocumentationIngestJobChunksFooter

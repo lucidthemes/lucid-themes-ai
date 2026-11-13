@@ -4,8 +4,9 @@ import { Metadata } from 'next';
 import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
 import { LoadingSpinner } from '@/components/loading';
+import ListHeader from '@/components/list/header';
 
-import DocumentationIngestSourcesListHeader from './components/list/header';
+import DocumentationIngestSourcesListFilters from './components/list/filters';
 import DocumentationIngestSourcesList from './components/list';
 
 export const metadata: Metadata = {
@@ -30,7 +31,11 @@ export default async function DashboardSearchDocumentationIngestSourcesPage({
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest sources" />
       <div className="flex flex-col gap-5">
-        <DocumentationIngestSourcesListHeader search_query={search_query} />
+        <ListHeader
+          searchPlaceholder="Source Id"
+          search_query={search_query}
+          filters={<DocumentationIngestSourcesListFilters />}
+        />
         <Suspense key="documentation-ingest-sources" fallback={<LoadingSpinner />}>
           <DocumentationIngestSourcesList
             page={page}
