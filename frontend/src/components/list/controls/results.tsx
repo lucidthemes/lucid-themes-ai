@@ -11,8 +11,8 @@ export default function ListControlResultsCount({
   const currentResultsUpper = page * limit <= totalCount ? page * limit : totalCount;
 
   return (
-    <div className="flex gap-x-1 text-sm">
-      <span className="font-medium">Results:</span>
+    <div className="flex min-w-fit gap-x-1 text-sm">
+      <span className="hidden font-medium xl:block">Results:</span>
       {totalCount > 0 ? (
         <span>
           {currentResultsLower} - {currentResultsUpper} of {totalCount}

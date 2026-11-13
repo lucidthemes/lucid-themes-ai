@@ -1,14 +1,22 @@
 'use client';
 
 import { Field, FieldLabel } from '@/components/ui/field';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 import useListControlLimit from './use-limit';
 
 export default function ListControlLimit({
   currentValue = 12,
   limitOptions = [5, 10, 15, 20],
-  label = 'Items per page',
+  label = 'Items per page:',
   className,
 }: {
   currentValue: number;
@@ -20,7 +28,9 @@ export default function ListControlLimit({
 
   return (
     <Field orientation="horizontal" className={`w-fit ${className}`}>
-      <FieldLabel htmlFor="select-items-per-page">{label}</FieldLabel>
+      <FieldLabel htmlFor="select-items-per-page " className="hidden xl:block">
+        {label}
+      </FieldLabel>
       <Select
         items={limitOptions as []}
         value={currentValue?.toString()}
@@ -33,6 +43,7 @@ export default function ListControlLimit({
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
+            <SelectLabel className="xl:hidden">{label}</SelectLabel>
             {limitOptions.map((option, index) => (
               <SelectItem key={index} value={option.toString()} className="cursor-pointer">
                 {option}
