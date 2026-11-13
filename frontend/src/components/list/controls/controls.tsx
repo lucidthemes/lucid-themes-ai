@@ -13,13 +13,9 @@ export default function ListControls({ page, limit, totalCount, limitOptions }: 
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
-    <div className="flex w-full flex-col items-center gap-y-2.5 self-center xl:flex-row xl:justify-between">
+    <div className="flex w-full items-center justify-between gap-5 self-center">
       <ListControlResultsCount page={page} limit={limit} totalCount={totalCount} />
-      <ListControlPagination
-        currentPage={page}
-        totalPages={totalPages}
-        className="justify-self-center sm:justify-self-start lg:col-start-2 lg:justify-self-center"
-      />
+      <ListControlPagination currentPage={page} totalPages={totalPages} />
       <ListControlLimit currentValue={limit} limitOptions={limitOptions} className="justify-self-end lg:col-start-3" />
     </div>
   );

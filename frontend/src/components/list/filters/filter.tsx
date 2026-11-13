@@ -49,7 +49,7 @@ export default function ListFilter({ type, label, options }: ListFilterProps) {
         }}
       >
         <SelectTrigger className="w-full cursor-pointer lg:max-w-48">
-          <SelectValue placeholder={label} />
+          <SelectValue placeholder={label} className="text-muted-foreground" />
         </SelectTrigger>
         <SelectContent>
           {options.map((item) => (

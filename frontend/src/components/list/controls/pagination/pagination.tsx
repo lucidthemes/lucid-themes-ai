@@ -16,11 +16,9 @@ import ListControlPaginationNumbers from './numbers';
 export default function ListControlPagination({
   currentPage,
   totalPages,
-  className,
 }: {
   currentPage: number;
   totalPages: number;
-  className?: string;
 }) {
   const { handlePageChange, handlePreviousPage, handleNextPage } = useListControlPagination(currentPage);
 
@@ -29,7 +27,7 @@ export default function ListControlPagination({
   const pageLimit = 10;
 
   return (
-    <Pagination className={`mx-0 w-auto ${className}`}>
+    <Pagination className="mx-0 w-auto justify-self-center lg:col-start-2 lg:justify-self-center">
       <PaginationContent>
         {currentPage && currentPage > 1 && (
           <PaginationItem>
@@ -37,7 +35,7 @@ export default function ListControlPagination({
           </PaginationItem>
         )}
 
-        <div className="flex flex-row flex-wrap items-center gap-1">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-1">
           {totalPages <= pageLimit ? (
             <ListControlPaginationNumbers
               handlePageChange={handlePageChange}

@@ -10,7 +10,7 @@ export default function ListFilters({ children }: { children: React.ReactNode })
   const activeFilters = searchParams.toString().match(/filter_/g);
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:flex-row">
+    <div className="flex w-full flex-col gap-4 self-start lg:flex-row">
       {children}
       {activeFilters && activeFilters.length > 1 && <ListFilterClearAll />}
     </div>

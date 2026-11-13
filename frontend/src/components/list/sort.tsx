@@ -38,7 +38,7 @@ export default function ListSort() {
       }}
     >
       <SelectTrigger className="w-full cursor-pointer lg:max-w-fit">
-        <SelectValue placeholder="Sort by" />
+        <SelectValue placeholder="Sort by" className="text-muted-foreground" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

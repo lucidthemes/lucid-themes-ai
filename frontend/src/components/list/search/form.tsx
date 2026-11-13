@@ -8,7 +8,7 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '
 
 import useListSearchForm from '@/components/list/search/use-form';
 
-export default function ListSearchForm({ placeholder, search_query }: { placeholder: string; search_query?: string }) {
+export default function ListSearchForm({ placeholder, search_query }: { placeholder?: string; search_query?: string }) {
   const { form, onSubmit } = useListSearchForm(search_query);
 
   return (
@@ -26,6 +26,7 @@ export default function ListSearchForm({ placeholder, search_query }: { placehol
                   aria-invalid={fieldState.invalid}
                   placeholder={placeholder}
                   autoComplete="on"
+                  className="text-muted-foreground"
                 />
                 <InputGroupAddon align="inline-end">
                   <InputGroupButton type="submit" variant="ghost" size="icon-sm" className="cursor-pointer">
