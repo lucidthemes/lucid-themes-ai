@@ -44,15 +44,16 @@ export default function DocumentationIngestJobParseUploadDocumentFormCreditCalcu
           />
         </Field>
         {pages >= 1 && (
-          <div className="flex justify-end gap-1">
-            <span className="text-sm font-medium">
-              Cost to parse{' '}
-              <Badge variant="secondary">
-                {pages} {pagesLabel}
-              </Badge>{' '}
-              on tier <Badge variant="secondary">{documentParseTier.label}</Badge> at{' '}
-              <Badge variant="secondary">{documentParseTier.credits} credits per page</Badge> :
+          <div className="flex flex-wrap items-center justify-end gap-1 text-sm font-medium">
+            <span>Cost to parse</span>
+            <Badge variant="secondary">
+              {pages} {pagesLabel}
+            </Badge>
+            <span>
+              on tier <Badge variant="secondary">{documentParseTier.label}</Badge> at
             </span>
+            <Badge variant="secondary">{documentParseTier.credits} credits per page</Badge>
+            <span>=</span>
             <Badge variant="default">{parseCreditsTotal} credits</Badge>
           </div>
         )}

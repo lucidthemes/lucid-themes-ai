@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction, TransitionStartFunction } from 'react';
-
 import { Maximize2, Minimize2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,6 @@ import type {
   DocumentationIngestJob,
   DocumentationIngestJobChunk,
 } from '../../../schemas/ingest-job.schema';
-// import type { DocumentationIngestJobChunksCreateFormChunk } from '../../../(routes)/new/schemas/chunks-create-form.schema';
 
 import DocumentationIngestJobChunksEmbeddingsButton from './embeddings-button';
 
@@ -30,7 +28,6 @@ export default function DocumentationIngestJobChunksHeader({
   setExpanded: Dispatch<SetStateAction<boolean>>;
   isPending: boolean;
   startTransition: TransitionStartFunction;
-  // chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[] | null;
   chunks?: DocumentationIngestJobChunk[] | null;
 }) {
   if (!ingestJobData) return;
@@ -44,7 +41,7 @@ export default function DocumentationIngestJobChunksHeader({
       </CardTitle>
       <CardDescription>Create chunks and generate embeddings</CardDescription>
       {!isPending && chunks && chunks.length > 0 && (
-        <CardAction className="flex gap-5 self-center">
+        <CardAction className="flex flex-col gap-5 self-center md:flex-row">
           <Button className="cursor-pointer" variant="secondary" onClick={() => setExpanded((expanded) => !expanded)}>
             {!expanded && (
               <>

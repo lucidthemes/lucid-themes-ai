@@ -7,7 +7,6 @@ import type {
   DocumentationIngestJobChunk,
   DocumentationIngestJob,
 } from '../../../schemas/ingest-job.schema';
-// import type { DocumentationIngestJobChunksCreateFormChunk } from '../../../(routes)/new/schemas/chunks-create-form.schema';
 
 import DocumentationIngestJobChunksCreateForm from './create';
 import DocumentationIngestJobChunksEmbeddingsButton from './embeddings-button';
@@ -25,7 +24,6 @@ export default function DocumentationIngestJobChunksFooter({
   expanded: boolean;
   isPending: boolean;
   startTransition: TransitionStartFunction;
-  // chunks?: DocumentationIngestJobChunk[] | DocumentationIngestJobChunksCreateFormChunk[] | null;
   chunks?: DocumentationIngestJobChunk[] | null;
 }) {
   if (ingestJobStatus === 'completed' || !ingestJobData) return;

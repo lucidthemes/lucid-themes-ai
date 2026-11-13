@@ -4,8 +4,9 @@ import { Metadata } from 'next';
 import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import DashboardLayoutHeading from '@/app/(dashboard)/components/heading';
 import { LoadingSpinner } from '@/components/loading';
+import ListHeader from '@/components/list/header';
 
-import DocumentationIngestParseJobsListHeader from './components/list/header';
+import DocumentationIngestParseJobsListFilters from './components/list/filters';
 import DocumentationIngestParseJobsList from './components/list';
 
 export const metadata: Metadata = {
@@ -30,7 +31,11 @@ export default async function DashboardSearchDocumentationIngestParseJobsPage({
     <DashboardLayoutContainer>
       <DashboardLayoutHeading heading="Ingest parse jobs" />
       <div className="flex flex-col gap-5">
-        <DocumentationIngestParseJobsListHeader search_query={search_query} />
+        <ListHeader
+          searchPlaceholder="Parse Job Id"
+          search_query={search_query}
+          filters={<DocumentationIngestParseJobsListFilters />}
+        />
         <Suspense key="documentation-ingest-parse-jobs" fallback={<LoadingSpinner />}>
           <DocumentationIngestParseJobsList
             page={page}

@@ -15,10 +15,6 @@ export const DocumentationIngestEmbeddingJobsListColumns = columnHelper.columns(
     header: 'Id',
   }),
 
-  // columnHelper.accessor('provider', {
-  //   header: 'Provider',
-  // }),
-
   columnHelper.accessor('model', {
     header: 'Model',
   }),
