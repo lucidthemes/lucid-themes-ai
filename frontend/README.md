@@ -1,5 +1,9 @@
 # Lucid Themes AI - Frontend
 
+## Documentation
+
+The documentation for the frontend can be found [here](https://github.com/lucidthemes/lucid-themes-ai/blob/main/frontend/docs/overview.md)
+
 ## Environment variables
 
 Environment variables for the frontend can be added by creating a .env-local file. The following variables are available by default:
