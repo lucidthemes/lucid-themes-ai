@@ -76,7 +76,7 @@ export default async function DashboardSearchDocumentationIngestJobPage({
   if (!ingestJobData) redirect('ingest');
 
   return (
-    <DashboardLayoutContainer className="py-6">
+    <DashboardLayoutContainer>
       <div className="flex flex-col gap-10">
         {ingestJobData.status === 'pending' && <DocumentationIngestJobPendingHeading />}
         {ingestJobData.status === 'completed' && <DocumentationIngestJobCompletedHeading />}

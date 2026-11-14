@@ -2,46 +2,54 @@ import { DatabasePlus, DatabaseCheck, FlaskConical } from 'lucide-react';
 
 import { Spinner } from '@/components/ui/spinner';
 
-function DocumentationIngestJobNewHeading() {
+function DocumentationIngestJobHeading({
+  icon,
+  heading,
+  subHeading,
+}: {
+  icon: React.ReactNode;
+  heading: string;
+  subHeading: string;
+}) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <DatabasePlus />
-      <h1 className="font-heading text-base font-medium">New ingest job</h1>
-      <span className="text-sm text-muted-foreground">Create a new documentation ingest job</span>
+      {icon}
+      <h1 className="font-heading text-xl font-medium">{heading}</h1>
+      <span className="text-sm text-muted-foreground">{subHeading}</span>
     </div>
   );
+}
+
+function DocumentationIngestJobNewHeading() {
+  return DocumentationIngestJobHeading({
+    icon: <DatabasePlus />,
+    heading: 'New ingest job',
+    subHeading: 'Create a new documentation ingest job',
+  });
 }
 
 function DocumentationIngestJobPendingHeading() {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <Spinner className="size-6" />
-      <h1 className="font-heading text-base font-medium">Pending ingest job</h1>
-      <span className="text-sm text-muted-foreground">View a pending documentation ingest job</span>
-    </div>
-  );
+  return DocumentationIngestJobHeading({
+    icon: <Spinner className="size-6" />,
+    heading: 'Pending ingest job',
+    subHeading: 'View a pending documentation ingest job',
+  });
 }
 
 function DocumentationIngestJobCompletedHeading() {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <DatabaseCheck />
-      <h1 className="font-heading text-base font-medium">Completed ingest job</h1>
-      <span className="text-sm text-muted-foreground">View a completed documentation ingest job</span>
-    </div>
-  );
+  return DocumentationIngestJobHeading({
+    icon: <DatabaseCheck />,
+    heading: 'Completed ingest job',
+    subHeading: 'View a completed documentation ingest job',
+  });
 }
 
 function DocumentationIngestJobTestingHeading() {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <FlaskConical />
-      <h1 className="font-heading text-base font-medium">Test ingest job</h1>
-      <span className="text-sm text-muted-foreground">
-        Use this ingest job embeddings in isolation to test responses
-      </span>
-    </div>
-  );
+  return DocumentationIngestJobHeading({
+    icon: <FlaskConical />,
+    heading: 'Test ingest job',
+    subHeading: 'Use this ingest job embeddings in isolation to test responses',
+  });
 }
 
 export {

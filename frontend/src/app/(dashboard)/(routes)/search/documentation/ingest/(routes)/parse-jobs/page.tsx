@@ -29,7 +29,7 @@ export default async function DashboardSearchDocumentationIngestParseJobsPage({
 
   return (
     <DashboardLayoutContainer>
-      <DashboardLayoutHeading heading="Ingest parse jobs" />
+      <DashboardLayoutHeading heading="Parse jobs" />
       <div className="flex flex-col gap-5">
         <ListHeader
           searchPlaceholder="Parse Job Id"

@@ -27,9 +27,9 @@ export default async function DashboardSearchDocumentationIngestChunksPage({
 
   return (
     <DashboardLayoutContainer>
-      <DashboardLayoutHeading heading="Ingest chunks" />
+      <DashboardLayoutHeading heading="Chunks" />
       <div className="flex flex-col gap-5">
-        <ListHeader searchPlaceholder="Chunk Id" search_query={search_query} />
+        <ListHeader searchPlaceholder="Chunk ID" search_query={search_query} />
         <Suspense key="documentation-ingest-chunks" fallback={<LoadingSpinner />}>
           <DocumentationIngestChunksList
             page={page}

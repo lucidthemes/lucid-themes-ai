@@ -12,7 +12,7 @@ const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestPa
 
 export const DocumentationIngestParseJobsListColumns = columnHelper.columns([
   columnHelper.accessor('id', {
-    header: 'Id',
+    header: 'ID',
   }),
 
   columnHelper.display({
@@ -22,16 +22,6 @@ export const DocumentationIngestParseJobsListColumns = columnHelper.columns([
       const item = row.original;
 
       return <span className="capitalize">{item.status}</span>;
-    },
-  }),
-
-  columnHelper.display({
-    id: 'created_at',
-    header: 'Created',
-    cell: ({ row }) => {
-      const item = row.original;
-
-      return dateTimeFormat(item.created_at);
     },
   }),
 

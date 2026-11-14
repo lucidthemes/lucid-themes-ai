@@ -12,7 +12,7 @@ const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestJo
 
 export const DocumentationIngestJobsListcolumns = columnHelper.columns([
   columnHelper.accessor('id', {
-    header: 'Id',
+    header: 'ID',
   }),
 
   columnHelper.accessor('name', {

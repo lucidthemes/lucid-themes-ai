@@ -12,7 +12,7 @@ const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestCh
 
 export const DocumentationIngestChunksListColumns = columnHelper.columns([
   columnHelper.accessor('id', {
-    header: 'Id',
+    header: 'ID',
   }),
 
   columnHelper.accessor('content', {

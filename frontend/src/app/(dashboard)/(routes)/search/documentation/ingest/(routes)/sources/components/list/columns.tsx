@@ -12,7 +12,7 @@ const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestSo
 
 export const DocumentationIngestSourcesListColumns = columnHelper.columns([
   columnHelper.accessor('id', {
-    header: 'Id',
+    header: 'ID',
   }),
 
   columnHelper.display({

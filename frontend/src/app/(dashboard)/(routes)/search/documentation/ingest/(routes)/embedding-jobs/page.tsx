@@ -27,9 +27,9 @@ export default async function DashboardSearchDocumentationIngestEmbeddingJobsPag
 
   return (
     <DashboardLayoutContainer>
-      <DashboardLayoutHeading heading="Ingest embedding jobs" />
+      <DashboardLayoutHeading heading="Embedding jobs" />
       <div className="flex flex-col gap-5">
-        <ListHeader searchPlaceholder="Embedding Job Id" search_query={search_query} />
+        <ListHeader searchPlaceholder="Embedding Job ID" search_query={search_query} />
         <Suspense key="documentation-ingest-embedding-jobs" fallback={<LoadingSpinner />}>
           <DocumentationIngestEmbeddingJobsList
             page={page}

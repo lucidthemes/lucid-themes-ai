@@ -32,7 +32,7 @@ export default async function DashboardSearchDocumentationIngestJobsPage({
       <DashboardLayoutHeading heading="Ingest jobs" buttonUrl="jobs/new" buttonText="New job" />
       <div className="flex flex-col gap-5">
         <ListHeader
-          searchPlaceholder="Job Id or Name"
+          searchPlaceholder="Job ID or Name"
           search_query={search_query}
           filters={<DocumentationIngestJobsListFilters />}
         />

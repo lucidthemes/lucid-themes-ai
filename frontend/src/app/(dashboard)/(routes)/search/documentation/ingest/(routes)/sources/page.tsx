@@ -29,10 +29,10 @@ export default async function DashboardSearchDocumentationIngestSourcesPage({
 
   return (
     <DashboardLayoutContainer>
-      <DashboardLayoutHeading heading="Ingest sources" />
+      <DashboardLayoutHeading heading="Sources" />
       <div className="flex flex-col gap-5">
         <ListHeader
-          searchPlaceholder="Source Id"
+          searchPlaceholder="Source ID"
           search_query={search_query}
           filters={<DocumentationIngestSourcesListFilters />}
         />

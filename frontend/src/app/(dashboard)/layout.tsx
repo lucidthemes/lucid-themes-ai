@@ -23,7 +23,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <DashboardLayoutSidebar authEmail={authEmail} />
       <SidebarInset className="overflow-x-auto">
         <DashboardLayoutHeader />
-        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+        <div className="h-full p-5 sm:p-7.5 md:p-10">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
