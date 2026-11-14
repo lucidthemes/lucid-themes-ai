@@ -1,5 +1,9 @@
 # Lucid Themes AI - Backend
 
+## Documentation
+
+The documentation for the backend can be found [here](https://github.com/lucidthemes/lucid-themes-ai/blob/main/backend/docs/overview.md)
+
 ## Environment variables
 
 Environment variables for the backend can be added by creating a .env file. The following variables are available by default:
