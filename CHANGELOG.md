@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 - dashboard page route
 - dashboard components
 
+- search route
+- documentation route
+- documentation ingest routes (jobs, sources, parse jobs, embedding jobs, chunks)
+
 ##### Auth
 
 - login route
@@ -24,13 +28,20 @@ All notable changes to this project will be documented in this file.
 
 - shadcn ui components
 - alerts
+- loading
+- sheet
+- list
 
 #### Lib
 
 - supabase js helpers
 - project environment check
 - app providers
-- api urls
+- backend api
+
+#### Store
+
+- sheet
 
 #### Types
 
