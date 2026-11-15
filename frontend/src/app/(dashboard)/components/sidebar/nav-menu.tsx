@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRightIcon } from 'lucide-react';
+import { cn } from 'cn';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -72,7 +73,7 @@ export default function DashboardLayoutSidebarNavMenu({ items }: { items: Sideba
                         return (
                           <SidebarMenuSubItem key={secondLevelItem.title}>
                             <SidebarMenuSubButton
-                              render={<Link href={secondLevelItem.url} className="h-9 transition-colors" />}
+                              render={<Link href={secondLevelItem.url} className={cn('h-9 transition-colors')} />}
                             >
                               <span>{secondLevelItem.title}</span>
                             </SidebarMenuSubButton>

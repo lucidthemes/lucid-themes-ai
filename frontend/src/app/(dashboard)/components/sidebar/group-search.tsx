@@ -34,25 +34,17 @@ export default function DashboardLayoutSidebarGroupSearch() {
               title: 'Semantic',
               url: '/search/documentation/retrieval/semantic',
             },
-            // {
-            //   title: 'Semantic - reranked',
-            //   url: '/search/documentation/retrieval/semantic-reranked',
-            // },
             {
               title: 'Keyword',
               url: '/search/documentation/retrieval/keyword',
             },
-            // {
-            //   title: 'Keyword - reranked',
-            //   url: '/search/documentation/retrieval/keyword-reranked',
-            // },
             {
               title: 'Hybrid',
               url: '/search/documentation/retrieval/hybrid',
             },
             // {
-            //   title: 'Hybrid - reranked',
-            //   url: '/search/documentation/retrieval/hybrid-reranked',
+            //   title: 'Reranked',
+            //   url: '/search/documentation/retrieval/reranked',
             // },
           ],
         },
