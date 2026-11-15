@@ -7,7 +7,7 @@ from fastapi import UploadFile
 from pydantic import BaseModel, HttpUrl
 from pydantic.types import StringConstraints
 
-from app.schemas.common import APIResponse
+from app.schemas.common import APIResponse, APIResponseCount
 
 # General
 
@@ -37,7 +37,7 @@ class DocumentationIngestSource(BaseModel):
 
 # Ingest sources list
 
-DocumentationIngestSourcesResponse = APIResponse[list[DocumentationIngestSource]]
+DocumentationIngestSourcesResponse = APIResponseCount[list[DocumentationIngestSource]]
 
 
 # Ingest parse job
@@ -70,7 +70,11 @@ class DocumentationIngestParseJob(BaseModel):
 
 # Ingest parse jobs list
 
-DocumentationIngestParseJobsResponse = APIResponse[list[DocumentationIngestParseJob]]
+DocumentationIngestParseJobsResponse = APIResponseCount[list[DocumentationIngestParseJob]]
+
+# Ingest parse jobs usage
+
+DocumentationIngestParseJobsUsageResponse = APIResponse[DocumentationIngestParseJobUsage]
 
 
 # Ingest embedding job
@@ -92,7 +96,11 @@ class DocumentationIngestEmbeddingJob(BaseModel):
 
 # Ingest embedding jobs list
 
-DocumentationIngestEmbeddingJobsResponse = APIResponse[list[DocumentationIngestEmbeddingJob]]
+DocumentationIngestEmbeddingJobsResponse = APIResponseCount[list[DocumentationIngestEmbeddingJob]]
+
+# Ingest embedding jobs usage
+
+DocumentationIngestEmbeddingJobsUsageResponse = APIResponse[DocumentationIngestEmbeddingJobUsage]
 
 
 # Ingest chunk
@@ -109,7 +117,7 @@ class DocumentationIngestChunk(BaseModel):
 
 # Ingest chunks list
 
-DocumentationIngestChunksResponse = APIResponse[list[DocumentationIngestChunk]]
+DocumentationIngestChunksResponse = APIResponseCount[list[DocumentationIngestChunk]]
 
 
 # Ingest jobs list
@@ -123,7 +131,7 @@ class DocumentationIngestJobs(BaseModel):
     updated_at: datetime
 
 
-DocumentationIngestJobsResponse = APIResponse[list[DocumentationIngestJobs]]
+DocumentationIngestJobsResponse = APIResponseCount[list[DocumentationIngestJobs]]
 
 
 # Single ingest job

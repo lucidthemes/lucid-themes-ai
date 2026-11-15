@@ -3,6 +3,9 @@ from pydantic import BaseModel
 
 class APIResponse[T](BaseModel):
     data: T
+
+
+class APIResponseCount(APIResponse):
     count: int | None = None
 
 

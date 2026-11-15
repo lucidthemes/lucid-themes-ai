@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
@@ -17,14 +18,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .schemas import (
     DocumentationIngestChunksResponse,
     DocumentationIngestEmbeddingJobsResponse,
+    DocumentationIngestEmbeddingJobsUsageResponse,
     DocumentationIngestJobChunksResponseChunk,
     DocumentationIngestJobSource,
     DocumentationIngestJobsResponse,
     DocumentationIngestParseJobsResponse,
+    DocumentationIngestParseJobsUsageResponse,
+    # DocumentationIngestJobResponse
     DocumentationIngestSourcesResponse,
     DocumentationIngestSourceType,
     DocumentationIngestStatus,
-    # DocumentationIngestJobResponse
 )
 
 # from fastapi import HTTPException
@@ -142,6 +145,21 @@ async def get_documentation_ingest_job(
     #     raise HTTPException(status_code=404, detail="Job not found")
 
     # return DocumentationIngestJobResponse(data=job)
+    return "test"
+
+
+async def delete_documentation_ingest_job(
+    job_id: uuid.UUID,
+    db: AsyncSession,
+):
+    # fetch post with id to check it exists
+
+    # if not exists, return 404 http status
+
+    # delete ingest job
+
+    # return 204 http status
+
     return "test"
 
 
@@ -341,6 +359,14 @@ async def get_documentation_ingest_parse_jobs(
         )
 
 
+async def get_documentation_ingest_parse_jobs_usage(
+    db: AsyncSession,
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
+):
+    return DocumentationIngestParseJobsUsageResponse(data={"credits": "69"})
+
+
 async def get_documentation_ingest_embedding_jobs(
     db: AsyncSession,
     limit: int = 10,
@@ -423,6 +449,14 @@ async def get_documentation_ingest_embedding_jobs(
                 },
             ]
         )
+
+
+async def get_documentation_ingest_embedding_jobs_usage(
+    db: AsyncSession,
+):
+    return DocumentationIngestEmbeddingJobsUsageResponse(
+        data={"prompt_tokens": 420, "total_tokens": 1337}
+    )
 
 
 async def get_documentation_ingest_chunks(

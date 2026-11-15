@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, Response, status
@@ -10,6 +11,7 @@ from app.db.dependencies import get_read_db, get_write_db
 from .schemas import (
     DocumentationIngestChunksResponse,
     DocumentationIngestEmbeddingJobsResponse,
+    DocumentationIngestEmbeddingJobsUsageResponse,
     DocumentationIngestJobChunksCreate,
     DocumentationIngestJobChunksResponse,
     DocumentationIngestJobEmbeddingsCreate,
@@ -19,6 +21,7 @@ from .schemas import (
     DocumentationIngestJobResponse,
     DocumentationIngestJobsResponse,
     DocumentationIngestParseJobsResponse,
+    DocumentationIngestParseJobsUsageResponse,
     DocumentationIngestSourcesResponse,
     DocumentationIngestSourceType,
     DocumentationIngestStatus,
@@ -28,8 +31,10 @@ from .service import (
     documentation_ingest_chunk_split_text,
     get_documentation_ingest_chunks,
     get_documentation_ingest_embedding_jobs,
+    get_documentation_ingest_embedding_jobs_usage,
     get_documentation_ingest_jobs,
     get_documentation_ingest_parse_jobs,
+    get_documentation_ingest_parse_jobs_usage,
     get_documentation_ingest_sources,
 )
 
@@ -504,6 +509,22 @@ async def read_documentation_ingest_parse_jobs(
 
 
 @router.get(
+    "/parse-jobs/usage",
+    response_model=DocumentationIngestParseJobsUsageResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest parse jobs usage",
+    description="Return ingest parse jobs usage",
+)
+async def read_documentation_ingest_parse_jobs_usage(
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
+):
+    return await get_documentation_ingest_parse_jobs_usage(db, date_from, date_to)
+
+
+@router.get(
     "/embedding-jobs",
     response_model=DocumentationIngestEmbeddingJobsResponse,
     status_code=status.HTTP_200_OK,
@@ -528,6 +549,20 @@ async def read_documentation_ingest_embedding_jobs(
     return await get_documentation_ingest_embedding_jobs(
         db, limit, offset, sort_by_desc, include_count, query
     )
+
+
+@router.get(
+    "/embedding-jobs/usage",
+    response_model=DocumentationIngestEmbeddingJobsUsageResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Read ingest embedding jobs usage",
+    description="Return ingest embedding jobs usage",
+)
+async def read_documentation_ingest_embedding_jobs_usage(
+    _: Annotated[str, Depends(get_current_user)],
+    db: AsyncSession = Depends(get_read_db),
+):
+    return await get_documentation_ingest_embedding_jobs_usage(db)
 
 
 @router.get(
