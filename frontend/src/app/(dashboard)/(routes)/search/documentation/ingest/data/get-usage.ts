@@ -6,10 +6,17 @@ import { DocumentationIngestParseJobUsageSchema } from '../(routes)/parse-jobs/s
 import type { DocumentationIngestEmbeddingJobUsage } from '../(routes)/embedding-jobs/schemas/ingest-embedding-job.schema';
 import { DocumentationIngestEmbeddingJobUsageSchema } from '../(routes)/embedding-jobs/schemas/ingest-embedding-job.schema';
 
-async function getDocumentationIngestUsageParse() {
+async function getDocumentationIngestUsageParse(dateFrom?: Date, dateTo?: Date) {
+  const usageCacheTag =
+    dateFrom && dateTo ? 'documentation-ingest-usage-parse-30-days' : 'documentation-ingest-usage-parse-all-time';
+
   const { data, error } = await backendAPIFetch<null, DocumentationIngestParseJobUsage>({
     url: '/api/v1/search/documentation/ingest/parse-jobs/usage',
-    cacheTags: ['documentation-ingest-usage-parse'],
+    requestQueryParams: {
+      ...(dateFrom && { date_from: dateFrom.toISOString() }),
+      ...(dateTo && { date_to: dateTo.toISOString() }),
+    },
+    cacheTags: [usageCacheTag],
   });
 
   if (!data || error) {
@@ -25,10 +32,19 @@ async function getDocumentationIngestUsageParse() {
   return parsedResponse.data;
 }
 
-async function getDocumentationIngestUsageEmbedding() {
+async function getDocumentationIngestUsageEmbedding(dateFrom?: Date, dateTo?: Date) {
+  const usageCacheTag =
+    dateFrom && dateTo
+      ? 'documentation-ingest-usage-embedding-30-days'
+      : 'documentation-ingest-usage-embedding-all-time';
+
   const { data, error } = await backendAPIFetch<null, DocumentationIngestEmbeddingJobUsage>({
     url: '/api/v1/search/documentation/ingest/embedding-jobs/usage',
-    cacheTags: ['documentation-ingest-usage-embedding'],
+    requestQueryParams: {
+      ...(dateFrom && { date_from: dateFrom.toISOString() }),
+      ...(dateTo && { date_to: dateTo.toISOString() }),
+    },
+    cacheTags: [usageCacheTag],
   });
 
   if (!data || error) {
