@@ -6,7 +6,7 @@ import type { DataTableFeatures } from '@/components/ui/data-table';
 import { dateTimeFormat } from '@/lib/formatters';
 
 import type { DocumentationIngestJobs } from '../../schemas/ingest-jobs.schema';
-import DocumentationIngestJobsListActionsButtons from './actions-buttons';
+import DocumentationIngestJobsListActionsButtons from './action-buttons';
 
 const columnHelper = createColumnHelper<DataTableFeatures, DocumentationIngestJobs>();
 
