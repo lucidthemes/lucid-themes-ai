@@ -3,17 +3,17 @@ from datetime import datetime
 
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
-# from sqlalchemy import func, select
+# from sqlalchemy import Numeric, cast, func, select
 # from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 # from app.api.utils import is_valid_uuid
 # from .models import (
-#     DocumentationChunk,
+#      DocumentationChunk,
 #     DocumentationIngestEmbeddingJob,
-#     DocumentationIngestJob,
+#      DocumentationIngestJob,
 #     DocumentationIngestParseJob,
-#     DocumentationIngestSource,
+#      DocumentationIngestSource,
 # )
 from .schemas import (
     DocumentationIngestChunksResponse,
@@ -364,7 +364,26 @@ async def get_documentation_ingest_parse_jobs_usage(
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ):
-    return DocumentationIngestParseJobsUsageResponse(data={"credits": "69"})
+    # stmt = select(
+    #     func.coalesce(
+    #         func.sum(cast(DocumentationIngestParseJob.usage["credits"].as_string(), Numeric)), 0
+    #     ).label("credits")
+    # )
+
+    # if date_from and date_to:
+    #     stmt = stmt.where(
+    #         DocumentationIngestParseJob.created_at >= date_from,
+    #         DocumentationIngestParseJob.created_at < date_to,
+    #     )
+
+    # result = (await db.execute(stmt)).one()
+
+    # return DocumentationIngestParseJobsUsageResponse(data={"credits": result.credits})
+
+    print(date_from)
+    print(date_to)
+
+    return DocumentationIngestParseJobsUsageResponse(data={"credits": "10"})
 
 
 async def get_documentation_ingest_embedding_jobs(
@@ -453,9 +472,41 @@ async def get_documentation_ingest_embedding_jobs(
 
 async def get_documentation_ingest_embedding_jobs_usage(
     db: AsyncSession,
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
 ):
+    # stmt = select(
+    #     func.coalesce(
+    #         func.sum(
+    #             cast(DocumentationIngestEmbeddingJob.usage["prompt_tokens"].as_string(), Numeric)
+    #         ),
+    #         0,
+    #     ).label("prompt_tokens"),
+    #     func.coalesce(
+    #         func.sum(
+    #             cast(DocumentationIngestEmbeddingJob.usage["total_tokens"].as_string(), Numeric)
+    #         ),
+    #         0,
+    #     ).label("total_tokens"),
+    # )
+
+    # if date_from and date_to:
+    #     stmt = stmt.where(
+    #         DocumentationIngestEmbeddingJob.created_at >= date_from,
+    #         DocumentationIngestEmbeddingJob.created_at < date_to,
+    #     )
+
+    # result = (await db.execute(stmt)).one()
+
+    # return DocumentationIngestEmbeddingJobsUsageResponse(
+    #     data={"prompt_tokens": result.prompt_tokens, "total_tokens": result.total_tokens}
+    # )
+
+    print(date_from)
+    print(date_to)
+
     return DocumentationIngestEmbeddingJobsUsageResponse(
-        data={"prompt_tokens": 420, "total_tokens": 1337}
+        data={"prompt_tokens": 10, "total_tokens": 20}
     )
 
 

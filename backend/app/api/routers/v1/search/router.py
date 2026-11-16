@@ -561,8 +561,10 @@ async def read_documentation_ingest_embedding_jobs(
 async def read_documentation_ingest_embedding_jobs_usage(
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
 ):
-    return await get_documentation_ingest_embedding_jobs_usage(db)
+    return await get_documentation_ingest_embedding_jobs_usage(db, date_from, date_to)
 
 
 @router.get(
