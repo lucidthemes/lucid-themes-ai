@@ -1,9 +1,10 @@
 import uuid
 from datetime import datetime
 
+from fastapi import Response, status
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
-# from sqlalchemy import Numeric, cast, func, select
+# from sqlalchemy import Numeric, cast, func, select, delete
 # from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 # from .models import (
 #      DocumentationChunk,
 #     DocumentationIngestEmbeddingJob,
-#      DocumentationIngestJob,
+#     DocumentationIngestJob,
 #     DocumentationIngestParseJob,
 #      DocumentationIngestSource,
 # )
@@ -33,7 +34,7 @@ from .schemas import (
 # from fastapi import HTTPException
 
 
-async def get_documentation_ingest_jobs(
+async def get_ingest_jobs(
     db: AsyncSession,
     limit: int = 10,
     offset: int = 0,
@@ -124,7 +125,7 @@ async def get_documentation_ingest_jobs(
         )
 
 
-async def get_documentation_ingest_job(
+async def get_ingest_job(
     job_id: uuid.UUID,
     db: AsyncSession,
 ):
@@ -141,29 +142,59 @@ async def get_documentation_ingest_job(
     # result = await db.execute(stmt)
     # job = result.unique().scalar_one_or_none()
 
-    # if not job:
+    # if job is None:
     #     raise HTTPException(status_code=404, detail="Job not found")
 
     # return DocumentationIngestJobResponse(data=job)
     return "test"
 
 
-async def delete_documentation_ingest_job(
+async def delete_ingest_job(
     job_id: uuid.UUID,
     db: AsyncSession,
 ):
-    # fetch post with id to check it exists
+    # stmt = delete(DocumentationIngestJob).where(DocumentationIngestJob.id == job_id)
 
-    # if not exists, return 404 http status
+    # result = await db.execute(stmt)
 
-    # delete ingest job
+    # if result.rowcount == 0:
+    #     raise HTTPException(status_code=404, detail="Job not found")
 
-    # return 204 http status
+    # await db.commit()
 
-    return "test"
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-async def get_documentation_ingest_sources(
+async def duplicate_ingest_job(
+    job_id: uuid.UUID,
+    job_name: str,
+    current_user: str,
+    read_db: AsyncSession,
+    write_db: AsyncSession,
+):
+    print(job_id)
+    print(current_user)
+
+    # select job from table. only get source_id
+
+    # create new job dict with user_id, new name, source_id, status as pending
+
+    # insert new job using dict and then return id of job.
+    # use .flush() instead of commit at this stage
+
+    # then need to fetch the parse job from the original job_id with status of completed
+
+    # create new parse job dict with data from selected parse job and insert the ingest_job_id from the newly inserted job.
+    # maybe also null the usage as there wasn't any?
+
+    # insert new parse job using dict
+
+    # use .commit() to complete the transaction
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+async def get_ingest_sources(
     db: AsyncSession,
     limit: int = 10,
     offset: int = 0,
@@ -243,7 +274,7 @@ async def get_documentation_ingest_sources(
         )
 
 
-async def get_documentation_ingest_parse_jobs(
+async def get_ingest_parse_jobs(
     db: AsyncSession,
     limit: int = 10,
     offset: int = 0,
@@ -359,7 +390,7 @@ async def get_documentation_ingest_parse_jobs(
         )
 
 
-async def get_documentation_ingest_parse_jobs_usage(
+async def get_ingest_parse_jobs_usage(
     db: AsyncSession,
     date_from: datetime | None = None,
     date_to: datetime | None = None,
@@ -380,13 +411,10 @@ async def get_documentation_ingest_parse_jobs_usage(
 
     # return DocumentationIngestParseJobsUsageResponse(data={"credits": result.credits})
 
-    print(date_from)
-    print(date_to)
-
     return DocumentationIngestParseJobsUsageResponse(data={"credits": "10"})
 
 
-async def get_documentation_ingest_embedding_jobs(
+async def get_ingest_embedding_jobs(
     db: AsyncSession,
     limit: int = 10,
     offset: int = 0,
@@ -470,7 +498,7 @@ async def get_documentation_ingest_embedding_jobs(
         )
 
 
-async def get_documentation_ingest_embedding_jobs_usage(
+async def get_ingest_embedding_jobs_usage(
     db: AsyncSession,
     date_from: datetime | None = None,
     date_to: datetime | None = None,
@@ -502,15 +530,12 @@ async def get_documentation_ingest_embedding_jobs_usage(
     #     data={"prompt_tokens": result.prompt_tokens, "total_tokens": result.total_tokens}
     # )
 
-    print(date_from)
-    print(date_to)
-
     return DocumentationIngestEmbeddingJobsUsageResponse(
         data={"prompt_tokens": 10, "total_tokens": 20}
     )
 
 
-async def get_documentation_ingest_chunks(
+async def get_ingest_chunks(
     db: AsyncSession,
     limit: int = 10,
     offset: int = 0,
@@ -701,7 +726,7 @@ Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
 Mauris nec nunc dignissim, vulputate ex vel, pellentesque risus. Aliquam erat volutpat. Vestibulum at aliquet nulla. Curabitur varius lorem et consectetur aliquam. Nulla luctus ultrices molestie. Praesent pharetra ipsum quis ante viverra, sed bibendum libero luctus. Suspendisse non nunc ut nulla tincidunt congue quis vel libero. Duis auctor, nunc id malesuada iaculis, purus neque vehicula eros, eleifend sagittis nibh mauris ornare mauris. In tincidunt nulla purus, id lobortis mauris sagittis at."""
 
 
-def documentation_ingest_chunk_source_metadata(source: DocumentationIngestJobSource):
+def chunk_source_metadata(source: DocumentationIngestJobSource):
     source_metadata = {}
     source_metadata["source_type"] = source.type
 
@@ -714,7 +739,7 @@ def documentation_ingest_chunk_source_metadata(source: DocumentationIngestJobSou
     return source_metadata
 
 
-def documentation_ingest_chunk_split_markdown(
+def markdown_chunk_splitter(
     chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
 ) -> list[DocumentationIngestJobChunksResponseChunk]:
     headers_to_split_on = [
@@ -738,7 +763,7 @@ def documentation_ingest_chunk_split_markdown(
 
     split_documents = recursive_splitter.split_documents(sections)
 
-    source_metadata = documentation_ingest_chunk_source_metadata(source=source)
+    source_metadata = chunk_source_metadata(source=source)
 
     structured_chunks = []
 
@@ -755,7 +780,7 @@ def documentation_ingest_chunk_split_markdown(
     return structured_chunks
 
 
-def documentation_ingest_chunk_split_text(
+def text_chunk_splitter(
     chunk_size: int, chunk_overlap: int, content: str, source: DocumentationIngestJobSource
 ) -> list[DocumentationIngestJobChunksResponseChunk]:
     text_splitter = RecursiveCharacterTextSplitter(
@@ -767,7 +792,7 @@ def documentation_ingest_chunk_split_text(
 
     split_documents = text_splitter.split_text(example_text)
 
-    source_metadata = documentation_ingest_chunk_source_metadata(source=source)
+    source_metadata = chunk_source_metadata(source=source)
 
     structured_chunks = []
 

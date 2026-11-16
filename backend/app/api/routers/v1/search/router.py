@@ -27,15 +27,17 @@ from .schemas import (
     DocumentationIngestStatus,
 )
 from .service import (
-    documentation_ingest_chunk_split_markdown,
-    documentation_ingest_chunk_split_text,
-    get_documentation_ingest_chunks,
-    get_documentation_ingest_embedding_jobs,
-    get_documentation_ingest_embedding_jobs_usage,
-    get_documentation_ingest_jobs,
-    get_documentation_ingest_parse_jobs,
-    get_documentation_ingest_parse_jobs_usage,
-    get_documentation_ingest_sources,
+    delete_ingest_job,
+    duplicate_ingest_job,
+    get_ingest_chunks,
+    get_ingest_embedding_jobs,
+    get_ingest_embedding_jobs_usage,
+    get_ingest_jobs,
+    get_ingest_parse_jobs,
+    get_ingest_parse_jobs_usage,
+    get_ingest_sources,
+    markdown_chunk_splitter,
+    text_chunk_splitter,
 )
 
 router = APIRouter(prefix="/search/documentation/ingest", tags=["Search - Documentation"])
@@ -65,9 +67,7 @@ async def read_documentation_ingest_jobs(
     # print(query)
     # print(status)
 
-    return await get_documentation_ingest_jobs(
-        db, limit, offset, sort_by_desc, include_count, query, status
-    )
+    return await get_ingest_jobs(db, limit, offset, sort_by_desc, include_count, query, status)
 
 
 test_ingest_job_parse_pending = DocumentationIngestJobResponse(
@@ -225,10 +225,11 @@ async def read_documentation_ingest_job(
 )
 async def delete_documentation_ingest_job(
     job_id: uuid.UUID,
-    current_user: Annotated[str, Depends(get_current_user)],
+    _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_write_db),
-) -> Response:
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+):
+    return await delete_ingest_job(job_id, db)
+    # return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.post(
@@ -239,10 +240,12 @@ async def delete_documentation_ingest_job(
 )
 async def duplicate_documentation_ingest_job(
     job_id: uuid.UUID,
+    job_name: str,
     current_user: Annotated[str, Depends(get_current_user)],
-    db: AsyncSession = Depends(get_write_db),
-) -> Response:
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    read_db: AsyncSession = Depends(get_read_db),
+    write_db: AsyncSession = Depends(get_write_db),
+):
+    return await duplicate_ingest_job(job_id, job_name, current_user, read_db, write_db)
 
 
 @router.post(
@@ -287,14 +290,14 @@ async def create_documentation_ingest_job_chunks(
     chunks = []
 
     if data.split_method == "markdown":
-        chunks = documentation_ingest_chunk_split_markdown(
+        chunks = markdown_chunk_splitter(
             chunk_size=data.chunk_size,
             chunk_overlap=data.chunk_overlap,
             content=data.content,
             source=data.source,
         )
     elif data.split_method == "text":
-        chunks = documentation_ingest_chunk_split_text(
+        chunks = text_chunk_splitter(
             chunk_size=data.chunk_size,
             chunk_overlap=data.chunk_overlap,
             content=data.content,
@@ -474,9 +477,7 @@ async def read_documentation_ingest_sources(
     # print(query)
     # print(type)
 
-    return await get_documentation_ingest_sources(
-        db, limit, offset, sort_by_desc, include_count, query, type
-    )
+    return await get_ingest_sources(db, limit, offset, sort_by_desc, include_count, query, type)
 
 
 @router.get(
@@ -503,7 +504,7 @@ async def read_documentation_ingest_parse_jobs(
     # print(query)
     # print(status)
 
-    return await get_documentation_ingest_parse_jobs(
+    return await get_ingest_parse_jobs(
         db, limit, offset, sort_by_desc, include_count, query, status
     )
 
@@ -521,7 +522,7 @@ async def read_documentation_ingest_parse_jobs_usage(
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ):
-    return await get_documentation_ingest_parse_jobs_usage(db, date_from, date_to)
+    return await get_ingest_parse_jobs_usage(db, date_from, date_to)
 
 
 @router.get(
@@ -546,9 +547,7 @@ async def read_documentation_ingest_embedding_jobs(
     # print(include_count)
     # print(query)
 
-    return await get_documentation_ingest_embedding_jobs(
-        db, limit, offset, sort_by_desc, include_count, query
-    )
+    return await get_ingest_embedding_jobs(db, limit, offset, sort_by_desc, include_count, query)
 
 
 @router.get(
@@ -564,7 +563,7 @@ async def read_documentation_ingest_embedding_jobs_usage(
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ):
-    return await get_documentation_ingest_embedding_jobs_usage(db, date_from, date_to)
+    return await get_ingest_embedding_jobs_usage(db, date_from, date_to)
 
 
 @router.get(
@@ -589,6 +588,4 @@ async def read_documentation_ingest_chunks(
     # print(include_count)
     # print(query)
 
-    return await get_documentation_ingest_chunks(
-        db, limit, offset, sort_by_desc, include_count, query
-    )
+    return await get_ingest_chunks(db, limit, offset, sort_by_desc, include_count, query)
