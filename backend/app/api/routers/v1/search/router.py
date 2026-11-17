@@ -48,7 +48,7 @@ router = APIRouter(prefix="/search/documentation/ingest", tags=["Search - Docume
     response_model=DocumentationIngestJobsResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest jobs",
-    description="Return a list of ingest jobs",
+    description="Returns a list of ingest jobs",
 )
 async def read_documentation_ingest_jobs(
     _: Annotated[str, Depends(get_current_user)],
@@ -207,7 +207,7 @@ test_ingest_job_completed = DocumentationIngestJobResponse(
     response_model=DocumentationIngestJobResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest job",
-    description="Return a specified ingest job",
+    description="Returns a specified ingest job",
 )
 async def read_documentation_ingest_job(
     job_id: uuid.UUID,
@@ -221,7 +221,7 @@ async def read_documentation_ingest_job(
     "/jobs/{job_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Delete ingest job",
-    description="Delete a specified ingest job",
+    description="Deletes a specified ingest job",
 )
 async def delete_documentation_ingest_job(
     job_id: uuid.UUID,
@@ -236,16 +236,15 @@ async def delete_documentation_ingest_job(
     "/jobs/{job_id}/duplicate",
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Duplicate ingest job",
-    description="Duplicate a specified ingest job",
+    description="Duplicates a specified ingest job",
 )
 async def duplicate_documentation_ingest_job(
     job_id: uuid.UUID,
-    job_name: str,
+    name: str,
     current_user: Annotated[str, Depends(get_current_user)],
-    read_db: AsyncSession = Depends(get_read_db),
-    write_db: AsyncSession = Depends(get_write_db),
+    db: AsyncSession = Depends(get_write_db),
 ):
-    return await duplicate_ingest_job(job_id, job_name, current_user, read_db, write_db)
+    return await duplicate_ingest_job(job_id, name, current_user, db)
 
 
 @router.post(
@@ -268,7 +267,7 @@ async def create_documentation_ingest_job_document(
     response_model=DocumentationIngestJobParseResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create ingest job webpage",
-    description="Create an ingest job with a webpage to parse",
+    description="Creates an ingest job with a webpage to parse",
 )
 async def create_documentation_ingest_job_webpage(
     data: DocumentationIngestJobParseWebpageCreate,
@@ -458,7 +457,7 @@ async def create_documentation_ingest_job_embeddings(
     response_model=DocumentationIngestSourcesResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest sources",
-    description="Return a list of ingest sources",
+    description="Returns a list of ingest sources",
 )
 async def read_documentation_ingest_sources(
     _: Annotated[str, Depends(get_current_user)],
@@ -485,7 +484,7 @@ async def read_documentation_ingest_sources(
     response_model=DocumentationIngestParseJobsResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest parse jobs",
-    description="Return a list of ingest parse jobs",
+    description="Returns a list of ingest parse jobs",
 )
 async def read_documentation_ingest_parse_jobs(
     _: Annotated[str, Depends(get_current_user)],
@@ -514,7 +513,7 @@ async def read_documentation_ingest_parse_jobs(
     response_model=DocumentationIngestParseJobsUsageResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest parse jobs usage",
-    description="Return ingest parse jobs usage",
+    description="Returns ingest parse jobs usage",
 )
 async def read_documentation_ingest_parse_jobs_usage(
     _: Annotated[str, Depends(get_current_user)],
@@ -522,6 +521,9 @@ async def read_documentation_ingest_parse_jobs_usage(
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ):
+    print(date_from)
+    print(date_to)
+
     return await get_ingest_parse_jobs_usage(db, date_from, date_to)
 
 
@@ -530,7 +532,7 @@ async def read_documentation_ingest_parse_jobs_usage(
     response_model=DocumentationIngestEmbeddingJobsResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest embedding jobs",
-    description="Return a list of ingest embedding jobs",
+    description="Returns a list of ingest embedding jobs",
 )
 async def read_documentation_ingest_embedding_jobs(
     _: Annotated[str, Depends(get_current_user)],
@@ -555,7 +557,7 @@ async def read_documentation_ingest_embedding_jobs(
     response_model=DocumentationIngestEmbeddingJobsUsageResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest embedding jobs usage",
-    description="Return ingest embedding jobs usage",
+    description="Returns ingest embedding jobs usage",
 )
 async def read_documentation_ingest_embedding_jobs_usage(
     _: Annotated[str, Depends(get_current_user)],
@@ -571,7 +573,7 @@ async def read_documentation_ingest_embedding_jobs_usage(
     response_model=DocumentationIngestChunksResponse,
     status_code=status.HTTP_200_OK,
     summary="Read ingest chunks",
-    description="Return a list of ingest chunks",
+    description="Returns a list of ingest chunks",
 )
 async def read_documentation_ingest_chunks(
     _: Annotated[str, Depends(get_current_user)],

@@ -10,8 +10,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 # from app.api.utils import is_valid_uuid
 # from .models import (
-#      DocumentationChunk,
-#     DocumentationIngestEmbeddingJob,
+#       DocumentationChunk,
+#      DocumentationIngestEmbeddingJob,
 #     DocumentationIngestJob,
 #     DocumentationIngestParseJob,
 #      DocumentationIngestSource,
@@ -167,13 +167,70 @@ async def delete_ingest_job(
 
 async def duplicate_ingest_job(
     job_id: uuid.UUID,
-    job_name: str,
+    name: str,
     current_user: str,
-    read_db: AsyncSession,
-    write_db: AsyncSession,
+    db: AsyncSession,
 ):
+    # stmt = (
+    #     select(DocumentationIngestJob)
+    #     .where(
+    #         DocumentationIngestJob.id == job_id,
+    #         DocumentationIngestJob.status == 'completed',
+    #         DocumentationIngestJob.parse_jobs.any(
+    #             DocumentationIngestParseJob.status == "completed"
+    #         ),
+    #     )
+    #     .options(
+    #         selectinload(
+    #             DocumentationIngestJob.parse_jobs.and_(
+    #                 DocumentationIngestParseJob.status == 'completed'
+    #             )
+    #         ),
+    #     )
+    # )
+
+    # result = await db.execute(stmt)
+    # job = result.unique().scalar_one_or_none()
+
+    # if job is None:
+    #     raise HTTPException(status_code=404, detail="Job not found")
+
+    # duplicate_job_data = {
+    #     "user_id" : current_user,
+    #     "name" : job_name,
+    #     "source_id" : job.source_id,
+    #     "status": "pending"
+    # }
+
+    # duplicate_job = DocumentationIngestJob(**duplicate_job_data)
+    # db.add(duplicate_job)
+
+    # await db.flush()
+
+    # for parse_job in job.parse_jobs:
+    #     duplicate_parse_job_data = {
+    #         "ingest_job_id": duplicate_job.id,
+    #         "llamaparse_job_id": parse_job.llamaparse_job_id,
+    #         "status": parse_job.status,
+    #         "markdown_full": parse_job.markdown_full,
+    #         "text_full": parse_job.text_full,
+    #         "tier": parse_job.tier,
+    #         "usage": None,
+    #     }
+
+    #     duplicate_parse_job = DocumentationIngestParseJob(
+    #         **duplicate_parse_job_data
+    #     )
+
+    #     db.add(duplicate_parse_job)
+
+    # await db.commit()
+
     print(job_id)
+    print(name)
     print(current_user)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     # select job from table. only get source_id
 
@@ -190,8 +247,6 @@ async def duplicate_ingest_job(
     # insert new parse job using dict
 
     # use .commit() to complete the transaction
-
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 async def get_ingest_sources(
