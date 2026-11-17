@@ -11,13 +11,3 @@ export const DocumentationIngestJobChunksCreateFormSchema = z.object({
 });
 
 export type DocumentationIngestJobChunksCreateForm = z.infer<typeof DocumentationIngestJobChunksCreateFormSchema>;
-
-// export const DocumentationIngestJobChunksCreateFormChunkSchema = z.object({
-//   id: z.int().positive(),
-//   content: z.string(),
-//   metadata: z.object().loose(),
-// });
-
-// export type DocumentationIngestJobChunksCreateFormChunk = z.infer<
-//   typeof DocumentationIngestJobChunksCreateFormChunkSchema
-// >;

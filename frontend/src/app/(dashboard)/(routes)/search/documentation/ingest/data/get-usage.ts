@@ -13,8 +13,8 @@ async function getDocumentationIngestUsageParse(dateFrom?: Date, dateTo?: Date) 
   const { data, error } = await backendAPIFetch<null, DocumentationIngestParseJobUsage>({
     url: '/api/v1/search/documentation/ingest/parse-jobs/usage',
     requestQueryParams: {
-      ...(dateFrom && { date_from: dateFrom.toISOString() }),
-      ...(dateTo && { date_to: dateTo.toISOString() }),
+      ...(dateFrom && { date_from: dateFrom.toISOString().substring(0, 10) }),
+      ...(dateTo && { date_to: dateTo.toISOString().substring(0, 10) }),
     },
     cacheTags: [usageCacheTag],
   });
@@ -41,8 +41,8 @@ async function getDocumentationIngestUsageEmbedding(dateFrom?: Date, dateTo?: Da
   const { data, error } = await backendAPIFetch<null, DocumentationIngestEmbeddingJobUsage>({
     url: '/api/v1/search/documentation/ingest/embedding-jobs/usage',
     requestQueryParams: {
-      ...(dateFrom && { date_from: dateFrom.toISOString() }),
-      ...(dateTo && { date_to: dateTo.toISOString() }),
+      ...(dateFrom && { date_from: dateFrom.toISOString().substring(0, 10) }),
+      ...(dateTo && { date_to: dateTo.toISOString().substring(0, 10) }),
     },
     cacheTags: [usageCacheTag],
   });

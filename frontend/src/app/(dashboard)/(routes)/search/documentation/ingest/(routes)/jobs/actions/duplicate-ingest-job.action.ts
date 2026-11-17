@@ -5,16 +5,29 @@ import { z } from 'zod';
 
 import { backendAPIFetch } from '@/lib/backend-api';
 
-export default async function duplicateIngestJob(ingestJobId: string) {
-  const parsedIngestJobId = z.uuid().safeParse(ingestJobId);
+import type { DocumentationIngestJobDuplicateForm } from '../schemas/duplicate-job-form.schema';
+import { DocumentationIngestJobDuplicateFormSchema } from '../schemas/duplicate-job-form.schema';
 
-  if (!parsedIngestJobId.success) {
+export default async function duplicateIngestJob({
+  id,
+  formData,
+}: {
+  id: string;
+  formData: DocumentationIngestJobDuplicateForm;
+}) {
+  const parsedJobId = z.uuid().safeParse(id);
+  const parsedFormData = DocumentationIngestJobDuplicateFormSchema.safeParse(formData);
+
+  if (!parsedJobId.success || !parsedFormData.success) {
     return { success: false };
   }
 
   const { error, status } = await backendAPIFetch({
-    url: `/api/v1/search/documentation/ingest/jobs/${ingestJobId}/duplicate`,
+    url: `/api/v1/search/documentation/ingest/jobs/${parsedJobId.data}/duplicate`,
     method: 'POST',
+    requestQueryParams: {
+      name: parsedFormData.data.name,
+    },
   });
 
   if (error || status !== 204) {

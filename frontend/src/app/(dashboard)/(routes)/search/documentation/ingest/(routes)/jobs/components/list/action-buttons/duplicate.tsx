@@ -1,38 +1,56 @@
 'use client';
 
-import { useTransition } from 'react';
 import { Copy } from 'lucide-react';
+import { useShallow } from 'zustand/shallow';
 
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { toast } from '@/components/ui/toast';
+import { useAppFormDialogStore } from '@/store/dialogs/form';
 
-import duplicateIngestJob from '../../../actions/duplicate-ingest-job.action';
 import type { DocumentationIngestJobs } from '../../../schemas/ingest-jobs.schema';
+import useDocumentationIngestJobDuplicateForm from '../../../hooks/use-duplicate-job-form';
+
+import DocumentationIngestJobsListActionsButtonDuplicateForm from './duplicate-form';
 
 export default function DocumentationIngestJobsListActionsButtonDuplicate({ item }: { item: DocumentationIngestJobs }) {
-  const [isPending, startTransition] = useTransition();
+  const {
+    setFormDialogOpen,
+    setFormDialogTitle,
+    setFormDialogDescription,
+    setFormDialogFormId,
+    setFormDialogFormFields,
+    setFormDialogFormPending,
+    setFormSubmitText,
+  } = useAppFormDialogStore(
+    useShallow((state) => ({
+      setFormDialogOpen: state.setFormDialogOpen,
+      setFormDialogTitle: state.setFormDialogTitle,
+      setFormDialogDescription: state.setFormDialogDescription,
+      setFormDialogFormId: state.setFormDialogFormId,
+      setFormDialogFormFields: state.setFormDialogFormFields,
+      setFormDialogFormPending: state.setFormDialogFormPending,
+      setFormSubmitText: state.setFormSubmitText,
+    })),
+  );
+
+  const { form, onSubmit, isPending } = useDocumentationIngestJobDuplicateForm({ item });
+
+  const formId = 'documentation-ingest-job-duplicate-form';
 
   return (
     <DropdownMenuItem
       className="cursor-pointer"
-      disabled={isPending}
       onClick={() => {
-        startTransition(async () => {
-          const result = await duplicateIngestJob(item.id);
-
-          if (result.success) {
-            toast.add({
-              type: 'success',
-              description: 'Successfully duplicated',
-            });
-          } else {
-            toast.add({
-              type: 'error',
-              description: 'Error duplicating ingest job. Please try again.',
-              priority: 'high',
-            });
-          }
-        });
+        setFormDialogOpen(true);
+        setFormDialogTitle('Duplicate ingest job');
+        setFormDialogDescription(
+          'Create a new ingest job with duplicate source and parse job data without needing to rerun a LlamaParse job',
+        );
+        setFormDialogFormId(formId);
+        setFormDialogFormFields(
+          <DocumentationIngestJobsListActionsButtonDuplicateForm form={form} onSubmit={onSubmit} formId={formId} />,
+        );
+        setFormDialogFormPending(isPending);
+        setFormSubmitText('Duplicate');
       }}
     >
       <Copy />
