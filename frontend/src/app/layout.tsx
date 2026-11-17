@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 
 import { Toaster } from '@/components/ui/toast';
 import { AppSheet } from '@/components/sheet';
+import { AppFormDialog } from '@/components/dialogs';
 import AppProviders from '@/lib/providers/app-providers';
 import { DEFAULT_METADATA } from '@/lib/metadata';
 
@@ -33,6 +34,7 @@ export default function RootLayout({
         <AppProviders>{children}</AppProviders>
         <Toaster />
         <AppSheet />
+        <AppFormDialog />
       </body>
     </html>
   );
