@@ -8,9 +8,9 @@ import DashboardLayoutContainer from '@/app/(dashboard)/components/container';
 import {
   DocumentationIngestJobPendingHeading,
   DocumentationIngestJobCompletedHeading,
-  DocumentationIngestJobTestingHeading,
 } from '../../components/job/heading';
 import DocumentationIngestJobLayout from '../../components/job/job-layout';
+import DocumentationIngestJobTesting from '../../components/job/testing/testing';
 
 import getDocumentationIngestJob from './data/get-ingest-job';
 
@@ -28,47 +28,6 @@ export default async function DashboardSearchDocumentationIngestJobPage({
 
   if (!slug || !isUUID(slug)) redirect('new');
 
-  // const ingestJobData2 = {
-  //   id: '9a93cf64-8bfc-4c69-8ae3-eaf08b43b6f3',
-  //   //user_id: '03c17ec8-71fe-45c6-a591-152d0ce9fe43',
-  //   name: 'Test ingest job',
-  //   source: {
-  //     type: 'document',
-  //     file_name: 'some-pdf-file-here.pdf',
-  //     file_url: '',
-  //     webpage_url: 'https://www.example.com',
-  //   },
-  //   parse_job: {
-  //     id: '00563b80-ef1c-4f0c-b5e9-8762caed9c1b',
-  //     status: 'completed',
-  //     markdown_full: '#text',
-  //     text_full: 'text',
-  //     tier: '',
-  //     error_message: '',
-  //     usage: {
-  //       credits: 30.0,
-  //     },
-  //   },
-  //   chunks: [
-  //     { id: '018204a2-9e58-4618-affe-e313be132aee', content: 'test content 1', vector: 'test vector 1' },
-  //     { id: '01df1db6-87f1-45f4-b34f-b6c5820addad', content: 'test content 2', vector: 'test vector 2' },
-  //   ],
-  //   embeddings_job: {
-  //     // status: '',
-  //     model: 'text-embedding-3-small',
-  //     usage: {
-  //       prompt_tokens: '',
-  //       total_tokens: '',
-  //     },
-  //   },
-  //   status: 'pending',
-  //   created_at: '',
-  //   updated_at: '',
-  // };
-
-  // source_type: '', // pdf or url
-  // source_name: '', // file name or url
-
   const ingestJobData = await getDocumentationIngestJob(slug);
 
   console.log(ingestJobData);
@@ -81,7 +40,7 @@ export default async function DashboardSearchDocumentationIngestJobPage({
         {ingestJobData.status === 'pending' && <DocumentationIngestJobPendingHeading />}
         {ingestJobData.status === 'completed' && <DocumentationIngestJobCompletedHeading />}
         <DocumentationIngestJobLayout ingestJobStatus={ingestJobData.status} ingestJobData={ingestJobData} />
-        {ingestJobData.status === 'completed' && <DocumentationIngestJobTestingHeading />}
+        {ingestJobData.status === 'completed' && <DocumentationIngestJobTesting />}
       </div>
     </DashboardLayoutContainer>
   );

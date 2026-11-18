@@ -36,7 +36,7 @@ export default function DocumentationIngestJobChunksItem({
       <ItemMedia variant="icon">
         <SquareText />
       </ItemMedia>
-      <ItemContent>
+      <ItemContent className="gap-2.5">
         <ItemTitle># {chunk.id}</ItemTitle>
         {open && (
           <Item variant="muted" className="grow items-start">

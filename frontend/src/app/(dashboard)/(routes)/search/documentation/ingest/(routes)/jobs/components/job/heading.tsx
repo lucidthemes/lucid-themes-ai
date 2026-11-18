@@ -48,7 +48,7 @@ function DocumentationIngestJobTestingHeading() {
   return DocumentationIngestJobHeading({
     icon: <FlaskConical />,
     heading: 'Test ingest job',
-    subHeading: 'Use this ingest job embeddings in isolation to test responses',
+    subHeading: 'Use this ingest job embeddings in isolation to test results',
   });
 }
 
