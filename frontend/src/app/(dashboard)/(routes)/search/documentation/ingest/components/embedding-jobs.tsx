@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import DocumentationIngestEmbeddingJobsList from '../(routes)/embedding-jobs/components/list';
 
-export default function DashboardSearchDocumentationIngestPageEmbeddingJobs() {
+export default function DashboardSearchDocumentationIngestPageEmbeddingJobs({ limit }: { limit: number }) {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +25,7 @@ export default function DashboardSearchDocumentationIngestPageEmbeddingJobs() {
       </CardHeader>
       <CardContent>
         <Suspense key="documentation-ingest-embedding-jobs" fallback={<LoadingSpinner />}>
-          <DocumentationIngestEmbeddingJobsList limit={5} />
+          <DocumentationIngestEmbeddingJobsList limit={limit} />
         </Suspense>
       </CardContent>
     </Card>

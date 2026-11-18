@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import DocumentationIngestSourcesList from '../(routes)/sources/components/list';
 
-export default function DashboardSearchDocumentationIngestPageSources() {
+export default function DashboardSearchDocumentationIngestPageSources({ limit }: { limit: number }) {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +25,7 @@ export default function DashboardSearchDocumentationIngestPageSources() {
       </CardHeader>
       <CardContent>
         <Suspense key="documentation-ingest-sources" fallback={<LoadingSpinner />}>
-          <DocumentationIngestSourcesList limit={5} />
+          <DocumentationIngestSourcesList limit={limit} />
         </Suspense>
       </CardContent>
     </Card>

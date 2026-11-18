@@ -16,7 +16,7 @@ type BackendAPIResult<TResponseData> = {
   status: number | null;
 };
 
-async function backendAPIFetch<TRequestData, TResponseData>({
+export async function backendAPIFetch<TRequestData, TResponseData>({
   url,
   method = 'GET',
   requireAuth = true,
@@ -130,5 +130,3 @@ async function backendAPIFetch<TRequestData, TResponseData>({
     };
   }
 }
-
-export { backendAPIFetch };

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 import DocumentationIngestJobsList from '../(routes)/jobs/components/list';
 
-export default function DashboardSearchDocumentationIngestPageJobs() {
+export default function DashboardSearchDocumentationIngestPageJobs({ limit }: { limit: number }) {
   return (
     <Card className="col-span-2">
       <CardHeader>
@@ -31,7 +31,7 @@ export default function DashboardSearchDocumentationIngestPageJobs() {
       </CardHeader>
       <CardContent>
         <Suspense key="documentation-ingest-jobs" fallback={<LoadingSpinner />}>
-          <DocumentationIngestJobsList limit={5} />
+          <DocumentationIngestJobsList limit={limit} />
         </Suspense>
       </CardContent>
     </Card>

@@ -22,11 +22,11 @@ export default function DashboardSearchDocumentationIngestPage() {
       <div className="flex flex-col gap-10">
         <DashboardSearchDocumentationIngestPageUsage />
         <div className="flex flex-col gap-10 xl:grid xl:grid-cols-2">
-          <DashboardSearchDocumentationIngestPageJobs />
-          <DashboardSearchDocumentationIngestPageSources />
-          <DashboardSearchDocumentationIngestPageParseJobs />
-          <DashboardSearchDocumentationIngestPageEmbeddingJobs />
-          <DashboardSearchDocumentationIngestPageChunks />
+          <DashboardSearchDocumentationIngestPageJobs limit={5} />
+          <DashboardSearchDocumentationIngestPageSources limit={5} />
+          <DashboardSearchDocumentationIngestPageParseJobs limit={5} />
+          <DashboardSearchDocumentationIngestPageEmbeddingJobs limit={5} />
+          <DashboardSearchDocumentationIngestPageChunks limit={5} />
         </div>
       </div>
     </DashboardLayoutContainer>

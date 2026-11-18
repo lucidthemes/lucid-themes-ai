@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import DocumentationIngestChunksList from '../(routes)/chunks/components/list';
 
-export default function DashboardSearchDocumentationIngestPageChunks() {
+export default function DashboardSearchDocumentationIngestPageChunks({ limit }: { limit: number }) {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +25,7 @@ export default function DashboardSearchDocumentationIngestPageChunks() {
       </CardHeader>
       <CardContent>
         <Suspense key="documentation-ingest-chunks" fallback={<LoadingSpinner />}>
-          <DocumentationIngestChunksList limit={5} />
+          <DocumentationIngestChunksList limit={limit} />
         </Suspense>
       </CardContent>
     </Card>

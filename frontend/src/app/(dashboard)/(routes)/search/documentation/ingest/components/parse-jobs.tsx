@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import DocumentationIngestParseJobsList from '../(routes)/parse-jobs/components/list';
 
-export default function DashboardSearchDocumentationIngestPageParseJobs() {
+export default function DashboardSearchDocumentationIngestPageParseJobs({ limit }: { limit: number }) {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +25,7 @@ export default function DashboardSearchDocumentationIngestPageParseJobs() {
       </CardHeader>
       <CardContent>
         <Suspense key="documentation-ingest-parse-jobs" fallback={<LoadingSpinner />}>
-          <DocumentationIngestParseJobsList limit={5} />
+          <DocumentationIngestParseJobsList limit={limit} />
         </Suspense>
       </CardContent>
     </Card>

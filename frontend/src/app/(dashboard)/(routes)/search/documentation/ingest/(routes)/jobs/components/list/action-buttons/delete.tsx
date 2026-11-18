@@ -1,39 +1,35 @@
 'use client';
 
-import { useTransition } from 'react';
 import { Trash } from 'lucide-react';
+import { useShallow } from 'zustand/shallow';
 
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { toast } from '@/components/ui/toast';
+import { useAppDeleteDialogStore } from '@/store/dialogs/delete';
 
-import deleteIngestJob from '../../../actions/delete-ingest-job.action';
 import type { DocumentationIngestJobs } from '../../../schemas/ingest-jobs.schema';
 
+import DocumentationIngestJobsListActionsButtonDeleteButton from './delete-button';
+
 export default function DocumentationIngestJobsListActionsButtonDelete({ item }: { item: DocumentationIngestJobs }) {
-  const [isPending, startTransition] = useTransition();
+  const { setDeleteDialogOpen, setDeleteDialogTitle, setDeleteDialogDescription, setDeleteDialogButton } =
+    useAppDeleteDialogStore(
+      useShallow((state) => ({
+        setDeleteDialogOpen: state.setDeleteDialogOpen,
+        setDeleteDialogTitle: state.setDeleteDialogTitle,
+        setDeleteDialogDescription: state.setDeleteDialogDescription,
+        setDeleteDialogButton: state.setDeleteDialogButton,
+      })),
+    );
 
   return (
     <DropdownMenuItem
       variant="destructive"
       className="cursor-pointer"
-      disabled={isPending}
       onClick={() => {
-        startTransition(async () => {
-          const result = await deleteIngestJob(item.id);
-
-          if (result.success) {
-            toast.add({
-              type: 'success',
-              description: 'Successfully deleted',
-            });
-          } else {
-            toast.add({
-              type: 'error',
-              description: 'Error deleting ingest job. Please try again.',
-              priority: 'high',
-            });
-          }
-        });
+        setDeleteDialogOpen(true);
+        setDeleteDialogTitle('Delete job');
+        setDeleteDialogDescription('This will permanently delete the ingest job. This action cannot be undone.');
+        setDeleteDialogButton(<DocumentationIngestJobsListActionsButtonDeleteButton item={item} />);
       }}
     >
       <Trash />
