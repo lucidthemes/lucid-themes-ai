@@ -214,7 +214,7 @@ async def read_documentation_ingest_job(
     _: Annotated[str, Depends(get_current_user)],
     db: AsyncSession = Depends(get_read_db),
 ):
-    return test_ingest_job_parse_completed
+    return test_ingest_job_completed
 
 
 @router.delete(
