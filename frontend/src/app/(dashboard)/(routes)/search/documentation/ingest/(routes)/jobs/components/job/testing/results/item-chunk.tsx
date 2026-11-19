@@ -6,7 +6,7 @@ import { SquareText, ChevronDown, ChevronUp } from 'lucide-react';
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle, ItemActions } from '@/components/ui/item';
 import { Button } from '@/components/ui/button';
 
-export default function DocumentationIngestJobTestingResultsItemChunk() {
+export default function DocumentationIngestJobTestingResultsItemChunk({ chunk }) {
   const [itemResultOpen, setItemResultOpen] = useState(true);
 
   return (
@@ -15,7 +15,7 @@ export default function DocumentationIngestJobTestingResultsItemChunk() {
         <SquareText />
       </ItemMedia>
       <ItemContent>
-        <ItemTitle># 018204a2-9e58-4618-affe-e313be132aee</ItemTitle>
+        <ItemTitle># {chunk.id}</ItemTitle>
         <ItemDescription>Similarity score: 0.8</ItemDescription>
         {itemResultOpen && (
           <Item variant="muted" className="mt-2.5 grow items-start">

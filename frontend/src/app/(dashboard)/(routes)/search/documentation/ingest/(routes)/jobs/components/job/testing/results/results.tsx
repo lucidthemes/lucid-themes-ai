@@ -1,16 +1,22 @@
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 import DocumentationIngestJobTestingResultsItems from './items';
+import DocumentationIngestJobTestingResultsEmpty from './empty';
 
-export default function DocumentationIngestJobTestingResults({}) {
+export default function DocumentationIngestJobTestingResults({ tests }) {
+  if (!tests) return;
+
+  const resultsCount = tests.length;
+
   return (
     <>
       <CardHeader>
-        <CardTitle>Tests(1)</CardTitle>
+        <CardTitle>Tests ({resultsCount})</CardTitle>
         <CardDescription>Previous test results</CardDescription>
       </CardHeader>
       <CardContent>
-        <DocumentationIngestJobTestingResultsItems />
+        {resultsCount > 0 && <DocumentationIngestJobTestingResultsItems tests={tests} />}
+        {resultsCount === 0 && <DocumentationIngestJobTestingResultsEmpty />}
       </CardContent>
     </>
   );

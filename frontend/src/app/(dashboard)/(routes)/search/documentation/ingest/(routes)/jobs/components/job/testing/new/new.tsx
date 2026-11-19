@@ -1,5 +1,7 @@
 'use client';
 
+// import { useActionState } from 'react';
+
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 import useDocumentationIngestJobTestForm from '../../../../hooks/use-job-test-form';
@@ -9,8 +11,12 @@ import DocumentationIngestJobTestingNewFieldSimilarityMetric from './field-simil
 import DocumentationIngestJobTestingNewFieldPhrase from './field-phrase';
 import DocumentationIngestJobTestingNewCommonPhrases from './common-phrases';
 
-export default function DocumentationIngestJobTestingNew({}) {
-  const { form, onSubmit } = useDocumentationIngestJobTestForm();
+// import createIngestJobTest from '../../../../actions/create-ingest-job-test.action';
+
+export default function DocumentationIngestJobTestingNew({ tests, submitAction, isPending }) {
+  //   const [state, submitAction, isPending] = useActionState(createIngestJobTest, tests);
+
+  const { form, onSubmit } = useDocumentationIngestJobTestForm(submitAction);
 
   return (
     <>
@@ -23,7 +29,7 @@ export default function DocumentationIngestJobTestingNew({}) {
           <DocumentationIngestJobTestingNewFieldSearchType form={form} />
           <DocumentationIngestJobTestingNewFieldSimilarityMetric form={form} />
           <DocumentationIngestJobTestingNewCommonPhrases />
-          <DocumentationIngestJobTestingNewFieldPhrase form={form} />
+          <DocumentationIngestJobTestingNewFieldPhrase form={form} isPending={isPending} />
         </form>
       </CardContent>
     </>

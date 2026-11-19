@@ -7,13 +7,16 @@ import { ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError } from '@/components/ui/field';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import { Spinner } from '@/components/ui/spinner';
 
 import type { DocumentationIngestJobTestForm } from '../../../../schemas/job-test-form.schema';
 
 export default function DocumentationIngestJobTestingNewFieldPhrase({
   form,
+  isPending,
 }: {
   form: UseFormReturn<DocumentationIngestJobTestForm>;
+  isPending: boolean;
 }) {
   return (
     <Controller
@@ -30,8 +33,16 @@ export default function DocumentationIngestJobTestingNewFieldPhrase({
               placeholder="Enter a search phrase or select a preset"
             />
             <InputGroupAddon align="inline-end">
-              <Button type="submit" variant="default" size="icon" className="cursor-pointer" title="Submit">
-                <ArrowUp />
+              <Button
+                type="submit"
+                variant="default"
+                size="icon"
+                className="cursor-pointer"
+                title="Submit"
+                disabled={isPending}
+              >
+                {!isPending && <ArrowUp />}
+                {isPending && <Spinner />}
               </Button>
             </InputGroupAddon>
           </InputGroup>
