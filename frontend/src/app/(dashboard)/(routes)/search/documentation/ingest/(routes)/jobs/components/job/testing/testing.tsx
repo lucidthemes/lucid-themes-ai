@@ -20,6 +20,8 @@ import {
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 import { DocumentationIngestJobTestingHeading } from '../heading';
+import DocumentationIngestJobTestingResults from './results';
+import DocumentationIngestJobTestingNew from './new';
 
 export default function DocumentationIngestJobTesting({}) {
   const [itemOpen, setItemOpen] = useState(true);
@@ -58,7 +60,8 @@ export default function DocumentationIngestJobTesting({}) {
     <>
       <DocumentationIngestJobTestingHeading />
       <Card>
-        <CardHeader>
+        <DocumentationIngestJobTestingResults />
+        {/* <CardHeader>
           <CardTitle>Tests(1)</CardTitle>
           <CardDescription>Previous test results</CardDescription>
         </CardHeader>
@@ -116,8 +119,9 @@ export default function DocumentationIngestJobTesting({}) {
               </ItemActions>
             </Item>
           </div>
-        </CardContent>
-        <CardHeader>
+        </CardContent> */}
+        <DocumentationIngestJobTestingNew />
+        {/* <CardHeader>
           <CardTitle>New test</CardTitle>
           <CardDescription>Create a new test by submitting a search phrase</CardDescription>
         </CardHeader>
@@ -152,17 +156,17 @@ export default function DocumentationIngestJobTesting({}) {
           </Field>
           {settingsOpen && (
             <form className="flex w-full flex-col gap-5">
-              {/* <Controller
+              <Controller
                 name="search_method"
                 control={form.control}
-                render={({ field, fieldState }) => ( */}
+                render={({ field, fieldState }) => (
               <Field
-              //   data-invalid={fieldState.invalid}
+                data-invalid={fieldState.invalid}
               >
                 <FieldLabel htmlFor="search_method">Search method</FieldLabel>
                 <Select
                   items={searchMethods}
-                  // name={field.name} value={field.value} onValueChange={field.onChange}
+                  name={field.name} value={field.value} onValueChange={field.onChange}
                 >
                   <SelectTrigger className="w-full cursor-pointer">
                     <SelectValue />
@@ -178,22 +182,22 @@ export default function DocumentationIngestJobTesting({}) {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                {/* {fieldState.invalid && <FieldError errors={[fieldState.error]} />} */}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
-              {/* )}
-              /> */}
+               )}
+              /> 
               <div className="flex w-full items-end gap-5">
-                {/* <Controller
+                <Controller
                   name="split_method"
                   control={form.control}
-                  render={({ field, fieldState }) => ( */}
+                  render={({ field, fieldState }) => (
                 <Field
-                // data-invalid={fieldState.invalid}
+                data-invalid={fieldState.invalid}
                 >
                   <FieldLabel htmlFor="split_method">Similarity metric</FieldLabel>
                   <Select
                     items={similarityMetrics}
-                    //   name={field.name} value={field.value} onValueChange={field.onChange}
+                      name={field.name} value={field.value} onValueChange={field.onChange}
                   >
                     <SelectTrigger className="w-full cursor-pointer">
                       <SelectValue />
@@ -213,10 +217,10 @@ export default function DocumentationIngestJobTesting({}) {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  {/* {fieldState.invalid && <FieldError errors={[fieldState.error]} />} */}
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
-                {/* )}
-                /> */}
+                 )}
+                /> 
                 <HoverCard>
                   <HoverCardTrigger
                     delay={10}
@@ -245,7 +249,7 @@ export default function DocumentationIngestJobTesting({}) {
               </div>
             </form>
           )}
-        </CardContent>
+        </CardContent> */}
       </Card>
     </>
   );
