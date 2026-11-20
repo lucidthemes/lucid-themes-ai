@@ -26,7 +26,6 @@ export default function ListSearchForm({ placeholder, search_query }: { placehol
                   aria-invalid={fieldState.invalid}
                   placeholder={placeholder}
                   autoComplete="on"
-                  className="text-muted-foreground"
                 />
                 <InputGroupAddon align="inline-end">
                   <InputGroupButton type="submit" variant="ghost" size="icon-sm" className="cursor-pointer">
