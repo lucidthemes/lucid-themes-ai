@@ -40,7 +40,7 @@ export default async function DashboardSearchDocumentationIngestJobPage({
         {ingestJobData.status === 'pending' && <DocumentationIngestJobPendingHeading />}
         {ingestJobData.status === 'completed' && <DocumentationIngestJobCompletedHeading />}
         <DocumentationIngestJobLayout ingestJobStatus={ingestJobData.status} ingestJobData={ingestJobData} />
-        {ingestJobData.status === 'completed' && <DocumentationIngestJobTesting />}
+        {ingestJobData.status === 'completed' && <DocumentationIngestJobTesting ingestJobData={ingestJobData} />}
       </div>
     </DashboardLayoutContainer>
   );

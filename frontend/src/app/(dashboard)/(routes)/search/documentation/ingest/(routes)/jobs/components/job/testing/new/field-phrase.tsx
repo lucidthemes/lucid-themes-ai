@@ -9,7 +9,7 @@ import { Field, FieldError } from '@/components/ui/field';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { Spinner } from '@/components/ui/spinner';
 
-import type { DocumentationIngestJobTestForm } from '../../../../schemas/job-test-form.schema';
+import type { DocumentationIngestJobTestForm } from '../../../../schemas/ingest-job-test.schema';
 
 export default function DocumentationIngestJobTestingNewFieldPhrase({
   form,

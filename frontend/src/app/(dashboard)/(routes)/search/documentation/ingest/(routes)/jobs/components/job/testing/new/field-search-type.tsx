@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-import type { DocumentationIngestJobTestForm } from '../../../../schemas/job-test-form.schema';
+import type { DocumentationIngestJobTestForm } from '../../../../schemas/ingest-job-test.schema';
 
 export default function DocumentationIngestJobTestingNewFieldSearchType({
   form,

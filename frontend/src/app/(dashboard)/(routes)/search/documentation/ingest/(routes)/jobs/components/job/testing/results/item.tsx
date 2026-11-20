@@ -6,12 +6,28 @@ import { SearchCode, ChevronDown, ChevronUp } from 'lucide-react';
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle, ItemActions } from '@/components/ui/item';
 import { Button } from '@/components/ui/button';
 
+import type { DocumentationIngestJobTest } from '../../../../schemas/ingest-job-test.schema';
+
 import DocumentationIngestJobTestingResultsItemChunks from './item-chunks';
 
-export default function DocumentationIngestJobTestingResultsItem({ test }) {
+export default function DocumentationIngestJobTestingResultsItem({
+  test,
+  showMetadata,
+  showEmbeddings,
+}: {
+  test: DocumentationIngestJobTest;
+  showMetadata: boolean;
+  showEmbeddings: boolean;
+}) {
   const [itemOpen, setItemOpen] = useState(true);
 
-  const resultChunksCount = test.chunks.length;
+  const metricsMap = new Map([
+    ['dot', 'dot product'],
+    ['cosine', 'cosine distance'],
+    ['euclidean', 'euclidean distance'],
+  ]);
+
+  const resultChunksCount = test.chunks?.length ?? 0;
 
   return (
     <Item variant="outline">
@@ -20,10 +36,16 @@ export default function DocumentationIngestJobTestingResultsItem({ test }) {
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{test.phrase}</ItemTitle>
-        <ItemDescription>Method: {test.method}</ItemDescription>
-        <ItemDescription>Metric: {test.metric}</ItemDescription>
+        <ItemDescription>Type: {test.search_type}</ItemDescription>
+        <ItemDescription>Metric: {metricsMap.get(test.similarity_metric)}</ItemDescription>
         <ItemDescription>Results: {resultChunksCount}</ItemDescription>
-        {itemOpen && resultChunksCount > 0 && <DocumentationIngestJobTestingResultsItemChunks chunks={test.chunks} />}
+        {itemOpen && resultChunksCount > 0 && (
+          <DocumentationIngestJobTestingResultsItemChunks
+            chunks={test.chunks}
+            showMetadata={showMetadata}
+            showEmbeddings={showEmbeddings}
+          />
+        )}
       </ItemContent>
       <ItemActions>
         <Button

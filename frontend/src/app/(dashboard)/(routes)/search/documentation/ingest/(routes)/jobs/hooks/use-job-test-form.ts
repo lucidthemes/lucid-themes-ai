@@ -2,8 +2,8 @@ import { startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import type { DocumentationIngestJobTestForm } from '../schemas/job-test-form.schema';
-import { DocumentationIngestJobTestFormSchema } from '../schemas/job-test-form.schema';
+import type { DocumentationIngestJobTestForm } from '../schemas/ingest-job-test.schema';
+import { DocumentationIngestJobTestFormSchema } from '../schemas/ingest-job-test.schema';
 
 type SubmitAction = (values: DocumentationIngestJobTestForm) => void;
 
@@ -19,6 +19,8 @@ export default function useDocumentationIngestJobTestForm(submitAction: SubmitAc
 
   const onSubmit = async (data: DocumentationIngestJobTestForm) => {
     console.log(data);
+
+    form.reset();
 
     startTransition(() => {
       submitAction(data);

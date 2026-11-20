@@ -24,7 +24,7 @@ export default function DocumentationIngestJobChunksContent({
   chunks?: DocumentationIngestJobChunk[] | null;
 }) {
   const [showMetadata, setShowMetadata] = useState(true);
-  const [showEmbeddings, setShowEmbeddings] = useState(true);
+  const [showEmbeddings, setShowEmbeddings] = useState(false);
 
   if (isPending) return <DocumentationIngestJobChunksEmbeddingsLoading />;
 
@@ -37,22 +37,22 @@ export default function DocumentationIngestJobChunksContent({
           <div className="flex justify-end gap-5">
             <div className="flex items-center gap-2.5">
               <Switch
-                id="show-metadata"
+                id="show-chunks-metadata"
                 className="cursor-pointer"
                 checked={showMetadata}
                 onCheckedChange={() => setShowMetadata((showMetadata) => !showMetadata)}
               />
-              <Label htmlFor="show-metadata">Show metadata</Label>
+              <Label htmlFor="show-chunks-metadata">Show metadata</Label>
             </div>
             {ingestJobStatus === 'completed' && (
               <div className="flex items-center justify-end gap-2.5">
                 <Switch
-                  id="show-embeddings"
+                  id="show-chunks-embeddings"
                   className="cursor-pointer"
                   checked={showEmbeddings}
                   onCheckedChange={() => setShowEmbeddings((showEmbeddings) => !showEmbeddings)}
                 />
-                <Label htmlFor="show-embeddings">Show embeddings</Label>
+                <Label htmlFor="show-chunks-embeddings">Show embeddings</Label>
               </div>
             )}
           </div>
